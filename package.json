@@ -1,9 +1,14 @@
 {
   "name": "leaflet-html",
+  "type": "module",
   "version": "0.1.0",
-  "main": "index.js",
+  "source": "src/index.js",
+  "main": "./dist/leaflet-html.js",
   "author": "andrewgryan <andrew.ryan@metoffice.gov.uk>",
   "license": "MIT",
+  "scripts": {
+    "build": "microbundle"
+  },
   "devDependencies": {
     "microbundle": "^0.15.1"
   }

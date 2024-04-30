@@ -3,5 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "author": "andrewgryan <andrew.ryan@metoffice.gov.uk>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "microbundle": "^0.15.1"
+  }
 }

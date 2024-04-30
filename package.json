@@ -1,0 +1,7 @@
+{
+  "name": "leaflet-html",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "andrewgryan <andrew.ryan@metoffice.gov.uk>",
+  "license": "MIT"
+}

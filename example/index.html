@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""></script>
+    <style>
+      * {
+        margin: 0;
+      }
+
+      [data-leaflet-html] {
+        block-size: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <div data-leaflet-html data-center="[39.61, -105.02]" data-zoom="10">
+      <div data-control-layers>
+        <div data-base-maps>
+          <div data-tile-layer
+               data-name="OpenStreetMap"
+               data-url-template="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+               data-attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+               data-max-zoom="12"
+          ></div>
+          <div data-tile-layer
+               data-name="Toner"
+               data-url-template="https://tiles.stadiamaps.com/tiles/stamen_toner/{z}/{x}/{y}{r}.png"
+               data-attribution=''
+               data-max-zoom="12"
+               data-show
+          ></div>
+        </div>
+        <div data-overlay-maps>
+          <div data-layer-group data-name="Cities">
+            <div data-marker data-lat-lng="[39.61, -105.02]">
+              <div data-popup data-content="This is Littleton, CO."></div>
+            </div>
+            <div data-marker data-lat-lng="[39.74, -104.99]">
+              <div data-popup data-content="This is Denver, CO."></div>
+            </div>
+            <div data-marker data-lat-lng="[39.73, -104.8]">
+              <div data-popup data-content="This is Aurora, CO."></div>
+            </div>
+            <div data-marker data-lat-lng="[39.77, -105.23]">
+              <div data-popup data-content="This is Golden, CO."></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <script type="module">
+      import * as leafletHTML from "./dist/leaflet-html.esm.js"
+
+      // Render Leaflet API calls
+      document.querySelectorAll("[data-leaflet-html]").forEach((el) => {
+        const { center, zoom } = el.dataset
+        const map = L.map(el).setView(JSON.parse(center), parseInt(zoom))
+
+        // L.control.layers
+        el.querySelectorAll("[data-control-layers]").forEach((el) => {
+          const baseMaps = {}
+        
+          // L.tileLayers
+          el.querySelectorAll("[data-tile-layer]").forEach((tileEl) => {
+            const { show, urlTemplate, attribution, maxZoom, name } = tileEl.dataset
+            baseMaps[name] = L.tileLayer(urlTemplate, { maxZoom, attribution });
+            if (show != null) {
+              baseMaps[name].addTo(map)
+            }
+          })
+
+          const overlayMaps = {}
+          // L.layerGroup
+          el.querySelectorAll("[data-layer-group]").forEach((el) => {
+            const { name } = el.dataset
+            const layers = []
+
+            // L.marker
+            el.querySelectorAll("[data-marker]").forEach((el) => {
+              const { latLng } = el.dataset
+              const marker = L.marker(JSON.parse(latLng)).addTo(map)
+
+              // marker.bindPopup
+              el.querySelectorAll("[data-popup]").forEach((el) => {
+                const { content } = el.dataset
+                marker.bindPopup(content)
+              })
+
+              layers.push(marker)
+            })
+
+            overlayMaps[name] = L.layerGroup(layers)
+          })
+
+          L.control.layers(baseMaps, overlayMaps).addTo(map)
+        })
+
+      })
+    </script>
+  </body>
+</html>

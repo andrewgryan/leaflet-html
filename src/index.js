@@ -27,16 +27,22 @@ const init = () => {
         el.querySelectorAll("[data-marker]").forEach((el) => {
           const { latLng } = el.dataset
           const marker = L.marker(JSON.parse(latLng)).addTo(map)
+          const observer = new MutationObserver(function(mutations) {
+              mutations.forEach((mutation) => {
+                const { latLng } = mutation.target.dataset
+                marker.setLatLng(JSON.parse(latLng))
+              })
+          })
+          observer.observe(el, { attributes: true, attributeFilter: ["data-lat-lng"] })
 
           // marker.bindPopup
           el.querySelectorAll("[data-popup]").forEach((el) => {
             const { content } = el.dataset
             marker.bindPopup(content)
-            const observer = new MutationObserver(function(mutations) {
-              console.log(mutations, el.dataset)
+            const observer = new MutationObserver(function() {
               marker.getPopup().setContent(el.dataset.content)
             })
-            observer.observe(el, { attributes: true })
+            observer.observe(el, { attributes: true, attributeFilter: ["data-content"] })
           })
 
           layers.push(marker)

@@ -82,6 +82,7 @@
         console.log("Edit a popup")
         const el = document.querySelector("[data-content='This is Littleton, CO.']")
         el.dataset.content = "No it isn't"
+        el.parentElement.dataset.latLng = "[39.66, -105.02]"
       })
     </script>
   </body>

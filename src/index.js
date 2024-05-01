@@ -32,6 +32,11 @@ const init = () => {
           el.querySelectorAll("[data-popup]").forEach((el) => {
             const { content } = el.dataset
             marker.bindPopup(content)
+            const observer = new MutationObserver(function(mutations) {
+              console.log(mutations, el.dataset)
+              marker.getPopup().setContent(el.dataset.content)
+            })
+            observer.observe(el, { attributes: true })
           })
 
           layers.push(marker)

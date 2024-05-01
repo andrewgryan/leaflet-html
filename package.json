@@ -2,9 +2,15 @@
   "name": "leaflet-html",
   "type": "module",
   "version": "0.1.0",
+  "description": "Leaflet expressed in HTML",
   "source": "src/index.js",
   "main": "./dist/leaflet-html.js",
-  "author": "andrewgryan <andrew.ryan@metoffice.gov.uk>",
+  "module": "./dist/leaflet-html.esm.js",
+  "author": "andrewgryan",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/andrewgryan/leaflet-html.git"
+  },
   "license": "MIT",
   "scripts": {
     "build": "microbundle",

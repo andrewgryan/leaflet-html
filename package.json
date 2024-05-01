@@ -9,7 +9,7 @@
   "author": "andrewgryan",
   "repository": {
     "type": "git",
-    "url": "https://github.com/andrewgryan/leaflet-html.git"
+    "url": "git+https://github.com/andrewgryan/leaflet-html.git"
   },
   "license": "MIT",
   "scripts": {

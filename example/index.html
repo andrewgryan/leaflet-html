@@ -77,12 +77,18 @@
 
       leafletHTML()
 
-      // Add a city
+      // Manual tests
       document.getElementById("btn").addEventListener("click", () => {
-        console.log("Edit a popup")
-        const el = document.querySelector("[data-content='This is Littleton, CO.']")
-        el.dataset.content = "No it isn't"
-        el.parentElement.dataset.latLng = "[39.66, -105.02]"
+        // New city
+        let el = document.querySelector('[data-name="Cities"]')
+        const city = document.createElement("div")
+        city.dataset.marker = ''
+        city.dataset.latLng = "[39.60, -105.02]"
+        el.appendChild(city)
+
+        // Remove Denver
+        el = document.querySelector('[data-lat-lng="[39.74, -104.99]"]')
+        el.remove()
       })
     </script>
   </body>

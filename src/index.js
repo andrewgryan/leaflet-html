@@ -23,10 +23,33 @@ const init = () => {
         const { name } = el.dataset
         const layers = []
 
+        const observer = new MutationObserver(function(mutations) {
+          mutations.forEach(mutation => {
+            mutation.addedNodes.forEach(node => {
+              const { latLng } = node.dataset // MutationObserver needed
+              const marker = L.marker(JSON.parse(latLng))
+              const group = overlayMaps[name]
+              group.addLayer(marker)
+              map.addLayer(marker)
+            })
+
+            mutation.removedNodes.forEach(node => {
+              const { _leafletId } = node.dataset
+              const group = overlayMaps[name]
+              const layer = group.getLayer(_leafletId)
+              group.removeLayer(layer)
+              map.removeLayer(layer)
+            })
+          })
+        })
+        observer.observe(el, { childList: true })
+
         // L.marker
         el.querySelectorAll("[data-marker]").forEach((el) => {
           const { latLng } = el.dataset
           const marker = L.marker(JSON.parse(latLng)).addTo(map)
+          el.dataset._leafletId = L.stamp(marker) // Save ID for later
+
           const observer = new MutationObserver(function(mutations) {
               mutations.forEach((mutation) => {
                 const { latLng } = mutation.target.dataset
@@ -53,7 +76,6 @@ const init = () => {
 
       L.control.layers(baseMaps, overlayMaps).addTo(map)
     })
-
   })
 }
 

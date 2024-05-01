@@ -24,20 +24,21 @@ const init = () => {
         const layers = []
 
         const observer = new MutationObserver(function(mutations) {
+          const group = overlayMaps[name]
+
           mutations.forEach(mutation => {
             mutation.addedNodes.forEach(node => {
               const { latLng } = node.dataset // MutationObserver needed
-              const marker = L.marker(JSON.parse(latLng))
-              const group = overlayMaps[name]
-              group.addLayer(marker)
-              map.addLayer(marker)
+              const layer = L.marker(JSON.parse(latLng))
+              group.addLayer(layer)
+              map.addLayer(layer)
             })
 
             mutation.removedNodes.forEach(node => {
               const { _leafletId } = node.dataset
-              const group = overlayMaps[name]
               const layer = group.getLayer(_leafletId)
               group.removeLayer(layer)
+
               map.removeLayer(layer)
             })
           })
@@ -47,7 +48,10 @@ const init = () => {
         // L.marker
         el.querySelectorAll("[data-marker]").forEach((el) => {
           const { latLng } = el.dataset
-          const marker = L.marker(JSON.parse(latLng)).addTo(map)
+          const { opacity = "1.0" } = el.dataset
+          const options = { opacity: parseFloat(opacity) }
+          console.log(options)
+          const marker = L.marker(JSON.parse(latLng), options).addTo(map)
           el.dataset._leafletId = L.stamp(marker) // Save ID for later
 
           const observer = new MutationObserver(function(mutations) {

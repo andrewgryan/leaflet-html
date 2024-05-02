@@ -1,3 +1,6 @@
+// Helpers
+const selector = (noun) => `[data-${noun}]`;
+
 /**
  * Parse L.tileLayer args from element attributes
  */
@@ -50,29 +53,29 @@ const parseVideoOverlay = (el) => {
 
 const render = () => {
   // Render Leaflet API calls
-  document.querySelectorAll("[data-leaflet-html]").forEach((el) => {
+  document.querySelectorAll(selector("leaflet-html")).forEach((el) => {
     const { center, zoom } = el.dataset;
     const map = L.map(el).setView(JSON.parse(center), parseInt(zoom));
 
     // L.tileLayers
-    el.querySelectorAll("[data-tile-layer]").forEach((el) => {
+    el.querySelectorAll(selector("tile-layer")).forEach((el) => {
       L.tileLayer(...parseTileLayer(el)).addTo(map);
     });
 
-    el.querySelectorAll("[data-image-overlay]").forEach((el) => {
+    el.querySelectorAll(selector("image-overlay")).forEach((el) => {
       L.imageOverlay(...parseImageOverlay(el)).addTo(map);
     });
 
-    el.querySelectorAll("[data-video-overlay]").forEach((el) => {
+    el.querySelectorAll(selector("video-overlay")).forEach((el) => {
       L.videoOverlay(...parseVideoOverlay(el)).addTo(map);
     });
 
     // L.control.layers
-    el.querySelectorAll("[data-control-layers]").forEach((el) => {
+    el.querySelectorAll(selector("control-layers")).forEach((el) => {
       const baseMaps = {};
 
       // L.tileLayers
-      el.querySelectorAll("[data-tile-layer]").forEach((el) => {
+      el.querySelectorAll(selector("tile-layer")).forEach((el) => {
         const { name, show } = el.dataset;
         baseMaps[name] = L.tileLayer(...parseTileLayer(el));
         if (show != null) {
@@ -82,7 +85,7 @@ const render = () => {
 
       const overlayMaps = {};
       // L.layerGroup
-      el.querySelectorAll("[data-layer-group]").forEach((el) => {
+      el.querySelectorAll(selector("layer-group")).forEach((el) => {
         const { name } = el.dataset;
         const layers = [];
 
@@ -109,11 +112,10 @@ const render = () => {
         observer.observe(el, { childList: true });
 
         // L.marker
-        el.querySelectorAll("[data-marker]").forEach((el) => {
+        el.querySelectorAll(selector("marker")).forEach((el) => {
           const { latLng } = el.dataset;
           const { opacity = "1.0" } = el.dataset;
           const options = { opacity: parseFloat(opacity) };
-          console.log(options);
           const marker = L.marker(JSON.parse(latLng), options).addTo(map);
           el.dataset._leafletId = L.stamp(marker); // Save ID for later
 
@@ -129,7 +131,7 @@ const render = () => {
           });
 
           // marker.bindPopup
-          el.querySelectorAll("[data-popup]").forEach((el) => {
+          el.querySelectorAll(selector("popup")).forEach((el) => {
             const { content } = el.dataset;
             marker.bindPopup(content);
             const observer = new MutationObserver(function () {

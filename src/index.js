@@ -1,4 +1,4 @@
-const init = () => {
+const render = () => {
   // Render Leaflet API calls
   document.querySelectorAll("[data-leaflet-html]").forEach((el) => {
     const { center, zoom } = el.dataset
@@ -81,6 +81,10 @@ const init = () => {
       L.control.layers(baseMaps, overlayMaps).addTo(map)
     })
   })
+}
+
+const init = () => {
+  document.addEventListener("DOMContentLoaded", render)
 }
 
 export default init

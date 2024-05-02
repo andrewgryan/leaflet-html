@@ -9,6 +9,7 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
     crossorigin=""></script>
+    <script src="https://www.unpkg.com/leaflet-html@0.1.2/dist/leaflet-html.js"></script>
     <style>
       * {
         margin: 0;
@@ -74,10 +75,6 @@
     </div>
     <button id="btn">Add a city</button>
     <script type="module">
-      import leafletHTML from "/dist/leaflet-html.esm.js"
-
-      leafletHTML()
-
       // Manual tests
       document.getElementById("btn").addEventListener("click", () => {
         // New city

@@ -9,10 +9,13 @@ const render = () => {
       const baseMaps = {};
 
       // L.tileLayers
-      el.querySelectorAll("[data-tile-layer]").forEach((tileEl) => {
-        const { show, urlTemplate, attribution, maxZoom, name } =
-          tileEl.dataset;
-        baseMaps[name] = L.tileLayer(urlTemplate, { maxZoom, attribution });
+      el.querySelectorAll("[data-tile-layer]").forEach((el) => {
+        const { show, urlTemplate, name } =
+          el.dataset;
+        const { attribution = null, maxZoom = "18", minZoom = "0", subdomains = "abc" } =
+          el.dataset;
+        const options = { attribution, maxZoom, minZoom, subdomains }
+        baseMaps[name] = L.tileLayer(urlTemplate, options);
         if (show != null) {
           baseMaps[name].addTo(map);
         }

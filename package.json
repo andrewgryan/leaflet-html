@@ -1,10 +1,11 @@
 {
   "name": "leaflet-html",
   "type": "module",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Leaflet expressed in HTML",
   "source": "src/index.js",
   "main": "./dist/leaflet-html.js",
+  "umd:main": "./dist/leaflet-html.umd.js",
   "exports": {
     "default": "./dist/leaflet-html.js"
   },

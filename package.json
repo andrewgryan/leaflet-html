@@ -1,10 +1,13 @@
 {
   "name": "leaflet-html",
   "type": "module",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Leaflet expressed in HTML",
   "source": "src/index.js",
   "main": "./dist/leaflet-html.js",
+  "exports": {
+    "default": "./dist/leaflet-html.js"
+  },
   "module": "./dist/leaflet-html.esm.js",
   "author": "andrewgryan",
   "repository": {

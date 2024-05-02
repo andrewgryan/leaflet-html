@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head lang="en">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Leaflet HTML imageOverlay</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <script src="/dist/leaflet-html.umd.js"></script>
+    <style>
+      * {
+        margin: 0;
+      }
+
+      [data-leaflet-html] {
+        block-size: 100vh;
+        isolation: isolate;
+        z-index: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div data-leaflet-html data-center="[37.8, -96]" data-zoom="4">
+      <div
+        data-tile-layer
+        data-name="OpenStreetMap"
+        data-url-template="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+        data-attribution=""
+      ></div>
+      <div
+        data-image-overlay
+        data-url="https://maps.lib.utexas.edu/maps/historical/newark_nj_1922.jpg"
+        data-bounds="[[40.799311, -74.118464], [40.68202047785919, -74.33]]"
+        data-opacity="0.8"
+        data-interactive="true"
+        data-error-overlay-url="https://cdn-icons-png.flaticon.com/512/110/110686.png"
+        data-alt="Image of Newark, N.J. in 1922. Source: The University of Texas at Austin, UT Libraries Map Collection."
+      ></div>
+      <div
+        data-video-overlay
+        data-url='["https://www.mapbox.com/bites/00188/patricia_nasa.webm", "https://www.mapbox.com/bites/00188/patricia_nasa.mp4"]'
+        data-error-overlay-url="https://cdn-icons-png.flaticon.com/512/110/110686.png"
+        data-bounds="[[32, -130], [13, -100]]"
+      ></div>
+    </div>
+  </body>
+</html>

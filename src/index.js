@@ -1,8 +1,71 @@
+/**
+ * Parse L.tileLayer args from element attributes
+ */
+const parseTileLayer = (el) => {
+  const { urlTemplate } = el.dataset;
+  const {
+    attribution = null,
+    maxZoom = "18",
+    minZoom = "0",
+    subdomains = "abc",
+  } = el.dataset;
+  const options = { attribution, maxZoom, minZoom, subdomains };
+  return [urlTemplate, options];
+};
+
+/**
+ * Parse L.imageOverlay args from element attributes
+ */
+const parseImageOverlay = (el) => {
+  let { url, bounds } = el.dataset;
+  bounds = JSON.parse(bounds);
+  const { opacity } = el.dataset;
+  const options = { opacity: parseFloat(opacity) };
+  return [url, bounds, options];
+};
+
+/**
+ * Parse L.imageOverlay args from element attributes
+ */
+const parseVideoOverlay = (el) => {
+  let { url, bounds } = el.dataset;
+  url = JSON.parse(url);
+  bounds = JSON.parse(bounds);
+  const {
+    opacity,
+    errorOverlayUrl,
+    autoplay = true,
+    muted = true,
+    playsInline = true,
+  } = el.dataset;
+  const options = {
+    opacity: parseFloat(opacity),
+    errorOverlayUrl,
+    autoplay,
+    muted,
+    playsInline,
+  };
+  return [url, bounds, options];
+};
+
 const render = () => {
   // Render Leaflet API calls
   document.querySelectorAll("[data-leaflet-html]").forEach((el) => {
     const { center, zoom } = el.dataset;
     const map = L.map(el).setView(JSON.parse(center), parseInt(zoom));
+
+    // L.tileLayers
+    el.querySelectorAll("[data-tile-layer]").forEach((el) => {
+      L.tileLayer(...parseTileLayer(el)).addTo(map);
+    });
+
+    el.querySelectorAll("[data-image-overlay]").forEach((el) => {
+      L.imageOverlay(...parseImageOverlay(el)).addTo(map);
+    });
+
+    el.querySelectorAll("[data-video-overlay]").forEach((el) => {
+      L.videoOverlay(...parseVideoOverlay(el)).addTo(map);
+    });
 
     // L.control.layers
     el.querySelectorAll("[data-control-layers]").forEach((el) => {
@@ -10,12 +73,8 @@ const render = () => {
 
       // L.tileLayers
       el.querySelectorAll("[data-tile-layer]").forEach((el) => {
-        const { show, urlTemplate, name } =
-          el.dataset;
-        const { attribution = null, maxZoom = "18", minZoom = "0", subdomains = "abc" } =
-          el.dataset;
-        const options = { attribution, maxZoom, minZoom, subdomains }
-        baseMaps[name] = L.tileLayer(urlTemplate, options);
+        const { name, show } = el.dataset;
+        baseMaps[name] = L.tileLayer(...parseTileLayer(el));
         if (show != null) {
           baseMaps[name].addTo(map);
         }

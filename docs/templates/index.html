@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+
+      [data-leaflet-html] {
+        block-size: 40ch;
+        isolation: isolate;
+        z-index: 1;
+      }
+  body {
+    font-family: system-ui;
+  }
+h1, h2 {
+  font-weight: 100;
+}
+
+pre {
+  padding-inline: 0.75rem;
+  padding-block: 0.5rem;
+  border-radius: 0.2rem;
+  overflow-x: scroll;
+}
+
+.wrapper {
+  inline-size: 80ch;
+  margin-inline: auto;
+}
+  </style>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <script
+      src="https://unpkg.com/leaflet-html@latest/dist/leaflet-html.umd.js"
+    ></script>
+</head>
+<body>
+<div class="wrapper">
+{{ section.content | safe }}
+</div>
+</body>
+</html>

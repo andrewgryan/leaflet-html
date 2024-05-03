@@ -3,6 +3,7 @@
 # Leaflet HTML
 
 [LeafletJS](https://leafletjs.com/) is a library geared towards map based visualisations.
+Leaflet HTML expresses that JavaScript API in HTML.
 
 
 ## Design principles

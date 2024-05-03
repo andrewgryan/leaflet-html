@@ -31,11 +31,16 @@
   <body>
     <div data-leaflet-html data-center="[37.8, -96]" data-zoom="4">
       <div
+        data-lat-lng-bounds
+        data-bounds="[[40.799311, -74.118464], [40.68202047785919, -74.33]]"
+      ></div>
+      <div
         data-tile-layer
         data-name="OpenStreetMap"
         data-url-template="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
         data-attribution=""
       ></div>
+      <!-- Newark -->
       <div
         data-image-overlay
         data-url="https://maps.lib.utexas.edu/maps/historical/newark_nj_1922.jpg"
@@ -45,6 +50,7 @@
         data-error-overlay-url="https://cdn-icons-png.flaticon.com/512/110/110686.png"
         data-alt="Image of Newark, N.J. in 1922. Source: The University of Texas at Austin, UT Libraries Map Collection."
       ></div>
+      <!-- Hurricane Patricia -->
       <div
         data-video-overlay
         data-url='["https://www.mapbox.com/bites/00188/patricia_nasa.webm", "https://www.mapbox.com/bites/00188/patricia_nasa.mp4"]'
@@ -52,5 +58,20 @@
         data-bounds="[[32, -130], [13, -100]]"
       ></div>
     </div>
+    <script>
+      el = document.querySelector("[data-lat-lng-bounds]")
+      let counter = 0
+      document.body.addEventListener("click", () => {
+        console.log("click")
+        if (counter === 0) {
+          const { bounds } = document.querySelector("[data-video-overlay]").dataset
+          el.dataset.bounds = bounds
+        } else {
+          const { bounds } = document.querySelector("[data-image-overlay]").dataset
+          el.dataset.bounds = bounds
+        }
+        counter += 1
+      })
+    </script>
   </body>
 </html>

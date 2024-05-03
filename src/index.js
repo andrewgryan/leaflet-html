@@ -1,3 +1,5 @@
+// @ts-check
+
 // Helpers
 const selector = (noun) => `[data-${noun}]`;
 
@@ -51,11 +53,39 @@ const parseVideoOverlay = (el) => {
   return [url, bounds, options];
 };
 
+/**
+ * @param {HTMLElement} el
+ */
+const parseLatLngBounds = (el) => {
+  let { bounds } = el.dataset;
+  if (typeof bounds === "undefined") {
+    throw Error("data-bounds not specified")
+  }
+  return [JSON.parse(bounds)];
+}
+
 const render = () => {
   // Render Leaflet API calls
   document.querySelectorAll(selector("leaflet-html")).forEach((el) => {
     const { center, zoom } = el.dataset;
     const map = L.map(el).setView(JSON.parse(center), parseInt(zoom));
+
+    // L.latLngBounds
+    el.querySelectorAll(selector("lat-lng-bounds")).forEach((el) => {
+      const bounds = L.latLngBounds(...parseLatLngBounds(el))
+      // TODO: encapsulate this design pattern
+      const observer = new MutationObserver(function (mutations) {
+        mutations.forEach((mutation) => {
+          let [bounds] = parseLatLngBounds(mutation.target)
+          map.flyToBounds(bounds); // TODO: Use HTML attrs for fly/fit bounds
+        });
+      });
+      observer.observe(el, {
+        attributes: true,
+        attributeFilter: ["data-bounds"],
+      });
+      map.fitBounds(bounds)
+    })
 
     // L.tileLayers
     el.querySelectorAll(selector("tile-layer")).forEach((el) => {

@@ -2,6 +2,12 @@
 
 Leaflet expressed in HTML to add maps to Hypermedia Driven Applications (HDA).
 
+Indeed, since it is HTML, any front end framework should work with it.
+
+Fine grained reactive frameworks such as [Solid JS](https://solidjs.com) or [Van JS](https://vanjs.org) are ideal candidates for client side development. 
+
+RESTful frameworks, like [HTMX](Https://htmx.org), that serve HTML over the wire are perfect choices for server rendered content.
+
 ## Example
 
 The HTML in `example/index.html` is a simple demonstration of the API.

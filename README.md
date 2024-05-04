@@ -8,6 +8,33 @@ Fine grained reactive frameworks such as [Solid JS](https://solidjs.com) or [Van
 
 RESTful frameworks, like [HTMX](Https://htmx.org), that serve HTML over the wire are perfect choices for server rendered content.
 
+## Usage
+
+Include both Leaflet and Leaflet HTML in script tags in the head of the document.
+
+```html
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+  crossorigin=""
+/>
+<script
+  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+  crossorigin=""
+></script>
+<script src="https://unpkg.com/leaflet-html@latest/leaflet-html.umd.js"></script>
+```
+
+And remember to style the various map container elements with enough size to be visible.
+
+```css
+[data-leaflet-html] {
+  block-size: 100vh;
+}
+```
+
 ## Example
 
 The HTML in `example/index.html` is a simple demonstration of the API.

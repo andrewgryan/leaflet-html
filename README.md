@@ -30,7 +30,8 @@ Include both Leaflet and Leaflet HTML in script tags in the head of the document
 And remember to style the various map container elements with enough size to be visible.
 
 ```css
-[data-leaflet-html] {
+l-map {
+  display: block;
   block-size: 100vh;
 }
 ```
@@ -43,41 +44,40 @@ The HTML in `example/index.html` is a simple demonstration of the API.
 
 ```html
 <!-- Note: Leaflet JS/CSS must be included in <head> and [data-leaflet-html] styled to an appropriate size. -->
-<div data-leaflet-html data-center="[39.61, -105.02]" data-zoom="10">
-  <div data-control-layers>
-    <div data-base-maps>
-      <div data-tile-layer
-           data-name="OpenStreetMap"
-           data-url-template="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-           data-attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-           data-max-zoom="12"
-      ></div>
-      <div data-tile-layer
-           data-name="Toner"
-           data-url-template="https://tiles.stadiamaps.com/tiles/stamen_toner/{z}/{x}/{y}{r}.png"
-           data-attribution=''
-           data-max-zoom="12"
-           data-show
-      ></div>
-    </div>
-    <div data-overlay-maps>
-      <div data-layer-group data-name="Cities">
-        <div data-marker data-lat-lng="[39.61, -105.02]">
-          <div data-popup data-content="This is Littleton, CO."></div>
-        </div>
-        <div data-marker data-lat-lng="[39.74, -104.99]">
-          <div data-popup data-content="This is Denver, CO."></div>
-        </div>
-        <div data-marker data-lat-lng="[39.73, -104.8]">
-          <div data-popup data-content="This is Aurora, CO."></div>
-        </div>
-        <div data-marker data-lat-lng="[39.77, -105.23]">
-          <div data-popup data-content="This is Golden, CO."></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<l-map center="[39.61, -105.02]" zoom="10">
+  <l-control-layers>
+    <l-base-layers>
+      <l-tile-layer
+        name="OpenStreetMap"
+        url-template="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        max-zoom="12"
+      ></l-tile-layer>
+      <l-tile-layer
+        name="Toner"
+        url-template="https://tiles.stadiamaps.com/tiles/stamen_toner/{z}/{x}/{y}{r}.png"
+        attribution=''
+        max-zoom="12"
+      ></l-tile-layer>
+    </l-base-layers>
+    <l-overlay-layers>
+      <l-layer-group name="Cities">
+        <l-marker lat-lng="[39.61, -105.02]">
+          <l-popup content="This is Littleton, CO."></l-popup>
+        </l-marker>
+        <l-marker lat-lng="[39.74, -104.99]">
+          <l-popup content="This is Denver, CO."></l-popup>
+        </l-marker>
+        <l-marker lat-lng="[39.73, -104.8]">
+          <l-popup content="This is Aurora, CO."></l-popup>
+        </l-marker>
+        <l-marker lat-lng="[39.77, -105.23]">
+          <l-popup content="This is Golden, CO."></l-popup>
+        </l-marker>
+      </l-layer-group>
+    </l-overlay-layers>
+  </l-control-layers>
+</l-map>
 ```
 
 ## Build

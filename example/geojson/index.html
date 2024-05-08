@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head lang="en">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GeoJSON</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <script type="module" src="/src/index.js"></script>
+    <style>
+      * {
+        margin: 0;
+      }
+      l-map {
+        display: block;
+        height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <l-map center="[55,0]" zoom="5">
+      <l-tile-layer
+        url-template="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+      ></l-tile-layer>
+      <l-geojson id="feature" geojson='{"type":"Feature","properties":{"name":"Coors Field","amenity":"Baseball Stadium","popupContent":"This is where the Rockies play!"},"geometry":{"type":"Point","coordinates":[-104.99404,39.75621]}}'></l-geojson>
+    </l-map>
+    <script>
+      document.getElementById("feature").addEventListener("map:addTo", (ev) => {
+        console.log({ message: "Hello, World!", ev })
+      })
+    </script>
+  </body>
+</html>

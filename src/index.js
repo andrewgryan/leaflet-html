@@ -10,6 +10,7 @@ import LTileLayer from "./l-tile-layer.js";
 import LLatLngBounds from "./l-lat-lng-bounds.js";
 import LImageOverlay from "./l-image-overlay.js";
 import LVideoOverlay from "./l-video-overlay.js";
+import LGeoJSON from "./l-geojson.js";
 
 
 const init = (() => {
@@ -25,6 +26,7 @@ const init = (() => {
   customElements.define("l-lat-lng-bounds", LLatLngBounds)
   customElements.define("l-image-overlay", LImageOverlay)
   customElements.define("l-video-overlay", LVideoOverlay)
+  customElements.define("l-geojson", LGeoJSON)
 })();
 
 export default init;

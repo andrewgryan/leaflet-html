@@ -1,13 +1,13 @@
 {
   "name": "leaflet-html",
   "type": "module",
-  "version": "0.1.7",
+  "version": "0.2.0",
   "description": "Leaflet expressed in HTML",
   "source": "src/index.js",
   "main": "./dist/leaflet-html.js",
   "umd:main": "./dist/leaflet-html.umd.js",
   "exports": {
-    "default": "./dist/leaflet-html.js"
+    "module": "./dist/leaflet-html.js"
   },
   "module": "./dist/leaflet-html.esm.js",
   "author": "andrewgryan",

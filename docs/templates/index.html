@@ -5,30 +5,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
 
-      [data-leaflet-html] {
-        block-size: 40ch;
-        isolation: isolate;
-        z-index: 1;
-      }
+  l-map {
+    display: block;
+    block-size: 40ch;
+    isolation: isolate;
+    z-index: 1;
+  }
+
   body {
     font-family: system-ui;
     line-height: 1.6;
   }
-h1, h2 {
-  font-weight: 100;
-}
 
-pre {
-  padding-inline: 0.75rem;
-  padding-block: 0.5rem;
-  border-radius: 0.2rem;
-  overflow-x: scroll;
-}
+  h1, h2 {
+    font-weight: 100;
+  }
 
-.wrapper {
-  inline-size: min(90%, 80ch);
-  margin-inline: auto;
-}
+  pre {
+    padding-inline: 0.75rem;
+    padding-block: 0.5rem;
+    border-radius: 0.2rem;
+    overflow-x: scroll;
+  }
+
+  .wrapper {
+    inline-size: min(90%, 80ch);
+    margin-inline: auto;
+  }
   </style>
     <link
       rel="stylesheet"
@@ -42,7 +45,8 @@ pre {
       crossorigin=""
     ></script>
     <script
-      src="https://unpkg.com/leaflet-html@latest/dist/leaflet-html.umd.js"
+      type="module"
+      src="https://unpkg.com/leaflet-html@latest/dist/leaflet-html.js"
     ></script>
 </head>
 <body>

@@ -11,7 +11,7 @@ class LMarker extends HTMLElement {
     this.addEventListener("icon:add", (ev) => {
       ev.stopPropagation();
       this.layer.setIcon(ev.detail.icon);
-    })
+    });
   }
 
   connectedCallback() {

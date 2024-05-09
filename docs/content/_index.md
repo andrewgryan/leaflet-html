@@ -5,6 +5,11 @@
 [LeafletJS](https://leafletjs.com/) is a library geared towards map based visualisations.
 Leaflet HTML expresses that JavaScript API in HTML.
 
+## How-to guides
+
+[Articles](/articles) have been written to make adopting Leaflet HTML simpler.
+These articles follow the Leaflet tutorials closely and add a few `leaflet-html` specific
+tips and tricks.
 
 ## Design principles
 
@@ -47,9 +52,9 @@ The following is a live running example of Leaflet HTML.
   </l-control-layers>
 </l-map>
 
+The above application is represented in HTML using the following syntax.
 
 ```html
-<!-- Example -->
 <l-map center="[39.61, -105.02]" zoom="10">
   <l-control-layers>
     <l-base-layers>
@@ -59,7 +64,6 @@ The following is a live running example of Leaflet HTML.
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
         max-zoom="20"
         subdomains="abcd"
-        show
       ></l-tile-layer>
     </l-base-layers>
     <l-overlay-layers>
@@ -82,3 +86,4 @@ The following is a live running example of Leaflet HTML.
 </l-map>
 ```
 
+The above example is a taste of the syntax and capabilities of wrapping Leaflet in HTML tags.

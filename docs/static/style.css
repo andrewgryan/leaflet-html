@@ -1,0 +1,44 @@
+@import "https://unpkg.com/open-props";
+
+l-map {
+  display: block;
+  block-size: 40ch;
+  isolation: isolate;
+  z-index: 1;
+}
+
+body {
+  font-family: system-ui;
+  line-height: 1.6;
+  margin: 0;
+}
+
+h1, h2, h3 {
+  font-weight: 100;
+}
+
+pre {
+  padding-inline: 0.75rem;
+  padding-block: 0.5rem;
+  border-radius: 0.2rem;
+  overflow-x: auto;
+}
+
+main {
+  inline-size: min(90%, 80ch);
+  margin-inline: auto;
+}
+
+footer {
+  margin-block-start: var(--size-3);
+  min-height: 15ch;
+  background-color: var(--gray-9);
+  padding: var(--size-3);
+
+  & .logo {
+    color: var(--gray-2);
+    font-size: var(--font-size-0);
+    letter-spacing: var(--font-letterspacing-5);
+  }
+}
+

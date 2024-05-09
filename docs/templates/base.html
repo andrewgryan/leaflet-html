@@ -4,35 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-
-  l-map {
-    display: block;
-    block-size: 40ch;
-    isolation: isolate;
-    z-index: 1;
-  }
-
-  body {
-    font-family: system-ui;
-    line-height: 1.6;
-  }
-
-  h1, h2, h3 {
-    font-weight: 100;
-  }
-
-  pre {
-    padding-inline: 0.75rem;
-    padding-block: 0.5rem;
-    border-radius: 0.2rem;
-    overflow-x: auto;
-  }
-
-  main {
-    inline-size: min(90%, 80ch);
-    margin-inline: auto;
-  }
   </style>
+    <link rel="stylesheet" href="/style.css" />
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -62,5 +35,8 @@
   <a href="{{ get_url(path='@/articles/_index.md') }}">Articles</a>
 </nav>
 {% block content %}{% endblock %}
+<footer>
+  <div class="logo">Leaflet-HTML</div>
+</footer>
 </body>
 </html>

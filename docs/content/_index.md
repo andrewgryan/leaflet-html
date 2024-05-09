@@ -7,7 +7,7 @@ Leaflet HTML expresses that JavaScript API in HTML.
 
 ## How-to guides
 
-[Articles](/articles) have been written to make adopting Leaflet HTML simpler.
+[Articles](@/articles/_index.md) have been written to make adopting Leaflet HTML simpler.
 These articles follow the Leaflet tutorials closely and add a few `leaflet-html` specific
 tips and tricks.
 

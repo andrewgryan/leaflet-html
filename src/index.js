@@ -11,6 +11,7 @@ import LLatLngBounds from "./l-lat-lng-bounds.js";
 import LImageOverlay from "./l-image-overlay.js";
 import LVideoOverlay from "./l-video-overlay.js";
 import LGeoJSON from "./l-geojson.js";
+import LIcon from "./l-icon.js";
 
 const init = (() => {
   // Custom elements (order of definition is important)
@@ -26,6 +27,7 @@ const init = (() => {
   customElements.define("l-image-overlay", LImageOverlay);
   customElements.define("l-video-overlay", LVideoOverlay);
   customElements.define("l-geojson", LGeoJSON);
+  customElements.define("l-icon", LIcon);
 })();
 
 export default init;

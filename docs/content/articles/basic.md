@@ -61,6 +61,16 @@ Leaflet-HTML is available via **npm** and **unpkg**.
 To get started quickly, use the CDN version available on **unpkg**.
 
 ```html
+<script type="importmap">
+{
+  "imports": {
+    "leaflet": "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  }
+}
+</script>
+```
+
+```html
 <script
   type="module"
   src="https://unpkg.com/leaflet-html@latest/dist/leaflet-html.js"

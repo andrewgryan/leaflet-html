@@ -4,12 +4,8 @@
   "version": "0.2.1",
   "description": "Leaflet expressed in HTML",
   "source": "src/index.js",
-  "main": "./dist/leaflet-html.js",
-  "umd:main": "./dist/leaflet-html.umd.js",
-  "exports": {
-    "module": "./dist/leaflet-html.js"
-  },
-  "module": "./dist/leaflet-html.esm.js",
+  "main": "./dist/leaflet-html.cjs",
+  "module": "./dist/leaflet-html.js",
   "author": "andrewgryan",
   "repository": {
     "type": "git",
@@ -17,7 +13,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "build": "microbundle --external leaflet",
+    "build": "microbundle",
     "watch": "microbundle watch",
     "test": "vitest"
   },

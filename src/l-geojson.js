@@ -1,20 +1,22 @@
-import { mapAddTo } from "./events.js"
+import { mapAddTo } from "./events.js";
 
 class LGeoJSON extends HTMLElement {
   constructor() {
-    super()
+    super();
   }
 
   connectedCallback() {
-    const layer = L.geoJSON(JSON.parse(this.getAttribute("geojson")))
-    this.dispatchEvent(new CustomEvent(mapAddTo, {
-      bubbles: true,
-      cancelable: true,
-      detail: {
-        layer
-      }
-    }))
+    const layer = L.geoJSON(JSON.parse(this.getAttribute("geojson")));
+    this.dispatchEvent(
+      new CustomEvent(mapAddTo, {
+        bubbles: true,
+        cancelable: true,
+        detail: {
+          layer,
+        },
+      }),
+    );
   }
 }
 
-export default LGeoJSON
+export default LGeoJSON;

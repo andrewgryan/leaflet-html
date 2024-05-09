@@ -1,29 +1,29 @@
-import { mapAddTo } from "./events.js"
+import { mapAddTo } from "./events.js";
 
 class LLayerGroup extends HTMLElement {
   constructor() {
-    super()
+    super();
   }
-  
+
   connectedCallback() {
-    const name = this.getAttribute("name")
-    const group = L.layerGroup()
+    const name = this.getAttribute("name");
+    const group = L.layerGroup();
     const event = new CustomEvent(mapAddTo, {
       cancelable: true,
       bubbles: true,
       detail: {
         layer: group,
-        name
-      }
-    })
-    this.dispatchEvent(event)
+        name,
+      },
+    });
+    this.dispatchEvent(event);
 
     this.addEventListener(mapAddTo, (ev) => {
-      ev.stopPropagation()
-      group.addLayer(ev.detail.layer)
-    })
+      ev.stopPropagation();
+      group.addLayer(ev.detail.layer);
+    });
 
-    const observer = new MutationObserver(function(mutations) {
+    const observer = new MutationObserver(function (mutations) {
       mutations.forEach((mutation) => {
         mutation.removedNodes.forEach((node) => {
           const leafletId = node.getAttribute("leaflet-id");
@@ -32,8 +32,8 @@ class LLayerGroup extends HTMLElement {
         });
       });
     });
-    observer.observe(this, { childList: true })
+    observer.observe(this, { childList: true });
   }
 }
 
-export default LLayerGroup
+export default LLayerGroup;

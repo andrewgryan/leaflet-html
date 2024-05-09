@@ -1,16 +1,15 @@
-import { mapAddTo } from "./events.js"
+import { mapAddTo } from "./events.js";
 
 class LBaseLayers extends HTMLElement {
   constructor() {
-    super()
+    super();
   }
-  
+
   connectedCallback() {
     this.addEventListener(mapAddTo, (ev) => {
-      ev.detail["type"] = "base"
-    })
+      ev.detail["type"] = "base";
+    });
   }
 }
 
-export default LBaseLayers
-
+export default LBaseLayers;

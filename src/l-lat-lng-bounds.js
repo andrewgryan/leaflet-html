@@ -1,8 +1,8 @@
 class LLatLngBounds extends HTMLElement {
-  static observedAttributes = ["bounds"]
+  static observedAttributes = ["bounds"];
 
   constructor() {
-    super()
+    super();
   }
 
   attributeChangedCallback(_name, _oldValue, newValue) {
@@ -10,11 +10,11 @@ class LLatLngBounds extends HTMLElement {
       bubbles: true,
       detail: {
         bounds: JSON.parse(newValue),
-        method: this.getAttribute("method") || "fitBounds"
-      }
-    })
-    this.dispatchEvent(event)
+        method: this.getAttribute("method") || "fitBounds",
+      },
+    });
+    this.dispatchEvent(event);
   }
 }
 
-export default LLatLngBounds
+export default LLatLngBounds;

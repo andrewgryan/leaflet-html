@@ -1,7 +1,7 @@
-import { defineConfig } from 'vite'
+import { defineConfig } from "vite";
 
 export default defineConfig({
   test: {
-    includeSource: ['src/**/*.{js,ts}'], 
+    includeSource: ["src/**/*.{js,ts}"],
   },
-})
+});

@@ -4,7 +4,7 @@ Leaflet expressed in HTML to add maps to Hypermedia Driven Applications (HDA).
 
 Indeed, since it is HTML, any front end framework should work with it.
 
-Fine grained reactive frameworks such as [Solid JS](https://solidjs.com) or [Van JS](https://vanjs.org) are ideal candidates for client side development. 
+Fine grained reactive frameworks such as [Solid JS](https://solidjs.com) or [Van JS](https://vanjs.org) are ideal candidates for client side development.
 
 RESTful frameworks, like [HTMX](Https://htmx.org), that serve HTML over the wire are perfect choices for server rendered content.
 
@@ -56,7 +56,7 @@ The HTML in `example/index.html` is a simple demonstration of the API.
       <l-tile-layer
         name="Toner"
         url-template="https://tiles.stadiamaps.com/tiles/stamen_toner/{z}/{x}/{y}{r}.png"
-        attribution=''
+        attribution=""
         max-zoom="12"
       ></l-tile-layer>
     </l-base-layers>

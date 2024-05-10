@@ -19,12 +19,20 @@ Include both Leaflet and Leaflet HTML in script tags in the head of the document
   integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
   crossorigin=""
 />
-<script
-  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-  crossorigin=""
-></script>
-<script src="https://unpkg.com/leaflet-html@latest/leaflet-html.umd.js"></script>
+<script type="importmap">
+  {
+    "imports": {
+      "leaflet": "https://unpkg.com/leaflet@1.9.4/dist/leaflet-src.esm.js",
+      "leaflet-html": "https://unpkg.com/leaflet-html@latest/dist/leaflet-html.js"
+    }
+  }
+</script>
+```
+
+```html
+<script type="module">
+  import "leaflet-html";
+</script>
 ```
 
 And remember to style the various map container elements with enough size to be visible.

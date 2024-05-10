@@ -18,11 +18,16 @@ class LMap extends HTMLElement {
     // Observe removed l-tile-layers
     const observer = new MutationObserver(function(mutations) {
       mutations.forEach((mutation) => {
-        mutation.removedNodes.forEach((node) => {
-          if (node instanceof LTileLayer) {
-            this.map.removeLayer(node.layer)
-          }
-        })
+        if (mutation.target instanceof LMap) {
+          const el = mutation.target
+          mutation.removedNodes.forEach((node) => {
+            if (node instanceof LTileLayer) {
+              if ((el.map !== null) && (node.layer !== null)) {
+                el.map.removeLayer(node.layer)
+              }
+            }
+          })
+        }
       })
     })
     observer.observe(this, { childList: true })

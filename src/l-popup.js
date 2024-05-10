@@ -1,3 +1,4 @@
+// @ts-check
 import { popupAdd } from "./events.js";
 
 class LPopup extends HTMLElement {

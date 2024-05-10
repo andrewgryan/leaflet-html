@@ -1,3 +1,5 @@
+// @ts-check
+import { videoOverlay } from "leaflet";
 import { mapAddTo } from "./events.js";
 
 class LVideoOverlay extends HTMLElement {
@@ -15,7 +17,7 @@ class LVideoOverlay extends HTMLElement {
       muted: true,
       playsInline: true,
     };
-    const layer = L.videoOverlay(url, bounds, options);
+    const layer = videoOverlay(url, bounds, options);
     this.dispatchEvent(
       new CustomEvent(mapAddTo, {
         cancelable: true,

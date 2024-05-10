@@ -1,3 +1,5 @@
+// @ts-check
+import { layerGroup } from "leaflet";
 import { mapAddTo } from "./events.js";
 
 class LLayerGroup extends HTMLElement {
@@ -7,7 +9,7 @@ class LLayerGroup extends HTMLElement {
 
   connectedCallback() {
     const name = this.getAttribute("name");
-    const group = L.layerGroup();
+    const group = layerGroup();
     const event = new CustomEvent(mapAddTo, {
       cancelable: true,
       bubbles: true,
@@ -26,9 +28,15 @@ class LLayerGroup extends HTMLElement {
     const observer = new MutationObserver(function (mutations) {
       mutations.forEach((mutation) => {
         mutation.removedNodes.forEach((node) => {
-          const leafletId = node.getAttribute("leaflet-id");
-          const layer = group.getLayer(leafletId);
-          group.removeLayer(layer);
+          if (node instanceof HTMLElement) {
+            const leafletId = node.getAttribute("leaflet-id");
+            if (leafletId !== null) {
+              const layer = group.getLayer(parseInt(leafletId));
+              if (typeof layer !== "undefined") {
+                group.removeLayer(layer);
+              }
+            }
+          }
         });
       });
     });

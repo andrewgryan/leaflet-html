@@ -1,4 +1,5 @@
 // @ts-check
+import * as L from "leaflet";
 import { layerRemove, mapAddTo } from "./events.js";
 
 class LMap extends HTMLElement {
@@ -8,7 +9,9 @@ class LMap extends HTMLElement {
     this.map = null;
     this.addEventListener("map:bounds", (ev) => {
       const { bounds, method } = ev.detail;
-      this.map[method](bounds);
+      if (this.map !== null) {
+        this.map[method](bounds);
+      }
     });
   }
 
@@ -25,7 +28,9 @@ class LMap extends HTMLElement {
     });
 
     this.addEventListener(layerRemove, (ev) => {
-      this.map.remove(ev.detail.layer);
+      if (this.map !== null) {
+        this.map.removeLayer(ev.detail.layer);
+      }
     });
   }
 }

@@ -1,3 +1,5 @@
+// @ts-check
+import { tileLayer } from "leaflet";
 import { mapAddTo } from "./events.js";
 
 class LTileLayer extends HTMLElement {
@@ -8,9 +10,15 @@ class LTileLayer extends HTMLElement {
   connectedCallback() {
     const name = this.getAttribute("name");
     const urlTemplate = this.getAttribute("url-template");
-    const attribution = this.getAttribute("attribution");
-    const options = { attribution };
-    const layer = L.tileLayer(urlTemplate, options);
+    if (urlTemplate === null) {
+      return;
+    }
+    const options = {};
+    const key = "attribution";
+    if (this.hasAttribute(key)) {
+      options[key] = this.getAttribute(key);
+    }
+    const layer = tileLayer(urlTemplate, options);
     const event = new CustomEvent(mapAddTo, {
       detail: { name, layer },
       bubbles: true,

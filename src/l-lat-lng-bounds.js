@@ -1,3 +1,4 @@
+// @ts-check
 class LLatLngBounds extends HTMLElement {
   static observedAttributes = ["bounds"];
 

@@ -1,3 +1,4 @@
+// @ts-check
 import { mapAddTo } from "./events.js";
 
 class LBaseLayers extends HTMLElement {

@@ -1,3 +1,5 @@
+// @ts-check
+import { imageOverlay } from "leaflet";
 import { mapAddTo } from "./events.js";
 
 class LImageOverlay extends HTMLElement {
@@ -10,12 +12,20 @@ class LImageOverlay extends HTMLElement {
 
   connectedCallback() {
     const url = this.getAttribute("url");
-    const bounds = JSON.parse(this.getAttribute("bounds"));
+    if (url === null) {
+      console.warn("attribute 'url' not set");
+      return;
+    }
+    let bounds = this.getAttribute("bounds");
+    if (bounds === null) {
+      console.warn("attribute 'bounds' not set");
+      return;
+    }
     const options = {
       opacity: parseFloat(this.getAttribute("opacity") || "1.0"),
       alt: this.getAttribute("alt") || "",
     };
-    this.layer = L.imageOverlay(url, bounds, options);
+    this.layer = imageOverlay(url, JSON.parse(bounds), options);
     this.dispatchEvent(
       new CustomEvent(mapAddTo, {
         cancelable: true,

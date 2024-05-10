@@ -1,6 +1,7 @@
 // @ts-check
 import * as L from "leaflet";
 import { layerRemove, mapAddTo } from "./events.js";
+import LTileLayer from "./l-tile-layer.js";
 
 class LMap extends HTMLElement {
   constructor() {
@@ -13,6 +14,18 @@ class LMap extends HTMLElement {
         this.map[method](bounds);
       }
     });
+
+    // Observe removed l-tile-layers
+    const observer = new MutationObserver(function(mutations) {
+      mutations.forEach((mutation) => {
+        mutation.removedNodes.forEach((node) => {
+          if (node instanceof LTileLayer) {
+            this.map.removeLayer(node.layer)
+          }
+        })
+      })
+    })
+    observer.observe(this, { childList: true })
   }
 
   connectedCallback() {

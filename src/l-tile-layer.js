@@ -5,6 +5,7 @@ import { mapAddTo } from "./events.js";
 class LTileLayer extends HTMLElement {
   constructor() {
     super();
+    this.layer = null
   }
 
   connectedCallback() {
@@ -18,9 +19,9 @@ class LTileLayer extends HTMLElement {
     if (this.hasAttribute(key)) {
       options[key] = this.getAttribute(key);
     }
-    const layer = tileLayer(urlTemplate, options);
+    this.layer = tileLayer(urlTemplate, options);
     const event = new CustomEvent(mapAddTo, {
-      detail: { name, layer },
+      detail: { name, layer: this.layer },
       bubbles: true,
     });
     this.dispatchEvent(event);

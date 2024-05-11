@@ -1,3 +1,8 @@
+{% if config.base_url == "https://andrewgryan.github.io/leaflet-html" %}
+  {% set js_url = "https://unpkg.com/leaflet-html@latest/dist/leaflet-html.js" %}
+{% else %}
+  {% set js_url = "/leaflet-html.js" %}
+{% endif %}
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -17,7 +22,7 @@
       {
         "imports": {
           "leaflet": "https://unpkg.com/leaflet@1.9.4/dist/leaflet-src.esm.js",
-          "leaflet-html": "https://unpkg.com/leaflet-html@latest/dist/leaflet-html.js"
+          "leaflet-html": "{{ js_url | safe }}"
         }
       }
     </script>

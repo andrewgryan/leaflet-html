@@ -14,7 +14,7 @@
   "license": "MIT",
   "scripts": {
     "build": "microbundle",
-    "watch": "microbundle watch",
+    "watch": "microbundle watch -o ./docs/static --format esm",
     "test": "vitest"
   },
   "devDependencies": {

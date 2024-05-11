@@ -1,8 +1,9 @@
 // @ts-check
 import { videoOverlay } from "leaflet";
 import { mapAddTo } from "./events.js";
+import LLayer from "./l-layer.js";
 
-class LVideoOverlay extends HTMLElement {
+class LVideoOverlay extends LLayer {
   constructor() {
     super();
   }

@@ -1,7 +1,7 @@
 // @ts-check
 import * as L from "leaflet";
 import { layerRemove, mapAddTo } from "./events.js";
-import LTileLayer from "./l-tile-layer.js";
+import LLayer from "./l-layer.js";
 
 class LMap extends HTMLElement {
   constructor() {
@@ -21,7 +21,7 @@ class LMap extends HTMLElement {
         if (mutation.target instanceof LMap) {
           const el = mutation.target
           mutation.removedNodes.forEach((node) => {
-            if (node instanceof LTileLayer) {
+            if (node instanceof LLayer) {
               if ((el.map !== null) && (node.layer !== null)) {
                 el.map.removeLayer(node.layer)
               }

@@ -1,8 +1,9 @@
 // @ts-check
 import { imageOverlay } from "leaflet";
 import { mapAddTo } from "./events.js";
+import LLayer from "./l-layer.js";
 
-class LImageOverlay extends HTMLElement {
+class LImageOverlay extends LLayer {
   static observedAttributes = ["url", "bounds", "opacity"];
 
   constructor() {

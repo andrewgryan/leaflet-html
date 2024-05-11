@@ -1,8 +1,9 @@
 // @ts-check
 import { tileLayer } from "leaflet";
 import { mapAddTo } from "./events.js";
+import LLayer from "./l-layer.js";
 
-class LTileLayer extends HTMLElement {
+class LTileLayer extends LLayer {
   constructor() {
     super();
     this.layer = null

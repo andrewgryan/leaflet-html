@@ -1,8 +1,9 @@
 // @vitest-environment happy-dom
 import * as L from "leaflet";
 import { mapAddTo, popupAdd } from "./events.js";
+import LLayer from "./l-layer.js";
 
-class LMarker extends HTMLElement {
+class LMarker extends LLayer {
   static observedAttributes = ["lat-lng", "opacity", "icon"];
 
   constructor() {

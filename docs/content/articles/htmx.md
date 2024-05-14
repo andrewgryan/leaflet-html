@@ -55,6 +55,9 @@ A button that requests HTML to replace part of the document should update the ma
   <l-tile-layer
     url-template="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
   ></l-tile-layer>
+  <l-circle radius="10000.0" lat-lng="[55, -5]"></l-circle>
+  <l-rectangle radius="10000.0" lat-lng="[[53, -5], [54, -6]]"></l-rectangle>
+  <l-polyline line-cap="square" lat-lng="[[55, -5], [55, -7]]"></l-polyline>
 </l-map>
 
 <button hx-get={{ url(path='htmx/tile-osm.html') }} hx-target="l-tile-layer" hx-swap="outerHTML">
@@ -81,4 +84,5 @@ All Leaflet-HTML tags, e.g. `<l-marker>`, `<l-icon>`, etc. can be swapped howeve
 It is just the contents of `<l-map>` that needs careful consideration.
 
 A more elegant mechanism in the future will make it clear which part of the document is controlled by Leaflet.
+
 

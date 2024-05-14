@@ -31,7 +31,7 @@ const INHERITS = {
   circle: ["path", "layer"],
   polyline: ["path", "layer"],
   polygon: ["polyline"],
-  rectangle: ["polyline"],
+  rectangle: ["path", "layer"],
 }
 
 const attributes = (methodName) => {
@@ -105,6 +105,7 @@ const generator = (method, methodName) => {
     connectedCallback() {
       const args = positional(this, methodName)
       const options = settings(this, methodName)
+      console.log(methodName, options)
       this.layer = method(...args, options)
       const event = new CustomEvent("map:addTo", {
         cancelable: true,

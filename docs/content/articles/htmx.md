@@ -56,7 +56,7 @@ A button that requests HTML to replace part of the document should update the ma
     url-template="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
   ></l-tile-layer>
   <l-circle radius="10000.0" lat-lng="[55, -5]"></l-circle>
-  <l-rectangle lat-lng="[[53, -5], [54, -6]]" color="hotpink"></l-rectangle>
+  <l-rectangle weight="1" lat-lng="[[53, -5], [54, -6]]" color="hotpink"></l-rectangle>
   <l-polyline line-cap="square" lat-lng="[[55, -5], [55, -7]]"></l-polyline>
 </l-map>
 

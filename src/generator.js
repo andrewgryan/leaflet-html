@@ -2,7 +2,7 @@ import { LatLng } from "leaflet"
 
 const ARGS = {
   circle: [["lat-lng", LatLng]],
-  polyline: [["lat-lng", LatLng]], // TODO: LatLng[] array
+  polyline: [["lat-lngs", LatLng]], // TODO: LatLng[] array
   polygon: [["lat-lng", LatLng]],
   rectangle: [["lat-lng", LatLng]],
 }
@@ -34,12 +34,30 @@ const INHERITS = {
   rectangle: ["path", "layer"],
 }
 
+// TODO: Generalise approach
+const setter = (layer, name, newValue) => {
+  switch(name) {
+    case "lat-lngs":
+        layer.setLatLngs(JSON.parse(newValue))
+        break;
+    case "weight":
+        layer.setStyle({ weight: parseInt(newValue) })
+        break;
+    case "color":
+        layer.setStyle({ color: newValue })
+        break;
+  }
+}
+
 const attributes = (methodName) => {
+  let args = ARGS[methodName].map(x => x[0])
   let attrs = Object.keys(OPTIONS[methodName])
   INHERITS[methodName].forEach((parent) => {
     attrs.push(...Object.keys(OPTIONS[parent]))
   })
-  return attrs.map(camelToKebab)
+  attrs = attrs.map(camelToKebab)
+  attrs.push(...args)
+  return attrs
 }
 
 const camelToKebab = (s) => {
@@ -93,6 +111,7 @@ const parse = (text, type, defaultValue) => {
 }
 
 const generator = (method, methodName) => {
+  console.log(attributes(methodName))
   class cls extends HTMLElement {
     static observedAttributes = attributes(methodName);
 
@@ -105,7 +124,6 @@ const generator = (method, methodName) => {
     connectedCallback() {
       const args = positional(this, methodName)
       const options = settings(this, methodName)
-      console.log(methodName, options)
       this.layer = method(...args, options)
       const event = new CustomEvent("map:addTo", {
         cancelable: true,
@@ -117,9 +135,10 @@ const generator = (method, methodName) => {
       this.dispatchEvent(event);
     }
 
-    attributeChangedCallback(name, oldValue, newValue) {
-      // TODO: use setters
-      console.log(name, oldValue, newValue)
+    attributeChangedCallback(name, _, newValue) {
+      if (this.layer !== null) {
+        setter(this.layer, name, newValue)
+      }
     }
   }
   return cls

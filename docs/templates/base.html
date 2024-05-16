@@ -29,10 +29,11 @@
     <script type="module">
       import "leaflet-html";
     </script>
+    <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
 </head>
 <body>
 <nav>
-  <a href="{{ get_url(path='@/_index.md') }}">Home</a>
+  <a href="{{ get_url(path='@/_index.md') }}"><iconify-icon icon="mdi:home"></iconify-icon> Home</a>
   <a href="{{ get_url(path='@/articles/_index.md') }}">Articles</a>
 </nav>
 {% block content %}{% endblock %}

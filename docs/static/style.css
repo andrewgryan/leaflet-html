@@ -34,10 +34,10 @@ main {
 }
 
 nav {
+  background-color: white;
   position: sticky; 
   top: 0;
   display: flex;
-  margin-inline-start: var(--size-3);
   & a {
     text-decoration: none;
     padding: var(--size-3);

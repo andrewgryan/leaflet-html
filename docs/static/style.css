@@ -68,6 +68,9 @@ nav {
     display: flex; 
     align-items: center; 
     gap: var(--size-1);
+    paint-order: stroke fill;
+    color: white;
+    -webkit-text-stroke: 5px var(--gray-9);
   }
 }
 

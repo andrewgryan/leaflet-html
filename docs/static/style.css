@@ -7,6 +7,12 @@ l-map {
   z-index: 1;
 }
 
+iconify-icon {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+}
+
 body {
   font-family: system-ui;
   line-height: 1.6;

@@ -78,9 +78,16 @@ footer {
   padding: var(--size-3);
 
   & .logo {
-    color: var(--gray-2);
+    --shadow-color: white;
+    color: var(--gray-9);
     font-size: var(--font-size-0);
-    letter-spacing: var(--font-letterspacing-5);
+    paint-order: stroke fill;
+    text-transform: uppercase;
+    font-weight: 900;
+    letter-spacing: -.175ch;
+    line-height: 0.9;
+    -webkit-text-stroke: 5px var(--shadow-color);
+    text-shadow: 8px 8px var(--shadow-color);
   }
 }
 

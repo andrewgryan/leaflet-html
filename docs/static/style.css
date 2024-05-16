@@ -75,6 +75,9 @@ nav {
       color: var(--gray-9);
     }
   }
+  & a:last-child {
+    align-self: flex-end;
+  }
 }
 
 footer {

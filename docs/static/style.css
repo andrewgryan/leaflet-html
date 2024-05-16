@@ -22,7 +22,19 @@ body {
   grid-template-columns: 1fr;
 }
 
-h1, h2, h3 {
+h1 {
+    paint-order: stroke fill;
+    text-transform: uppercase;
+    font-size: calc(1rem + min(90px, 15vw));
+    font-weight: 900;
+    letter-spacing: -.175ch;
+    line-height: 0.9;
+    color: white;
+    -webkit-text-stroke: 5px black;
+    text-shadow: 8px 8px black;
+}
+
+h2, h3 {
   font-weight: 100;
 }
 

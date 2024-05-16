@@ -34,11 +34,13 @@ main {
 }
 
 nav {
+  position: sticky; 
+  top: 0;
   display: flex;
-  gap: var(--size-3);
-  padding: var(--size-3);
+  margin-inline-start: var(--size-3);
   & a {
     text-decoration: none;
+    padding: var(--size-3);
   }
 }
 

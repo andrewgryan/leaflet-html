@@ -63,6 +63,9 @@ nav {
   top: 0;
   display: flex;
   justify-content: space-between;
+  & div {
+    display: flex;
+  }
   & a {
     text-decoration: none;
     padding: var(--size-3);

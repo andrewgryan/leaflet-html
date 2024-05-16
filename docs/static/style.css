@@ -33,6 +33,15 @@ main {
   max-inline-size: 100vw;
 }
 
+nav {
+  display: flex;
+  gap: var(--size-3);
+  padding: var(--size-3);
+  & a {
+    text-decoration: none;
+  }
+}
+
 footer {
   margin-block-start: auto;
   min-height: 15ch;

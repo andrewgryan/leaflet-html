@@ -1,6 +1,7 @@
 @import "https://unpkg.com/open-props";
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Allerta+Stencil&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Saira+Stencil+One&display=swap');
 
 l-map {
   display: block;
@@ -37,7 +38,7 @@ h1 {
 }
 
 h2, h3 {
-  font-family: "Allerta Stencil", system-ui;
+  font-family: "Saira Stencil One", system-ui;
   font-weight: 400;
   font-style: normal;
 }

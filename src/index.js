@@ -13,8 +13,7 @@ import LVideoOverlay from "./l-video-overlay.js";
 import LGeoJSON from "./l-geojson.js";
 import LIcon from "./l-icon.js";
 import generator from "./generator.js";
-import { circle, polyline, polygon, rectangle } from "leaflet"
-
+import { circle, polyline, polygon, rectangle, tooltip } from "leaflet";
 
 const init = (() => {
   // Custom elements (order of definition is important)
@@ -31,10 +30,11 @@ const init = (() => {
   customElements.define("l-video-overlay", LVideoOverlay);
   customElements.define("l-geojson", LGeoJSON);
   customElements.define("l-icon", LIcon);
-  customElements.define("l-circle", generator(circle, "circle"))
-  customElements.define("l-polyline", generator(polyline, "polyline"))
-  customElements.define("l-polygon", generator(polygon, "polygon"))
-  customElements.define("l-rectangle", generator(rectangle, "rectangle"))
+  customElements.define("l-circle", generator(circle, "circle"));
+  customElements.define("l-polyline", generator(polyline, "polyline"));
+  customElements.define("l-polygon", generator(polygon, "polygon"));
+  customElements.define("l-rectangle", generator(rectangle, "rectangle"));
+  customElements.define("l-tooltip", generator(tooltip, "tooltip"));
 })();
 
 export default init;

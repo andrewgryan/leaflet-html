@@ -33,19 +33,34 @@ const OPTIONS = {
   },
   layer: {},
   rectangle: {},
+  interactiveLayer: {
+    interactive: [Boolean, true],
+  },
 };
 
 const INHERITS = {
-  circle: ["path", "layer"],
-  polyline: ["path", "layer"],
-  polygon: ["path", "layer"],
-  rectangle: ["path", "layer"],
+  circle: ["path"],
+  polyline: ["path"],
+  polygon: ["polyline"],
+  rectangle: ["polygon"],
+  path: ["interactiveLayer"],
+  interactiveLayer: [],
+};
+
+const inheritance = (methodName) => {
+  let name = methodName;
+  let chain = [methodName];
+  while (INHERITS[name].length > 0) {
+    let parent = INHERITS[name][0];
+    chain.push(parent);
+    name = parent;
+  }
+  return chain;
 };
 
 // TODO: Generalise approach
 const setter = (layer, methodName, name, newValue) => {
   const allowedAttributes = schema(methodName);
-  console.log({ allowedAttributes, name });
   // Type (str) -> T
   let type = allowedAttributes.get(name);
 
@@ -78,13 +93,11 @@ const setter = (layer, methodName, name, newValue) => {
     case "fill-color":
     case "fill-opacity":
     case "smooth-factor":
+    case "no-clip":
+    case "interactive":
       layer.setStyle({ [kebabToCamel(name)]: newValue });
       break;
   }
-};
-
-const inheritance = (methodName) => {
-  return [methodName, ...INHERITS[methodName]];
 };
 
 const schema = (methodName) => {

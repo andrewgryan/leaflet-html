@@ -19,6 +19,7 @@ it("should render <l-polyline lat-lng='[]'>", () => {
 });
 
 it.each([
+  ["interactive", "false", "interactive", false],
   ["color", "red", "color", "red"],
   ["opacity", "0.2", "opacity", 0.2],
   ["weight", "1", "weight", 1],
@@ -63,7 +64,9 @@ it.each([["smooth-factor", "1.1"]])(
 );
 
 it.each([
+  ["interactive", "false", "interactive", false],
   ["smooth-factor", "1.1", "smoothFactor", 1.1],
+  ["no-clip", "true", "noClip", true],
   ["color", "red", "color", "red"],
   ["opacity", "0.2", "opacity", 0.2],
   ["weight", "1", "weight", 1],
@@ -92,6 +95,7 @@ it.each([
 );
 
 it.each([
+  ["interactive", "false", "interactive", false],
   ["color", "red", "color", "red"],
   ["opacity", "0.2", "opacity", 0.2],
   ["weight", "1", "weight", 1],

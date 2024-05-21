@@ -61,41 +61,20 @@ The only thing to be aware of is to change case from camelCase to kebab-case. E.
 
 ## Quick start
 
-To get started quickly, include CSS and JS from Leaflet alongside Leaflet-HTML custom elements.
-
-The CSS assets and minimal style can be set in a `<style>` tag.
-
-```html
-<style>
-@import "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
-
-l-map {
-  display: block;
-  height: 100vh;
-}
-</style>
-```
-
-JavaScript can be configured using ES modules and import maps.
+A minimal Leaflet-HTML app, is `<l-map center="[0,0]" zoom="1"></l-map>`, which adds an empty map to a page.
+But a gray block is of little use, to show a map, add a `<l-tile-layer>` tag with a `url-template` and `attribution`.
 
 ```html
-<script type="importmap">
-{
-  "imports": {
-    "leaflet": "https://unpkg.com/leaflet@1.9.4/dist/leaflet-src.esm.js",
-    "leaflet-html": "https://unpkg.com/leaflet-html@latest/dist/leaflet-html.js"
-  }
-}
-</script>
+<l-map center="[0, 0]" zoom="1">
+  <l-tile-layer
+    url-template="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+    attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  ></l-tile-layer>
+</l-map>
 ```
 
-Importing `"leaflet-html"` wires up the document with custom elements that call the leaflet API.
-
-```html
-<script type="module">
-  import "leaflet-html";
-</script>
-```
+Adding layers, layer groups, and controls requires very little additional effort.
+The same translation patterns can be followed to map from JS to HTML.
 
 ## Example
 

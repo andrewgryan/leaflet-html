@@ -48,7 +48,8 @@ l-map {
 
 Name | Description
 -- | --
-<l-map> | `L.map` parent element for a map. Child elements `addTo` this element.
+l-map | `L.map` parent element for a map. Child elements `addTo` this element.
+l-tile-layer | `L.tileLayer` call, can be attached to a `l-map` or `l-base-layers` element.
 
 ## Example
 

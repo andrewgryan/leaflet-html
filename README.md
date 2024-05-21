@@ -46,10 +46,16 @@ l-map {
 
 ## Custom elements
 
+Leaflet HTML uses Custom elements to declare the state of each map on the page. 
+
+The most common elements are described below.
+
 Name | Description
 -- | --
 l-map | `L.map` parent element for a map. Child elements `addTo` this element.
 l-tile-layer | `L.tileLayer` call, can be attached to a `l-map` or `l-base-layers` element.
+l-marker | `L.marker` equivalent, can be attached to a `l-map` or `l-layer-group`.
+
 
 ## Example
 

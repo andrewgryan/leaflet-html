@@ -59,6 +59,43 @@ l-marker | `L.marker` equivalent, can be attached to a `l-map` or `l-layer-group
 Each custom element can be configured using HTML attributes with the same naming convention as the Leaflet docs.
 The only thing to be aware of is to change case from camelCase to kebab-case. E.g. `maxZoom` becomes `max-zoom`.
 
+## Quick start
+
+To get started quickly, include CSS and JS from Leaflet alongside Leaflet-HTML custom elements.
+
+The CSS assets and minimal style can be set in a `<style>` tag.
+
+```html
+<style>
+@import "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
+
+l-map {
+  display: block;
+  height: 100vh;
+}
+</style>
+```
+
+JavaScript can be configured using ES modules and import maps.
+
+```html
+<script type="importmap">
+{
+  "imports": {
+    "leaflet": "https://unpkg.com/leaflet@1.9.4/dist/leaflet-src.esm.js",
+    "leaflet-html": "https://unpkg.com/leaflet-html@latest/dist/leaflet-html.js"
+  }
+}
+</script>
+```
+
+Importing `"leaflet-html"` wires up the document with custom elements that call the leaflet API.
+
+```html
+<script type="module">
+  import "leaflet-html";
+</script>
+```
 
 ## Example
 

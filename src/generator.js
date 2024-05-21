@@ -80,22 +80,17 @@ const setter = (layer, methodName, name, newValue) => {
     case "radius":
       layer.setRadius(newValue);
       break;
-    case "weight":
-    case "opacity":
-    case "color":
-    case "stroke":
-    case "line-cap":
-    case "line-join":
-    case "dash-array":
-    case "dash-offset":
-    case "fill":
-    case "fill-color":
-    case "fill-opacity":
-    case "smooth-factor":
-    case "no-clip":
-    case "interactive":
-      layer.setStyle({ [kebabToCamel(name)]: newValue });
-      break;
+  }
+
+  // setStyle options
+  let styleOptions = ["path", "polyline", "interactiveLayer"].flatMap(
+    (method) => {
+      return Object.keys(OPTIONS[method]);
+    }
+  );
+  let camelName = kebabToCamel(name);
+  if (styleOptions.indexOf(camelName) !== -1) {
+    layer.setStyle({ [camelName]: newValue });
   }
 };
 

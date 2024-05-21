@@ -1,11 +1,14 @@
 import { LatLng } from "leaflet"
+import { camelToKebab, kebabToCamel } from "./util.js"; 
 
 const ARGS = {
   circle: [["lat-lng", LatLng]],
   polyline: [["lat-lngs", LatLng]], // TODO: LatLng[] array
-  polygon: [["lat-lng", LatLng]],
+  polygon: [["lat-lngs", LatLng]],
   rectangle: [["lat-lng", LatLng]],
 }
+
+// Is this the best data structure??
 const OPTIONS = {
   circle: {
     radius: [Number, null]
@@ -22,50 +25,87 @@ const OPTIONS = {
     opacity: [Number, 1.0],
     lineCap: [String, "round"],
     lineJoin: [String, "round"],
+    dashArray: [String, null],
+    dashOffset: [String, null],
+    fill: [Boolean, true],
+    fillColor: [String, "#3388ff"],
+    fillOpacity: [Number, 0.2],
   },
   layer: {},
   rectangle: {}
 }
 
+
 const INHERITS = {
   circle: ["path", "layer"],
   polyline: ["path", "layer"],
-  polygon: ["polyline"],
+  polygon: ["path", "layer"],
   rectangle: ["path", "layer"],
 }
 
 // TODO: Generalise approach
-const setter = (layer, name, newValue) => {
+const setter = (layer, methodName, name, newValue) => {
+  const allowedAttributes = schema(methodName)
+  // Type (str) -> T
+  let type = allowedAttributes.get(name)
+
+  // Parse
+  newValue = parse(newValue, type, newValue)
+  
+  // Update
   switch(name) {
     case "lat-lngs":
-        layer.setLatLngs(JSON.parse(newValue))
+        layer.setLatLngs(newValue)
         break;
     case "weight":
-        layer.setStyle({ weight: parseInt(newValue) })
-        break;
+    case "opacity":
     case "color":
-        layer.setStyle({ color: newValue })
+    case "stroke":
+    case "line-cap":
+    case "line-join":
+    case "dash-array":
+    case "dash-offset":
+    case "fill":
+    case "fill-color":
+    case "fill-opacity":
+    case "smooth-factor":
+        layer.setStyle({ [kebabToCamel(name)] :newValue })
         break;
   }
 }
 
+const inheritance = (methodName) => {
+  const chain = [methodName]
+  INHERITS[methodName].forEach((parent) => {
+    chain.push(parent)
+  })
+  return chain
+}
+
+const schema = (methodName) => {
+  const data = new Map()
+  ARGS[methodName].forEach(([key, type]) => {
+    data.set(key, type)
+  })
+
+  inheritance(methodName).forEach(parent => {
+    for (const key in OPTIONS[parent]) {
+      const [type, _] = OPTIONS[parent][key]
+      data.set(camelToKebab(key), type)
+    }
+  })
+  return data
+}
+
 const attributes = (methodName) => {
   let args = ARGS[methodName].map(x => x[0])
-  let attrs = Object.keys(OPTIONS[methodName])
-  INHERITS[methodName].forEach((parent) => {
+  let attrs = []
+  inheritance(methodName).forEach((parent) => {
     attrs.push(...Object.keys(OPTIONS[parent]))
   })
   attrs = attrs.map(camelToKebab)
   attrs.push(...args)
   return attrs
-}
-
-const camelToKebab = (s) => {
-   return s.split('').map((letter, idx) => {
-     return letter.toUpperCase() === letter
-      ? `${idx !== 0 ? '-' : ''}${letter.toLowerCase()}`
-      : letter;
-   }).join('');
 }
 
 const settings = (el, methodName) => {
@@ -82,8 +122,7 @@ const settings = (el, methodName) => {
   }
 
   // Process inheritance chain
-  process(OPTIONS[methodName])
-  INHERITS[methodName].forEach(parent => {
+  inheritance(methodName).forEach(parent => {
     process(OPTIONS[parent])
   })
   return result
@@ -111,7 +150,6 @@ const parse = (text, type, defaultValue) => {
 }
 
 const generator = (method, methodName) => {
-  console.log(attributes(methodName))
   class cls extends HTMLElement {
     static observedAttributes = attributes(methodName);
 
@@ -135,9 +173,9 @@ const generator = (method, methodName) => {
       this.dispatchEvent(event);
     }
 
-    attributeChangedCallback(name, _, newValue) {
+    attributeChangedCallback(attName, _, newValue) {
       if (this.layer !== null) {
-        setter(this.layer, name, newValue)
+        setter(this.layer, methodName, attName, newValue)
       }
     }
   }

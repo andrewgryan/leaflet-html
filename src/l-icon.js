@@ -1,7 +1,7 @@
 // @vitest-environment happy-dom
 import * as L from "leaflet";
+import { kebabToCamel } from "./util.js"; 
 
-const camelCase = (kebab) => kebab.replace(/-./g, (x) => x[1].toUpperCase());
 
 class LIcon extends HTMLElement {
   constructor() {
@@ -22,7 +22,7 @@ class LIcon extends HTMLElement {
     ];
     keys.forEach((key) => {
       if (this.hasAttribute(key)) {
-        options[camelCase(key)] = this.getAttribute(key);
+        options[kebabToCamel(key)] = this.getAttribute(key);
       }
     });
 
@@ -37,7 +37,7 @@ class LIcon extends HTMLElement {
     ];
     points.forEach((key) => {
       if (this.hasAttribute(key)) {
-        options[camelCase(key)] = JSON.parse(this.getAttribute(key));
+        options[kebabToCamel(key)] = JSON.parse(this.getAttribute(key));
       }
     });
 

@@ -1,4 +1,4 @@
-import { LatLng, LatLngBounds } from "leaflet";
+import { LatLng, LatLngBounds, tooltip } from "leaflet";
 import { camelToKebab, kebabToCamel } from "./util.js";
 
 const ARGS = {
@@ -31,7 +31,6 @@ const OPTIONS = {
     fillColor: [String, "#3388ff"],
     fillOpacity: [Number, 0.2],
   },
-  layer: {},
   rectangle: {},
   interactiveLayer: {
     interactive: [Boolean, true],
@@ -169,13 +168,54 @@ const parse = (text, type, defaultValue) => {
 };
 
 const generator = (method, methodName) => {
+  if (methodName === "tooltip") {
+    return generateTooltip();
+  } else {
+    return generateVector(method, methodName);
+  }
+};
+
+const generateTooltip = () => {
+  class cls extends HTMLElement {
+    static observedAttributes = ["content"];
+
+    constructor() {
+      super();
+      this.tooltip = tooltip();
+    }
+
+    connectedCallback() {
+      const event = new CustomEvent("bindTooltip", {
+        cancelable: true,
+        bubbles: true,
+        detail: {
+          tooltip: this.tooltip,
+        },
+      });
+      this.dispatchEvent(event);
+    }
+
+    attributeChangedCallback(attName, _, newValue) {
+      if (attName === "content") {
+        this.tooltip.setContent(newValue);
+      }
+    }
+  }
+  return cls;
+};
+
+const generateVector = (method, methodName) => {
   class cls extends HTMLElement {
     static observedAttributes = attributes(methodName);
 
     constructor() {
       super();
       this.layer = null;
-      // TODO: event handlers
+      this.addEventListener("bindTooltip", (ev) => {
+        if (this.layer !== null) {
+          this.layer.bindTooltip(ev.detail.tooltip);
+        }
+      });
     }
 
     connectedCallback() {

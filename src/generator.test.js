@@ -1,5 +1,5 @@
 // @vitest-environment happy-dom
-import { circle, polyline, polygon, rectangle } from "leaflet";
+import { circle, polyline, polygon, rectangle, tooltip } from "leaflet";
 import { beforeAll, it, expect } from "vitest";
 import generator from "./generator.js";
 
@@ -9,6 +9,7 @@ beforeAll(() => {
   customElements.define("l-rectangle", generator(rectangle, "rectangle"));
   customElements.define("l-polyline", generator(polyline, "polyline"));
   customElements.define("l-polygon", generator(polygon, "polygon"));
+  customElements.define("l-tooltip", generator(tooltip, "tooltip"));
 });
 
 it("should render <l-polyline lat-lng='[]'>", () => {
@@ -174,3 +175,33 @@ it("should update <l-circle> radius", () => {
   el.setAttribute("radius", "2");
   expect(el.layer.getRadius()).toEqual(2);
 });
+
+it.each([["circle"], ["rectangle"], ["polyline"], ["polygon"]])(
+  "should bindTooltip to <l-%s>",
+  (shape) => {
+    const content = "Hello, World!";
+    const elShape = document.createElement(`l-${shape}`);
+    if (shape === "rectangle") {
+      elShape.setAttribute(
+        "lat-lng-bounds",
+        JSON.stringify([
+          [0, 0],
+          [1, 1],
+        ])
+      );
+    } else if (["polyline", "polygon"].indexOf(shape) !== -1) {
+      elShape.setAttribute(
+        "lat-lngs",
+        JSON.stringify([
+          [0, 0],
+          [1, 1],
+        ])
+      );
+    }
+    const elTooltip = document.createElement("l-tooltip");
+    elTooltip.setAttribute("content", content);
+    document.body.appendChild(elShape);
+    elShape.appendChild(elTooltip);
+    expect(elShape.layer.getTooltip().getContent()).toEqual(content);
+  }
+);

@@ -69,8 +69,8 @@ For example, a marker with a custom icon in Leaflet JS has attributes like `{ sh
     url-template="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
   ></l-tile-layer>
   <l-marker lat-lng="[51.5, -0.09]"><l-icon
-      icon-url={{ url(path='icons/leaf-green.png') }}
-      shadow-url={{ url(path='icons/leaf-shadow.png') }}
+      icon-url="icons/leaf-green.png"
+      shadow-url="icons/leaf-shadow.png"
       icon-size="[38, 95]"
       shadow-size="[50, 64]" 
       icon-anchor="[22, 94]" 

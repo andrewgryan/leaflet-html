@@ -44,6 +44,12 @@ l-map {
 }
 ```
 
+## Custom elements
+
+Name | Description
+-- | --
+<l-map> | `L.map` parent element for a map. Child elements `addTo` this element.
+
 ## Example
 
 The HTML in `example/index.html` is a simple demonstration of the API.

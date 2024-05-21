@@ -1,21 +1,21 @@
-import { LatLng } from "leaflet"
-import { camelToKebab, kebabToCamel } from "./util.js"; 
+import { LatLng, LatLngBounds } from "leaflet";
+import { camelToKebab, kebabToCamel } from "./util.js";
 
 const ARGS = {
   circle: [["lat-lng", LatLng]],
-  polyline: [["lat-lngs", LatLng]], // TODO: LatLng[] array
+  polyline: [["lat-lngs", LatLng]],
   polygon: [["lat-lngs", LatLng]],
-  rectangle: [["lat-lng", LatLng]],
-}
+  rectangle: [["lat-lng-bounds", LatLngBounds]],
+};
 
 // Is this the best data structure??
 const OPTIONS = {
   circle: {
-    radius: [Number, null]
+    radius: [Number, null],
   },
   polyline: {
     smoothFactor: [Number, 1.0],
-    noClip: [Boolean, false]
+    noClip: [Boolean, false],
   },
   polygon: {},
   path: {
@@ -32,31 +32,40 @@ const OPTIONS = {
     fillOpacity: [Number, 0.2],
   },
   layer: {},
-  rectangle: {}
-}
-
+  rectangle: {},
+};
 
 const INHERITS = {
   circle: ["path", "layer"],
   polyline: ["path", "layer"],
   polygon: ["path", "layer"],
   rectangle: ["path", "layer"],
-}
+};
 
 // TODO: Generalise approach
 const setter = (layer, methodName, name, newValue) => {
-  const allowedAttributes = schema(methodName)
+  const allowedAttributes = schema(methodName);
+  console.log({ allowedAttributes, name });
   // Type (str) -> T
-  let type = allowedAttributes.get(name)
+  let type = allowedAttributes.get(name);
 
   // Parse
-  newValue = parse(newValue, type, newValue)
-  
+  newValue = parse(newValue, type, newValue);
+
   // Update
-  switch(name) {
+  switch (name) {
+    case "lat-lng":
+      layer.setLatLng(newValue);
+      break;
     case "lat-lngs":
-        layer.setLatLngs(newValue)
-        break;
+      layer.setLatLngs(newValue);
+      break;
+    case "lat-lng-bounds":
+      layer.setBounds(newValue);
+      break;
+    case "radius":
+      layer.setRadius(newValue);
+      break;
     case "weight":
     case "opacity":
     case "color":
@@ -69,105 +78,102 @@ const setter = (layer, methodName, name, newValue) => {
     case "fill-color":
     case "fill-opacity":
     case "smooth-factor":
-        layer.setStyle({ [kebabToCamel(name)] :newValue })
-        break;
+      layer.setStyle({ [kebabToCamel(name)]: newValue });
+      break;
   }
-}
+};
 
 const inheritance = (methodName) => {
-  const chain = [methodName]
-  INHERITS[methodName].forEach((parent) => {
-    chain.push(parent)
-  })
-  return chain
-}
+  return [methodName, ...INHERITS[methodName]];
+};
 
 const schema = (methodName) => {
-  const data = new Map()
+  const data = new Map();
   ARGS[methodName].forEach(([key, type]) => {
-    data.set(key, type)
-  })
+    data.set(key, type);
+  });
 
-  inheritance(methodName).forEach(parent => {
+  inheritance(methodName).forEach((parent) => {
     for (const key in OPTIONS[parent]) {
-      const [type, _] = OPTIONS[parent][key]
-      data.set(camelToKebab(key), type)
+      const [type, _] = OPTIONS[parent][key];
+      data.set(camelToKebab(key), type);
     }
-  })
-  return data
-}
+  });
+  return data;
+};
 
 const attributes = (methodName) => {
-  let args = ARGS[methodName].map(x => x[0])
-  let attrs = []
+  let args = ARGS[methodName].map((x) => x[0]);
+  let attrs = [];
   inheritance(methodName).forEach((parent) => {
-    attrs.push(...Object.keys(OPTIONS[parent]))
-  })
-  attrs = attrs.map(camelToKebab)
-  attrs.push(...args)
-  return attrs
-}
+    attrs.push(...Object.keys(OPTIONS[parent]));
+  });
+  attrs = attrs.map(camelToKebab);
+  attrs.push(...args);
+  return attrs;
+};
 
 const settings = (el, methodName) => {
   // Gather settings
-  let result = {}  
+  let result = {};
   let process = (opts) => {
     Object.entries(opts).forEach(([key, value]) => {
-      const [type, val] = value
-      const attribute = camelToKebab(key)
+      const [type, val] = value;
+      const attribute = camelToKebab(key);
       if (el.hasAttribute(attribute)) {
-        result[key] = parse(el.getAttribute(attribute), type, val)
+        result[key] = parse(el.getAttribute(attribute), type, val);
       }
-    })
-  }
+    });
+  };
 
   // Process inheritance chain
-  inheritance(methodName).forEach(parent => {
-    process(OPTIONS[parent])
-  })
-  return result
-}
+  inheritance(methodName).forEach((parent) => {
+    process(OPTIONS[parent]);
+  });
+  return result;
+};
 
 const positional = (el, methodName) => {
   return ARGS[methodName].map(([key, type]) => {
-    return parse(el.getAttribute(key), type, null)
-  })
-}
+    return parse(el.getAttribute(key), type, null);
+  });
+};
 
 const parse = (text, type, defaultValue) => {
   switch (type) {
     case Number:
-      return parseFloat(text)
+      return parseFloat(text);
     case Boolean:
-      return text.toLowerCase() === "true"
+      return text.toLowerCase() === "true";
     case String:
-      return text
+      return text;
     case LatLng:
-      return JSON.parse(text)
+    case LatLngBounds:
+      return JSON.parse(text);
     default:
-      return defaultValue
+      return defaultValue;
   }
-}
+};
 
 const generator = (method, methodName) => {
   class cls extends HTMLElement {
     static observedAttributes = attributes(methodName);
 
     constructor() {
-      super()
-      this.layer = null
+      super();
+      this.layer = null;
       // TODO: event handlers
     }
 
     connectedCallback() {
-      const args = positional(this, methodName)
-      const options = settings(this, methodName)
-      this.layer = method(...args, options)
+      const args = positional(this, methodName);
+      const options = settings(this, methodName);
+      this.layer = method(...args, options);
       const event = new CustomEvent("map:addTo", {
         cancelable: true,
         bubbles: true,
         detail: {
-          layer: this.layer
+          layer: this.layer,
         },
       });
       this.dispatchEvent(event);
@@ -175,12 +181,11 @@ const generator = (method, methodName) => {
 
     attributeChangedCallback(attName, _, newValue) {
       if (this.layer !== null) {
-        setter(this.layer, methodName, attName, newValue)
+        setter(this.layer, methodName, attName, newValue);
       }
     }
   }
-  return cls
-}
+  return cls;
+};
 
-
-export default generator
+export default generator;

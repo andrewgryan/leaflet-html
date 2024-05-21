@@ -66,6 +66,7 @@ The same translation patterns can be followed to map from JS to HTML.
 Leaflet HTML uses Custom elements to declare the state of each map on the page. 
 
 The most common elements are described below.
+The naming convention followed here makes it easy to map from a Leaflet method, e.g. `L.method()`, to a custom element, e.g. `<l-method></l-method>`.
 
 Name | Description
 -- | --

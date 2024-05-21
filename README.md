@@ -8,9 +8,9 @@ Fine grained reactive frameworks such as [Solid JS](https://solidjs.com) or [Van
 
 RESTful frameworks, like [HTMX](Https://htmx.org), that serve HTML over the wire are perfect choices for server rendered content.
 
-## Usage
+## Installation
 
-Include both Leaflet and Leaflet HTML in script tags in the head of the document.
+Include Leaflet JS/CSS assets and Leaflet HTML in the document.
 
 ```html
 <link
@@ -35,7 +35,7 @@ Include both Leaflet and Leaflet HTML in script tags in the head of the document
 </script>
 ```
 
-And remember to style the various map container elements with enough size to be visible.
+Remember to style **l-map** elements with display and size settings to make them visible.
 
 ```css
 l-map {
@@ -43,6 +43,23 @@ l-map {
   block-size: 100vh;
 }
 ```
+
+## Quick start
+
+A minimal Leaflet-HTML app, is `<l-map center="[0,0]" zoom="1"></l-map>`, which adds an empty map to a page.
+But a gray block is of little use, to show a map, add a `<l-tile-layer>` tag with a `url-template` and `attribution`.
+
+```html
+<l-map center="[0, 0]" zoom="1">
+  <l-tile-layer
+    url-template="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+    attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  ></l-tile-layer>
+</l-map>
+```
+
+Adding layers, layer groups, and controls requires very little additional effort.
+The same translation patterns can be followed to map from JS to HTML.
 
 ## Custom elements
 
@@ -55,6 +72,14 @@ Name | Description
 l-map | `L.map` parent element for a map. Child elements `addTo` this element.
 l-tile-layer | `L.tileLayer` call, can be attached to a `l-map` or `l-base-layers` element.
 l-marker | `L.marker` equivalent, can be attached to a `l-map` or `l-layer-group`.
+l-icon | Icon attachable to `l-marker`.
+l-popup | Popup.
+l-image-overlay | Image overlay.
+l-video-overlay | Video overlay.
+l-control-layers | Adds `l-base-layers` and `l-overlay-layers` to control UI.
+l-base-layers | Collection of layers, typical `l-tile-layers`.
+l-overlay-layers | Collection of layers, either layer or layer groups.
+l-layer-group | Parent element to group layers inside control UI. Makes adding/removing groups of UI to a map simple.
 
 Each custom element can be configured using HTML attributes with the same naming convention as the Leaflet docs.
 
@@ -81,24 +106,7 @@ For example, a marker with a custom icon in Leaflet JS has attributes like `{ sh
 </l-map>
 ```
 
-## Quick start
-
-A minimal Leaflet-HTML app, is `<l-map center="[0,0]" zoom="1"></l-map>`, which adds an empty map to a page.
-But a gray block is of little use, to show a map, add a `<l-tile-layer>` tag with a `url-template` and `attribution`.
-
-```html
-<l-map center="[0, 0]" zoom="1">
-  <l-tile-layer
-    url-template="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-    attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-  ></l-tile-layer>
-</l-map>
-```
-
-Adding layers, layer groups, and controls requires very little additional effort.
-The same translation patterns can be followed to map from JS to HTML.
-
-## Example
+## Realistic example
 
 The HTML in `example/index.html` is a simple demonstration of the API.
 

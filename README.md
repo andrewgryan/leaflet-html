@@ -57,7 +57,29 @@ l-tile-layer | `L.tileLayer` call, can be attached to a `l-map` or `l-base-layer
 l-marker | `L.marker` equivalent, can be attached to a `l-map` or `l-layer-group`.
 
 Each custom element can be configured using HTML attributes with the same naming convention as the Leaflet docs.
-The only thing to be aware of is to change case from camelCase to kebab-case. E.g. `maxZoom` becomes `max-zoom`.
+
+> [!NOTE]
+> Attributes are specified by changing **camelCase** to **kebab-case**. E.g. `maxZoom` becomes `max-zoom`.
+
+For example, a marker with a custom icon in Leaflet JS has attributes like `{ shadowSize: [50, 64] }` in JS, which translates to `shadow-size="[50,64]"` in HTML.
+
+```html
+<l-map center="[51.5, -0.09]" zoom="12">
+  <l-tile-layer
+    url-template="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+  ></l-tile-layer>
+  <l-marker lat-lng="[51.5, -0.09]"><l-icon
+      icon-url={{ url(path='icons/leaf-green.png') }}
+      shadow-url={{ url(path='icons/leaf-shadow.png') }}
+      icon-size="[38, 95]"
+      shadow-size="[50, 64]" 
+      icon-anchor="[22, 94]" 
+      shadow-anchor="[4, 62]" 
+      popup-anchor="[-3, -76]" 
+    ></l-icon>
+  </l-marker>
+</l-map>
+```
 
 ## Quick start
 

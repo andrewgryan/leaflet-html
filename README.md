@@ -56,6 +56,9 @@ l-map | `L.map` parent element for a map. Child elements `addTo` this element.
 l-tile-layer | `L.tileLayer` call, can be attached to a `l-map` or `l-base-layers` element.
 l-marker | `L.marker` equivalent, can be attached to a `l-map` or `l-layer-group`.
 
+Each custom element can be configured using HTML attributes with the same naming convention as the Leaflet docs.
+The only thing to be aware of is to change case from camelCase to kebab-case. E.g. `maxZoom` becomes `max-zoom`.
+
 
 ## Example
 

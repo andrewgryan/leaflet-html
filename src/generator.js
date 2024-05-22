@@ -1,14 +1,13 @@
 // @ts-check
-import { LatLng, tooltip } from "leaflet";
+import { Circle, LatLng, Polygon, Polyline, Rectangle, tooltip } from "leaflet";
 import { camelToKebab } from "./util.js";
 
 /**
  * @typedef {Object} TagOption
- * @template T
  * @property {string} camel
  * @property {string} kebab
- * @property {(s: string) => T} parser
- * @property {T} defaultValue
+ * @property {(s: string) => AttributeValue} parser
+ * @property {AttributeValue | null} defaultValue
  */
 /**
  * @typedef {("circle"|"rectangle"|"polygon"|"polyline")} MethodName
@@ -19,7 +18,7 @@ import { camelToKebab } from "./util.js";
 
 /**
  * @param {MethodName} methodName
- * @returns {TagOption<AttributeValue>[]}
+ * @returns {TagOption[]}
  */
 const positionalArguments = (methodName) => {
   switch (methodName) {
@@ -35,11 +34,10 @@ const positionalArguments = (methodName) => {
 };
 
 /**
- * @template T
  * @param {string} name
  * @param {AttributeType} type
- * @param {T} defaultValue
- * @returns {TagOption<T>}
+ * @param {AttributeValue | null} defaultValue
+ * @returns {TagOption}
  */
 const option = (name, type, defaultValue) => {
   return {
@@ -72,7 +70,7 @@ const inferParser = (type) => {
 
 /**
  * @param {MethodName} methodName
- * @returns {TagOption<AttributeValue>[]}
+ * @returns {TagOption[]}
  */
 const options = (methodName) => {
   const _OPTIONS = {
@@ -129,9 +127,10 @@ const inheritance = (methodName) => {
   return chain;
 };
 
-// TODO: Generalise approach
 /**
  * @param {MethodName} methodName
+ * @param {string} newValue
+ * @param {(Circle | Rectangle | Polygon | Polyline)} layer
  */
 const setter = (layer, methodName, name, newValue) => {
   // Parse
@@ -140,32 +139,48 @@ const setter = (layer, methodName, name, newValue) => {
     ...options(methodName),
   ];
   let _opt = allOptions.find((o) => o.kebab === name);
-  if (typeof _opt !== "undefined") {
-    newValue = _opt.parser(newValue);
-  } else {
+  if (typeof _opt === "undefined") {
     return;
   }
+  const parsedValue = _opt.parser(newValue);
 
   // Update
-  switch (name) {
-    case "lat-lng":
-      layer.setLatLng(newValue);
-      break;
-    case "lat-lngs":
-      layer.setLatLngs(newValue);
-      break;
-    case "lat-lng-bounds":
-      layer.setBounds(newValue);
-      break;
-    case "radius":
-      layer.setRadius(newValue);
-      break;
+  if (layer instanceof Circle) {
+    switch (name) {
+      case "lat-lng":
+        layer.setLatLng(JSON.parse(newValue));
+        break;
+      case "radius":
+        layer.setRadius(parseFloat(newValue));
+        break;
+    }
+  } else if (layer instanceof Rectangle) {
+    switch (name) {
+      case "lat-lngs":
+        layer.setLatLngs(JSON.parse(newValue));
+        break;
+      case "lat-lng-bounds":
+        layer.setBounds(JSON.parse(newValue));
+        break;
+    }
+  } else if (layer instanceof Polygon) {
+    switch (name) {
+      case "lat-lngs":
+        layer.setLatLngs(JSON.parse(newValue));
+        break;
+    }
+  } else if (layer instanceof Polyline) {
+    switch (name) {
+      case "lat-lngs":
+        layer.setLatLngs(JSON.parse(newValue));
+        break;
+    }
   }
 
   // setStyle options
   let opt = options("polyline").find((o) => o.kebab === name);
   if (typeof opt !== "undefined") {
-    layer.setStyle({ [opt.camel]: newValue });
+    layer.setStyle({ [opt.camel]: parsedValue });
   }
 };
 
@@ -244,6 +259,7 @@ const generateTooltip = () => {
   }
   return cls;
 };
+
 
 /**
  * @param {MethodName} methodName

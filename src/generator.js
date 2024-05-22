@@ -1,5 +1,5 @@
 // @ts-check
-import { LatLng, LatLngBounds, tooltip } from "leaflet";
+import { LatLng, tooltip } from "leaflet";
 import { camelToKebab } from "./util.js";
 
 /**
@@ -24,15 +24,15 @@ import { camelToKebab } from "./util.js";
 const positionalArguments = (methodName) => {
   switch (methodName) {
     case "circle":
-      return [option("latLng", "latlng", null)]
+      return [option("latLng", "latlng", null)];
     case "rectangle":
-      return [option("latLngBounds", "latlngbounds", null)]
+      return [option("latLngBounds", "latlngbounds", null)];
     case "polygon":
-      return [option("latLngs", "latlng", null)]
+      return [option("latLngs", "latlng", null)];
     case "polyline":
-      return [option("latLngs", "latlng", null)]
+      return [option("latLngs", "latlng", null)];
   }
-}
+};
 
 /**
  * @template T
@@ -46,9 +46,9 @@ const option = (name, type, defaultValue) => {
     camel: name,
     kebab: camelToKebab(name),
     parser: inferParser(type),
-    defaultValue
-  }
-}
+    defaultValue,
+  };
+};
 
 /**
  * @param {AttributeType} type
@@ -57,19 +57,18 @@ const option = (name, type, defaultValue) => {
 const inferParser = (type) => {
   switch (type.toLowerCase()) {
     case "boolean":
-      return (s) => s === "true"
+      return (s) => s === "true";
     case "number":
-      return parseFloat
+      return parseFloat;
     case "latlng":
     case "latlngbounds":
-      return JSON.parse
+      return JSON.parse;
     case "string":
-      return (s) => s
+      return (s) => s;
     default:
-      return (s) => s
+      return (s) => s;
   }
-}
-
+};
 
 /**
  * @param {MethodName} methodName
@@ -77,9 +76,7 @@ const inferParser = (type) => {
  */
 const options = (methodName) => {
   const _OPTIONS = {
-    circle: [
-      option("radius", "number", null)
-    ],
+    circle: [option("radius", "number", null)],
     path: [
       option("stroke", "boolean", true),
       option("color", "string", "#3388ff"),
@@ -99,15 +96,13 @@ const options = (methodName) => {
     ],
     polygon: [],
     rectangle: [],
-    interactiveLayer: [
-      option("interactive", "boolean", true),
-    ]
-  }
-  return inheritance(methodName).flatMap(parent => _OPTIONS[parent])
-}
+    interactiveLayer: [option("interactive", "boolean", true)],
+  };
+  return inheritance(methodName).flatMap((parent) => _OPTIONS[parent]);
+};
 
 /**
-* @type {Object.<string, (MethodName | LayerName)[]>}
+ * @type {Object.<string, (MethodName | LayerName)[]>}
  */
 const INHERITS = {
   circle: ["path"],
@@ -123,6 +118,7 @@ const INHERITS = {
  * @returns {(MethodName | LayerName)[]}
  */
 const inheritance = (methodName) => {
+  /** @type {(MethodName | LayerName)} */
   let name = methodName;
   let chain = [methodName];
   while (INHERITS[name].length > 0) {
@@ -133,16 +129,21 @@ const inheritance = (methodName) => {
   return chain;
 };
 
-
 // TODO: Generalise approach
+/**
+ * @param {MethodName} methodName
+ */
 const setter = (layer, methodName, name, newValue) => {
   // Parse
-  const allOptions = [...positionalArguments(methodName), ...options(methodName)]
-  let _opt = allOptions.find(o => o.kebab === name)
+  const allOptions = [
+    ...positionalArguments(methodName),
+    ...options(methodName),
+  ];
+  let _opt = allOptions.find((o) => o.kebab === name);
   if (typeof _opt !== "undefined") {
     newValue = _opt.parser(newValue);
   } else {
-    return
+    return;
   }
 
   // Update
@@ -162,22 +163,20 @@ const setter = (layer, methodName, name, newValue) => {
   }
 
   // setStyle options
-  let opt = options("polyline").find((o) => o.kebab === name)
+  let opt = options("polyline").find((o) => o.kebab === name);
   if (typeof opt !== "undefined") {
     layer.setStyle({ [opt.camel]: newValue });
   }
 };
-
 
 /**
  * @param {MethodName} methodName
  */
 const attributes = (methodName) => {
   let args = positionalArguments(methodName).map((o) => o.kebab);
-  let opts = options(methodName).map(o => o.kebab)
+  let opts = options(methodName).map((o) => o.kebab);
   return [...args, ...opts];
 };
-
 
 /**
  * @param {HTMLElement} el
@@ -189,9 +188,9 @@ const settings = (el, methodName) => {
 
   // Process inheritance chain
   options(methodName).forEach((o) => {
-      if (el.hasAttribute(o.kebab)) {
-        result[o.camel] = o.parser(el.getAttribute(o.kebab));
-      }
+    if (el.hasAttribute(o.kebab)) {
+      result[o.camel] = o.parser(el.getAttribute(o.kebab));
+    }
   });
   return result;
 };
@@ -201,9 +200,10 @@ const settings = (el, methodName) => {
  * @param {MethodName} methodName
  */
 const positional = (el, methodName) => {
-  return positionalArguments(methodName).map(option => option.parser(el.getAttribute(option.kebab)))
+  return positionalArguments(methodName).map((option) =>
+    option.parser(el.getAttribute(option.kebab)),
+  );
 };
-
 
 /**
  * @param {(MethodName | "tooltip")} methodName

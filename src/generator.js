@@ -1,42 +1,114 @@
+// @ts-check
 import { LatLng, LatLngBounds, tooltip } from "leaflet";
-import { camelToKebab, kebabToCamel } from "./util.js";
+import { camelToKebab } from "./util.js";
 
-const ARGS = {
-  circle: [["lat-lng", LatLng]],
-  polyline: [["lat-lngs", LatLng]],
-  polygon: [["lat-lngs", LatLng]],
-  rectangle: [["lat-lng-bounds", LatLngBounds]],
-};
+/**
+ * @typedef {Object} TagOption
+ * @template T
+ * @property {string} camel
+ * @property {string} kebab
+ * @property {(s: string) => T} parser
+ * @property {T} defaultValue
+ */
+/**
+ * @typedef {("circle"|"rectangle"|"polygon"|"polyline")} MethodName
+ * @typedef {("path"|"interactiveLayer")} LayerName
+ * @typedef {("boolean"|"number"|"string"|"latlng"|"latlngbounds")} AttributeType
+ * @typedef {(boolean|number|string|LatLng)} AttributeValue
+ */
 
-// Is this the best data structure??
-const OPTIONS = {
-  circle: {
-    radius: [Number, null],
-  },
-  polyline: {
-    smoothFactor: [Number, 1.0],
-    noClip: [Boolean, false],
-  },
-  polygon: {},
-  path: {
-    stroke: [Boolean, true],
-    color: [String, "#3388ff"],
-    weight: [Number, 3],
-    opacity: [Number, 1.0],
-    lineCap: [String, "round"],
-    lineJoin: [String, "round"],
-    dashArray: [String, null],
-    dashOffset: [String, null],
-    fill: [Boolean, true],
-    fillColor: [String, "#3388ff"],
-    fillOpacity: [Number, 0.2],
-  },
-  rectangle: {},
-  interactiveLayer: {
-    interactive: [Boolean, true],
-  },
-};
+/**
+ * @param {MethodName} methodName
+ * @returns {TagOption<AttributeValue>[]}
+ */
+const positionalArguments = (methodName) => {
+  switch (methodName) {
+    case "circle":
+      return [option("latLng", "latlng", null)]
+    case "rectangle":
+      return [option("latLngBounds", "latlngbounds", null)]
+    case "polygon":
+      return [option("latLngs", "latlng", null)]
+    case "polyline":
+      return [option("latLngs", "latlng", null)]
+  }
+}
 
+/**
+ * @template T
+ * @param {string} name
+ * @param {AttributeType} type
+ * @param {T} defaultValue
+ * @returns {TagOption<T>}
+ */
+const option = (name, type, defaultValue) => {
+  return {
+    camel: name,
+    kebab: camelToKebab(name),
+    parser: inferParser(type),
+    defaultValue
+  }
+}
+
+/**
+ * @param {AttributeType} type
+ * @returns {(s: string) => AttributeValue}
+ */
+const inferParser = (type) => {
+  switch (type.toLowerCase()) {
+    case "boolean":
+      return (s) => s === "true"
+    case "number":
+      return parseFloat
+    case "latlng":
+    case "latlngbounds":
+      return JSON.parse
+    case "string":
+      return (s) => s
+    default:
+      return (s) => s
+  }
+}
+
+
+/**
+ * @param {MethodName} methodName
+ * @returns {TagOption<AttributeValue>[]}
+ */
+const options = (methodName) => {
+  const _OPTIONS = {
+    circle: [
+      option("radius", "number", null)
+    ],
+    path: [
+      option("stroke", "boolean", true),
+      option("color", "string", "#3388ff"),
+      option("weight", "number", 3),
+      option("opacity", "number", 1.0),
+      option("lineCap", "string", "round"),
+      option("lineJoin", "string", "round"),
+      option("dashArray", "string", null),
+      option("dashOffset", "string", null),
+      option("fill", "boolean", true),
+      option("fillColor", "string", "#3388ff"),
+      option("fillOpacity", "number", 0.2),
+    ],
+    polyline: [
+      option("smoothFactor", "number", 1.0),
+      option("noClip", "boolean", false),
+    ],
+    polygon: [],
+    rectangle: [],
+    interactiveLayer: [
+      option("interactive", "boolean", true),
+    ]
+  }
+  return inheritance(methodName).flatMap(parent => _OPTIONS[parent])
+}
+
+/**
+* @type {Object.<string, (MethodName | LayerName)[]>}
+ */
 const INHERITS = {
   circle: ["path"],
   polyline: ["path"],
@@ -46,6 +118,10 @@ const INHERITS = {
   interactiveLayer: [],
 };
 
+/**
+ * @param {MethodName} methodName
+ * @returns {(MethodName | LayerName)[]}
+ */
 const inheritance = (methodName) => {
   let name = methodName;
   let chain = [methodName];
@@ -57,14 +133,17 @@ const inheritance = (methodName) => {
   return chain;
 };
 
+
 // TODO: Generalise approach
 const setter = (layer, methodName, name, newValue) => {
-  const allowedAttributes = schema(methodName);
-  // Type (str) -> T
-  let type = allowedAttributes.get(name);
-
   // Parse
-  newValue = parse(newValue, type, newValue);
+  const allOptions = [...positionalArguments(methodName), ...options(methodName)]
+  let _opt = allOptions.find(o => o.kebab === name)
+  if (typeof _opt !== "undefined") {
+    newValue = _opt.parser(newValue);
+  } else {
+    return
+  }
 
   // Update
   switch (name) {
@@ -83,85 +162,52 @@ const setter = (layer, methodName, name, newValue) => {
   }
 
   // setStyle options
-  let styleOptions = ["path", "polyline", "interactiveLayer"].flatMap(
-    (method) => {
-      return Object.keys(OPTIONS[method]);
-    }
-  );
-  let camelName = kebabToCamel(name);
-  if (styleOptions.indexOf(camelName) !== -1) {
-    layer.setStyle({ [camelName]: newValue });
+  let opt = options("polyline").find((o) => o.kebab === name)
+  if (typeof opt !== "undefined") {
+    layer.setStyle({ [opt.camel]: newValue });
   }
 };
 
-const schema = (methodName) => {
-  const data = new Map();
-  ARGS[methodName].forEach(([key, type]) => {
-    data.set(key, type);
-  });
 
-  inheritance(methodName).forEach((parent) => {
-    for (const key in OPTIONS[parent]) {
-      const [type, _] = OPTIONS[parent][key];
-      data.set(camelToKebab(key), type);
-    }
-  });
-  return data;
-};
-
+/**
+ * @param {MethodName} methodName
+ */
 const attributes = (methodName) => {
-  let args = ARGS[methodName].map((x) => x[0]);
-  let attrs = [];
-  inheritance(methodName).forEach((parent) => {
-    attrs.push(...Object.keys(OPTIONS[parent]));
-  });
-  attrs = attrs.map(camelToKebab);
-  attrs.push(...args);
-  return attrs;
+  let args = positionalArguments(methodName).map((o) => o.kebab);
+  let opts = options(methodName).map(o => o.kebab)
+  return [...args, ...opts];
 };
 
+
+/**
+ * @param {HTMLElement} el
+ * @param {MethodName} methodName
+ */
 const settings = (el, methodName) => {
   // Gather settings
   let result = {};
-  let process = (opts) => {
-    Object.entries(opts).forEach(([key, value]) => {
-      const [type, val] = value;
-      const attribute = camelToKebab(key);
-      if (el.hasAttribute(attribute)) {
-        result[key] = parse(el.getAttribute(attribute), type, val);
-      }
-    });
-  };
 
   // Process inheritance chain
-  inheritance(methodName).forEach((parent) => {
-    process(OPTIONS[parent]);
+  options(methodName).forEach((o) => {
+      if (el.hasAttribute(o.kebab)) {
+        result[o.camel] = o.parser(el.getAttribute(o.kebab));
+      }
   });
   return result;
 };
 
+/**
+ * @param {HTMLElement} el
+ * @param {MethodName} methodName
+ */
 const positional = (el, methodName) => {
-  return ARGS[methodName].map(([key, type]) => {
-    return parse(el.getAttribute(key), type, null);
-  });
+  return positionalArguments(methodName).map(option => option.parser(el.getAttribute(option.kebab)))
 };
 
-const parse = (text, type, defaultValue) => {
-  switch (type) {
-    case Number:
-      return parseFloat(text);
-    case Boolean:
-      return text.toLowerCase() === "true";
-    case String:
-      return text;
-    case LatLng:
-    case LatLngBounds:
-      return JSON.parse(text);
-    default:
-      return defaultValue;
-  }
-};
 
+/**
+ * @param {(MethodName | "tooltip")} methodName
+ */
 const generator = (method, methodName) => {
   if (methodName === "tooltip") {
     return generateTooltip();
@@ -199,6 +245,9 @@ const generateTooltip = () => {
   return cls;
 };
 
+/**
+ * @param {MethodName} methodName
+ */
 const generateVector = (method, methodName) => {
   class cls extends HTMLElement {
     static observedAttributes = attributes(methodName);

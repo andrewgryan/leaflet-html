@@ -142,7 +142,7 @@ The HTML in `example/index.html` is a simple demonstration of the API.
 ![image](https://github.com/andrewgryan/leaflet-html/assets/22789046/0186bce2-ddcc-443a-b7a2-ccd86dcffcfc)
 
 ```html
-<!-- Note: Leaflet JS/CSS must be included in <head> and [data-leaflet-html] styled to an appropriate size. -->
+<!-- Note: Leaflet JS/CSS must be included in <head> and l-map styled to an appropriate size. -->
 <l-map center="[39.61, -105.02]" zoom="10">
   <l-control-layers>
     <l-base-layers>

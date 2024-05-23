@@ -120,6 +120,10 @@ Leaflet HTML uses Custom elements to declare the state of each map on the page.
 The most common elements are described below.
 The naming convention followed here makes it easy to map from a Leaflet method, e.g. `L.method()`, to a custom element, e.g. `<l-method></l-method>`.
 
+Positional arguments and options are specified as kebab-case equivalents of the camelCase name from the Leaflet docs.
+E.g. `<l-method foo-bar="42"></l-method>` translates to `L.method({fooBar: 42})`.
+Type conversions and correct call positions are handled by the library.
+
 Name             | Leaflet docs                                                            | Description
 --               | --                                                                      | --
 l-map            | [L.map](https://leafletjs.com/reference.html#map)                       | Parent element for a map. Child elements `addTo` this element.

@@ -24,7 +24,7 @@
   "homepage": "https://andrewgryan.github.io/leaflet-html",
   "license": "MIT",
   "scripts": {
-    "build": "microbundle",
+    "build": "microbundle --format esm",
     "watch": "microbundle watch -o ./docs/static --format esm",
     "test": "vitest"
   },

@@ -2,6 +2,7 @@
 import { circle, polyline, polygon, rectangle, tooltip } from "leaflet";
 import { beforeAll, it, expect } from "vitest";
 import generator from "./generator.js";
+import LTooltip from "./l-tooltip.js";
 
 beforeAll(() => {
   // TODO: use a function to wire up elements to match library usage
@@ -9,7 +10,7 @@ beforeAll(() => {
   customElements.define("l-rectangle", generator(rectangle, "rectangle"));
   customElements.define("l-polyline", generator(polyline, "polyline"));
   customElements.define("l-polygon", generator(polygon, "polygon"));
-  customElements.define("l-tooltip", generator(tooltip, "tooltip"));
+  customElements.define("l-tooltip", LTooltip);
 });
 
 it("should render <l-polyline lat-lng='[]'>", () => {

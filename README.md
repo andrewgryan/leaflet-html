@@ -38,6 +38,9 @@ to point both `leaflet` and `leaflet-html` at ES modules.
 </script>
 ```
 
+Execute the library by importing it in a `script` tag.
+Leaflet dependencies are detected via the `importmap`.
+
 ```html
 <script type="module">
   import "leaflet-html";

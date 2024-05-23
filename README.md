@@ -17,6 +17,9 @@ A comprehensive documentation site is available.
 ## Installation
 
 Include Leaflet JS/CSS assets and Leaflet HTML in the document.
+This can be achieved using [importmap](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script/type/importmap)
+to point both `leaflet` and `leaflet-html` at ES modules.
+
 
 ```html
 <link

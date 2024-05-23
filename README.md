@@ -8,6 +8,12 @@ Fine grained reactive frameworks such as [Solid JS](https://solidjs.com) or [Van
 
 RESTful frameworks, like [HTMX](Https://htmx.org), that serve HTML over the wire are perfect choices for server rendered content.
 
+## Documentation
+
+A comprehensive documentation site is available.
+
+[leaflet-html docs](https://andrewgryan.github.io/leaflet-html/)
+
 ## Installation
 
 Include Leaflet JS/CSS assets and Leaflet HTML in the document.

@@ -74,24 +74,24 @@ Leaflet HTML uses Custom elements to declare the state of each map on the page.
 The most common elements are described below.
 The naming convention followed here makes it easy to map from a Leaflet method, e.g. `L.method()`, to a custom element, e.g. `<l-method></l-method>`.
 
-Name | Description
--- | --
-l-map | `L.map` parent element for a map. Child elements `addTo` this element.
-l-tile-layer | `L.tileLayer` call, can be attached to a `l-map` or `l-base-layers` element.
-l-marker | `L.marker` equivalent, can be attached to a `l-map` or `l-layer-group`.
-l-icon | Icon attachable to `l-marker`.
-l-popup | Popup.
-l-tooltip | Tooltip.
-l-image-overlay | Image overlay.
-l-video-overlay | Video overlay.
-l-control-layers | Adds `l-base-layers` and `l-overlay-layers` to control UI.
-l-base-layers | Collection of layers, typical `l-tile-layers`.
-l-overlay-layers | Collection of layers, either layer or layer groups.
-l-layer-group | Parent element to group layers inside control UI. Makes adding/removing groups of UI to a map simple.
-l-circle | Vector layer.
-l-rectangle | Vector layer.
-l-polygon | Vector layer.
-l-polyline | Vector layer.
+Name             | Leaflet docs                                                            | Description
+--               | --                                                                      | --
+l-map            | [L.map](https://leafletjs.com/reference.html#map)                       | Parent element for a map. Child elements `addTo` this element.
+l-tile-layer     | [L.tileLayer](https://leafletjs.com/reference.html#tilelayer)           | TileLayer, can be attached to a `l-map` or `l-base-layers` element.
+l-marker         | [L.marker](https://leafletjs.com/reference.html#marker)                 | Marker, can be attached to a `l-map` or `l-layer-group`.
+l-icon           | [L.icon](https://leafletjs.com/reference.html#icon)                     | Icon attachable to `l-marker`.
+l-popup          | [L.popup](https://leafletjs.com/reference.html#popup)                   | Popup.
+l-tooltip        | [L.tooltip](https://leafletjs.com/reference.html#tooltip)               | Tooltip.
+l-image-overlay  | [L.imageOverlay](https://leafletjs.com/reference.html#imageoverlay)     | Image overlay.
+l-video-overlay  | [L.videoOverlay](https://leafletjs.com/reference.html#videooverlay)     | Video overlay.
+l-control-layers | [L.control.layers](https://leafletjs.com/reference.html#control-layers) | Adds `l-base-layers` and `l-overlay-layers` to control UI.
+l-base-layers    | -                                                                       | Collection of layers, typical `l-tile-layers`.
+l-overlay-layers | -                                                                       | Collection of layers, either layer or layer groups.
+l-layer-group    | [L.layerGroup](https://leafletjs.com/reference.html#layergroup)         | Parent element to group layers inside control UI. Makes adding/removing groups of UI to a map simple.
+l-circle         | [L.circle](https://leafletjs.com/reference.html#circle)                 | Vector layer.
+l-rectangle      | [L.rectangle](https://leafletjs.com/reference.html#rectangle)           | Vector layer.
+l-polygon        | [L.polygon](https://leafletjs.com/reference.html#polygon)               | Vector layer.
+l-polyline       | [L.polyline](https://leafletjs.com/reference.html#polyline)             | Vector layer.
 
 Each custom element can be configured using HTML attributes with the same naming convention as the Leaflet docs.
 

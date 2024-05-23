@@ -31,6 +31,14 @@ to point both `leaflet` and `leaflet-html` at ES modules.
   integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
   crossorigin=""
 />
+```
+
+### CDN
+
+Leaflet HTML is available via a Content Delivery Network (CDN) on unpkg.com.
+This is a good option for use cases that don't need a build step.
+
+```
 <script type="importmap">
   {
     "imports": {
@@ -50,7 +58,25 @@ Leaflet dependencies are detected via the `importmap`.
 </script>
 ```
 
-Remember to style **l-map** elements with display and size settings to make them visible.
+### NPM
+
+Leaflet HTML can be added to a project using `npm`.
+
+```sh
+npm install leaflet-html
+```
+
+```html
+<script type="module">
+  import "leaflet-html";
+</script>
+```
+
+### Style
+
+In both CDN and `npm` installation approaches some minimal styling needs to be applied.
+Custom elements are `display: inline` by default.
+Leaflet maps, `l-map` elements, need to be set to `display: block` to have a vertical size.
 
 ```css
 l-map {

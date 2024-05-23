@@ -1,5 +1,5 @@
 // @ts-check
-import { Circle, LatLng, Polygon, Polyline, Rectangle, tooltip } from "leaflet";
+import { Circle, LatLng, Polygon, Polyline, Rectangle } from "leaflet";
 import { camelToKebab } from "./util.js";
 
 /**
@@ -216,55 +216,14 @@ const settings = (el, methodName) => {
  */
 const positional = (el, methodName) => {
   return positionalArguments(methodName).map((option) =>
-    option.parser(el.getAttribute(option.kebab)),
+    option.parser(el.getAttribute(option.kebab))
   );
 };
 
 /**
- * @param {(MethodName | "tooltip")} methodName
- */
-const generator = (method, methodName) => {
-  if (methodName === "tooltip") {
-    return generateTooltip();
-  } else {
-    return generateVector(method, methodName);
-  }
-};
-
-const generateTooltip = () => {
-  class cls extends HTMLElement {
-    static observedAttributes = ["content"];
-
-    constructor() {
-      super();
-      this.tooltip = tooltip();
-    }
-
-    connectedCallback() {
-      const event = new CustomEvent("bindTooltip", {
-        cancelable: true,
-        bubbles: true,
-        detail: {
-          tooltip: this.tooltip,
-        },
-      });
-      this.dispatchEvent(event);
-    }
-
-    attributeChangedCallback(attName, _, newValue) {
-      if (attName === "content") {
-        this.tooltip.setContent(newValue);
-      }
-    }
-  }
-  return cls;
-};
-
-
-/**
  * @param {MethodName} methodName
  */
-const generateVector = (method, methodName) => {
+const generator = (method, methodName) => {
   class cls extends HTMLElement {
     static observedAttributes = attributes(methodName);
 

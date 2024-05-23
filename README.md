@@ -66,6 +66,8 @@ Leaflet HTML can be added to a project using `npm`.
 npm install leaflet-html
 ```
 
+If using a build tool like `vite`, the following script tag and some CSS is all that is needed to get going.
+
 ```html
 <script type="module">
   import "leaflet-html";

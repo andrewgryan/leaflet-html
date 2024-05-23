@@ -1,0 +1,28 @@
+name: yarn-test
+on:
+  push:
+    branches:
+      - master
+jobs:
+  yarn-test:
+    name: yarn-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 21
+      - name: Install
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install
+      - name: Build
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: build
+      - name: Test
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: test

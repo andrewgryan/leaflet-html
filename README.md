@@ -85,8 +85,8 @@ l-tooltip        | [L.tooltip](https://leafletjs.com/reference.html#tooltip)    
 l-image-overlay  | [L.imageOverlay](https://leafletjs.com/reference.html#imageoverlay)     | Image overlay.
 l-video-overlay  | [L.videoOverlay](https://leafletjs.com/reference.html#videooverlay)     | Video overlay.
 l-control-layers | [L.control.layers](https://leafletjs.com/reference.html#control-layers) | Adds `l-base-layers` and `l-overlay-layers` to control UI.
-l-base-layers    | -                                                                       | Collection of layers, typical `l-tile-layers`.
-l-overlay-layers | -                                                                       | Collection of layers, either layer or layer groups.
+l-base-layers    | [L.control.layers](https://leafletjs.com/reference.html#control-layers) | Child of `l-control-layers`. Contains `l-tile-layer` elements.
+l-overlay-layers | [L.control.layers](https://leafletjs.com/reference.html#control-layers) | Child of `l-control-layers`. Contains either layer or layer group elements.
 l-layer-group    | [L.layerGroup](https://leafletjs.com/reference.html#layergroup)         | Parent element to group layers inside control UI. Makes adding/removing groups of UI to a map simple.
 l-circle         | [L.circle](https://leafletjs.com/reference.html#circle)                 | Vector layer.
 l-rectangle      | [L.rectangle](https://leafletjs.com/reference.html#rectangle)           | Vector layer.

@@ -81,12 +81,17 @@ l-tile-layer | `L.tileLayer` call, can be attached to a `l-map` or `l-base-layer
 l-marker | `L.marker` equivalent, can be attached to a `l-map` or `l-layer-group`.
 l-icon | Icon attachable to `l-marker`.
 l-popup | Popup.
+l-tooltip | Tooltip.
 l-image-overlay | Image overlay.
 l-video-overlay | Video overlay.
 l-control-layers | Adds `l-base-layers` and `l-overlay-layers` to control UI.
 l-base-layers | Collection of layers, typical `l-tile-layers`.
 l-overlay-layers | Collection of layers, either layer or layer groups.
 l-layer-group | Parent element to group layers inside control UI. Makes adding/removing groups of UI to a map simple.
+l-circle | Vector layer.
+l-rectangle | Vector layer.
+l-polygon | Vector layer.
+l-polyline | Vector layer.
 
 Each custom element can be configured using HTML attributes with the same naming convention as the Leaflet docs.
 

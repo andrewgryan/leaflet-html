@@ -52,8 +52,7 @@ l-map {
 
 ## Quick start
 
-A minimal Leaflet-HTML app, is `<l-map center="[0,0]" zoom="1"></l-map>`, which adds an empty map to a page.
-But a gray block is of little use, to show a map, add a `<l-tile-layer>` tag with a `url-template` and `attribution`.
+To show a map with a base map background, add a `<l-tile-layer>` tag with a `url-template` and `attribution` inside a `<l-map>`.
 
 ```html
 <l-map center="[0, 0]" zoom="1">
@@ -64,8 +63,18 @@ But a gray block is of little use, to show a map, add a `<l-tile-layer>` tag wit
 </l-map>
 ```
 
-Adding layers, layer groups, and controls requires very little additional effort.
-The same translation patterns can be followed to map from JS to HTML.
+Adding layers, layer groups, and controls follows the Leaflet JS one-to-one.
+E.g. to add a marker to the above example.
+
+```html
+<l-map center="[0, 0]" zoom="1">
+  <l-tile-layer
+    url-template="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+    attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  ></l-tile-layer>
+  <l-marker lat-lng="[51.5, -0.09]"></l-marker>
+</l-map>
+```
 
 ## Custom elements
 

@@ -2,6 +2,8 @@
 
 [![npm version](http://img.shields.io/npm/v/leaflet-html.svg?style="for-the-badge")](https://npmjs.org/package/leaflet-html)
 [![tests](https://img.shields.io/github/actions/workflow/status/andrewgryan/leaflet-html/tests.yml?branch=master&logo=github&style=for-the-badge)](https://github.com/andrewgryan/leaflet-html/actions/workflows/tests.yml)
+![npm package minimized gzipped size](https://img.shields.io/bundlejs/size/leaflet-html)
+
 
 Leaflet expressed in HTML to add maps to Hypermedia Driven Applications (HDA).
 

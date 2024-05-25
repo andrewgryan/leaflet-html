@@ -58,7 +58,7 @@ ball.x += ball.velocity * Math.cos(ball.angleRadians) * dT
 ball.y += ball.velocity * Math.sin(ball.angleRadians) * dT
 ```
 
-### Paddle
+#### Paddle
 
 Paddle movement responds to keyboard input events and is constrained by the upper and lower walls.
 

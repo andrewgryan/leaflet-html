@@ -28,6 +28,8 @@ window requestAnimationFrame(gameLoop)
 
 The game loop is responsible updating the game state and calling the render method to display the latest game state.
 
+In our game re-renders of state are handled by VanJS and LeafletHTML.
+
 ### Entities
 
 No modern game engine would be complete without a concept of entities.

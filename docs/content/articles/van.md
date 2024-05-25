@@ -30,6 +30,12 @@ No modern game engine would be complete without a concept of entities.
 
 In our game we have three entities, two paddles and a ball.
 
+For simplicity, let's make them rectangles.
+
+```html
+<l-rectangle><\l-rectangle>
+```
+
 ### Collision detection
 
 Pong has very simple rules around collision detection. The paddles and upper and lower walls work very similarly. 

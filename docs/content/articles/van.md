@@ -57,3 +57,9 @@ Bouncing off a paddle however is different. The angle that the ball leaves the p
 ### Scoring
 
 Scoring is another kind of collision, if either of the vertical boundaries are collided with then the opposite players score counter is incremented and the ball is placed back into the field of play or a game over state is reached.
+
+```js
+if (final.x > right.x) {
+  score.playerOne += 1
+}
+```

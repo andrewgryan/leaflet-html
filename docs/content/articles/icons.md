@@ -1,6 +1,5 @@
 +++
 title = "Custom icons"
-published = true
 +++
 
 There are two ways to add an icon to a marker.

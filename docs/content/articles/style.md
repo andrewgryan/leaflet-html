@@ -1,5 +1,6 @@
 +++
 title = "Styling leaflet objects"
+published = false
 +++
 
 ## Naming convention

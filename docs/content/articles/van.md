@@ -38,6 +38,8 @@ For simplicity, let's make them rectangles.
 
 ### Movement
 
+#### Ball
+
 Ball movement is simple, the ball has a constant velocity and an angle. 
 
 ```js
@@ -55,6 +57,10 @@ A single tick, moves the ball.
 ball.x += ball.velocity * Math.cos(ball.angleRadians) * dT
 ball.y += ball.velocity * Math.sin(ball.angleRadians) * dT
 ```
+
+### Paddle
+
+Paddle movement responds to keyboard input events and is constrained by the upper and lower walls.
 
 ### Collision detection
 

@@ -9,7 +9,9 @@ To illustrate the elegance and efficiency of representing application state in h
 To play pong in a cylindrical projection of a sphere it is wise to position the board close to the equator.
 
 ```html
-<l-map lat-lng="[0,40]" zoom="12"></l-map>
+<l-map
+  lat-lng="[0,40]"
+  zoom="12"></l-map>
 ```
 
 <l-map center="[0, 40]" zoom="12">

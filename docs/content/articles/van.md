@@ -91,3 +91,11 @@ if (final.x > right.x) {
   score.playerOne += 1
 }
 ```
+
+## Rendering
+
+A game that updates state without displaying the game to the user is a meaningless game. 
+
+To render Pong we use Leaflet to embed our entities in a cylindrical projection world. 
+
+To make our game run at 60 frames per second, we can use a light weight reactive framework such as VanJS.

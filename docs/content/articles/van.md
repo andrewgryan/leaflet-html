@@ -10,6 +10,14 @@ To illustrate the elegance and efficiency of representing application state in h
 <l-map></l-map>
 ```
 
+<l-map center="[0, 45]" zoom="12">
+  <l-tile-layer
+    url-template="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+  ></l-tile-layer>
+  <l-marker lat-lng="[0,45]">
+  </l-marker>
+</l-map>
+
 ### Game loop
 
 A good place to start is the game loop. Essentially, what happens on each frame of the game. 

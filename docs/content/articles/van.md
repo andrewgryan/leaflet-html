@@ -6,15 +6,17 @@ title = "Pong with VanJS"
 
 To illustrate the elegance and efficiency of representing application state in hypermedia it is instructive to implement a simple arcade game in Leaflet HTML.
 
+To play pong in a cylindrical projection of a sphere it is wise to position the board close to the equator.
+
 ```html
-<l-map></l-map>
+<l-map lat-lng="[0,40]" zoom="12"></l-map>
 ```
 
-<l-map center="[0, 45]" zoom="12">
+<l-map center="[0, 40]" zoom="12">
   <l-tile-layer
     url-template="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
   ></l-tile-layer>
-  <l-marker lat-lng="[0,45]">
+  <l-marker lat-lng="[0,40]">
   </l-marker>
 </l-map>
 

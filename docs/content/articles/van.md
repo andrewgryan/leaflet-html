@@ -38,6 +38,8 @@ For simplicity, let's make them rectangles.
 
 ### Movement
 
+Each tick of the game loop simulates some elapsed time. Pong is a world of elastic collisions. The only thing that needs to be tracked is position and direction.
+
 #### Ball
 
 Ball movement is simple, the ball has a constant velocity and an angle. 

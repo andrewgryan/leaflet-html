@@ -2,9 +2,7 @@
 
 {% block content %}
 <main>
-  {% if page.published %}
-    <h1>{{ page.title }}</h1>
-    {{ page.content | safe }}
-  {% endif %}
+  <h1>{{ page.title }}</h1>
+  {{ page.content | safe }}
 </main>
 {% endblock %}

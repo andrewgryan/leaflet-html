@@ -53,7 +53,7 @@ const ball = {
 }
 ```
 
-A single tick, moves the ball. 
+A single tick, moves the ball in its direction of travel proportional to the elapsed time since the last update. 
 
 ```js
 ball.x += ball.velocity * Math.cos(ball.angleRadians) * dT

@@ -117,6 +117,7 @@ const nextBall = integrateMotion(ball, dT)
 if (behind(wall, nextBall)) {
   // recoil algorithm
   nextBall.y = wall.y - Math.abs(nextBall.y - wall.y)
+  nextBall.angleRadians // TO DO
 }
 ```
 

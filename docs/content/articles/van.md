@@ -33,7 +33,7 @@ In our game we have three entities, two paddles and a ball.
 For simplicity, let's make them rectangles.
 
 ```html
-<l-rectangle><\l-rectangle>
+<l-rectangle></l-rectangle>
 ```
 
 ### Collision detection
@@ -41,6 +41,12 @@ For simplicity, let's make them rectangles.
 Pong has very simple rules around collision detection. The paddles and upper and lower walls work very similarly. 
 
 The ball is said to have collided with an obstacle if it's final position is behind the obstacle and the point of intersection is within the extent of the obstacle.
+
+```js
+const willCollide = (ball, obstacle) => {
+  return ball.x > obstacle.x
+}
+```
 
 ### Recoil
 

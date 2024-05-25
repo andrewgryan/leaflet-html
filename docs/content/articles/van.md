@@ -36,6 +36,27 @@ For simplicity, let's make them rectangles.
 <l-rectangle></l-rectangle>
 ```
 
+### Movement
+
+Ball movement is simple, the ball has a constant velocity and an angle. 
+
+```js
+const ball = {
+   velocity: 1,
+   angleRadians: 0,
+   x: 0,
+   y: 0
+}
+```
+
+A single tick, moves the ball. 
+
+```js
+ball.x += ball.velocity * Math.cos(ball.angleRadians) * dT
+
+ball.y += ball.velocity * Math.sin(ball.angleRadians) * dT
+```
+
 ### Collision detection
 
 Pong has very simple rules around collision detection. The paddles and upper and lower walls work very similarly. 

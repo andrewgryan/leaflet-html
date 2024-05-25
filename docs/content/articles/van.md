@@ -53,7 +53,6 @@ A single tick, moves the ball.
 
 ```js
 ball.x += ball.velocity * Math.cos(ball.angleRadians) * dT
-
 ball.y += ball.velocity * Math.sin(ball.angleRadians) * dT
 ```
 

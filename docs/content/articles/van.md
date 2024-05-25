@@ -114,8 +114,9 @@ const dT = 2 // Fake units
 
 const nextBall = integrateMotion(ball, dT)
 
-if (behind(wall, ball)) {
+if (behind(wall, nextBall)) {
   // recoil algorithm
+  nextBall.y = wall.y - Math.abs(nextBall.y - wall.y)
 }
 ```
 

@@ -130,6 +130,7 @@ const inheritance = (methodName) => {
 /**
  * @param {MethodName} methodName
  * @param {string} newValue
+ * @param {string} name
  * @param {(Circle | Rectangle | Polygon | Polyline)} layer
  */
 const setter = (layer, methodName, name, newValue) => {
@@ -210,14 +211,31 @@ const settings = (el, methodName) => {
   return result;
 };
 
+class LeafletHTMLError extends Error {
+  /**
+   * @param {string} message
+   */
+  constructor(message) {
+    super(message);
+    this.name = "LeafletHTMLError";
+  }
+}
+
 /**
+ * Read positional arguments from HTMLElement
+ *
  * @param {HTMLElement} el
  * @param {MethodName} methodName
  */
 const positional = (el, methodName) => {
-  return positionalArguments(methodName).map((option) =>
-    option.parser(el.getAttribute(option.kebab))
-  );
+  return positionalArguments(methodName).map((option) => {
+    if (!el.hasAttribute(option.kebab)) {
+      throw new LeafletHTMLError(
+        `l-${methodName} element missing ${option.kebab} HTML attribute`
+      );
+    }
+    return option.parser(el.getAttribute(option.kebab));
+  });
 };
 
 /**
@@ -251,6 +269,10 @@ const generator = (method, methodName) => {
       this.dispatchEvent(event);
     }
 
+    /**
+     * @param {string} attName
+     * @param {string} newValue
+     */
     attributeChangedCallback(attName, _, newValue) {
       if (this.layer !== null) {
         setter(this.layer, methodName, attName, newValue);

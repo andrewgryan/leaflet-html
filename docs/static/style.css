@@ -1,7 +1,9 @@
 @import "https://unpkg.com/open-props";
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Allerta+Stencil&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Saira+Stencil+One&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Saira+Stencil+One&display=swap");
+
+:root {
+  --font-family: "Saira Stencil One", system-ui;
+}
 
 l-map {
   display: block;
@@ -11,9 +13,9 @@ l-map {
 }
 
 iconify-icon {
-    display: inline-block;
-    width: 1em;
-    height: 1em;
+  display: inline-block;
+  width: 1em;
+  height: 1em;
 }
 
 body {
@@ -25,24 +27,13 @@ body {
   grid-template-columns: 1fr;
 }
 
-h1 {
-    paint-order: stroke fill;
-    text-transform: uppercase;
-    font-size: calc(1rem + min(90px, 15vw));
-    font-weight: 900;
-    letter-spacing: -.175ch;
-    line-height: 0.9;
-    color: white;
-    -webkit-text-stroke: 5px black;
-    text-shadow: 8px 8px black;
-}
-
-h2, h3 {
-  font-family: "Saira Stencil One", system-ui;
+h1,
+h2,
+h3 {
+  font-family: var(--font-family);
   font-weight: 400;
   font-style: normal;
 }
-
 
 pre {
   padding-inline: 0.75rem;
@@ -60,7 +51,7 @@ main {
 nav {
   z-index: 2;
   background-color: white;
-  position: sticky; 
+  position: sticky;
   top: 0;
   display: flex;
   justify-content: space-between;
@@ -68,17 +59,13 @@ nav {
     display: flex;
   }
   & a {
+    font-family: var(--font-family);
     text-decoration: none;
     padding: var(--size-3);
-    display: flex; 
-    align-items: center; 
+    display: flex;
+    align-items: center;
     gap: var(--size-1);
-    paint-order: stroke fill;
-    color: white;
-    -webkit-text-stroke: 3px var(--gray-9);
-    & iconify-icon {
-      color: var(--gray-9);
-    }
+    color: var(--gray-9);
   }
 }
 
@@ -89,15 +76,9 @@ footer {
   padding: var(--size-3);
 
   & .logo {
-    --shadow-color: white;
-    color: var(--gray-9);
+    color: white;
     font-size: var(--font-size-0);
-    paint-order: stroke fill;
     text-transform: uppercase;
-    font-weight: 900;
-    letter-spacing: -.175ch;
-    line-height: 0.9;
-    -webkit-text-stroke: 5px var(--shadow-color);
+    font-family: var(--font-family);
   }
 }
-

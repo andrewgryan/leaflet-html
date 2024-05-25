@@ -1,6 +1,5 @@
 +++
 title = "Working with HTMX"
-published = true
 +++
 
 To add HTMX to a project.

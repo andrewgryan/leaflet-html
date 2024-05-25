@@ -1,6 +1,5 @@
 +++
 title = "Basic usage"
-published = true
 +++
 
 The minimal `leaflet-html` app is a basemap centered and zoomed on a location.

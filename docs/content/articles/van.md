@@ -95,7 +95,29 @@ const willCollide = (ball, obstacle) => {
 
 ### Recoil
 
-Bouncing off the upper and lower walls is an elastic collision like light bouncing off a mirror. Calculate the angle of incidence and use that as the angle of reflection. 
+Bouncing off the upper and lower walls is an elastic collision like light bouncing off a mirror. Calculate the angle of incidence and use that as the angle of reflection.
+
+```js
+// Reflective bounce mechanic
+const wall = {
+  y: 5
+}
+
+const ball = {
+  x: 0,
+  y: 4,
+  angleRadians: Math.PI / 4,
+  velocity: 1
+}
+
+const dT = 2 // Fake units
+
+const nextBall = integrateMotion(ball, dT)
+
+if (behind(wall, ball)) {
+  // recoil algorithm
+}
+```
 
 Bouncing off a paddle however is different. The angle that the ball leaves the paddle is proportional to the distance from the center of the paddle. Independent of the angle of incidence.
 

@@ -1,6 +1,6 @@
 +++
 title = "Styling leaflet objects"
-published = false
+draft = true
 +++
 
 ## Naming convention

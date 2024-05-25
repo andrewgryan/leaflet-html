@@ -5,7 +5,9 @@
   <h1>{{section.title}}</h1>
   <ul>
     {% for page in section.pages %}
-      <li><a href="{{ page.permalink | safe }}">{{ page.title }}</a></li>
+      {% if page.published %}
+        <li><a href="{{ page.permalink | safe }}">{{ page.title }}</a></li>
+      {% endif %}
     {% endfor %}
   </ul>
 </main>

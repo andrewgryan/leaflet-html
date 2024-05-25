@@ -1,6 +1,5 @@
 +++
-title = "Programming with VanJS"
-published = true
+title = "Pong with VanJS"
 +++
 
 ## Pong

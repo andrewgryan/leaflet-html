@@ -15,13 +15,15 @@ To illustrate the elegance and efficiency of representing application state in h
 
 A good place to start is the game loop. Essentially, what happens on each frame of the game. 
 
+In a browser, to sync a render cycle with the browsers paint cycle it is best to use `window.requestAnimationFrame` method.
+
 ```js
 const gameLoop = () => {
   console.log("tick")
-  requestAnimationFrame(gameLoop)
+  window.requestAnimationFrame(gameLoop)
 }
 
-requestAnimationFrame(gameLoop)
+window requestAnimationFrame(gameLoop)
 ```
 
 ### Entities

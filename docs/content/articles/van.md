@@ -58,11 +58,15 @@ For simplicity, let's make them rectangles.
 ```js
 const bounds = (entity) => {
   const {x, y, dx, dy} = entity
-  const lowX = x - (dx / 2)
-  const lowY = y - (dy / 2)
-  const highX = x + (dx / 2)
-  const highY = y + (dy / 2)
-  return [[lowX, lowY], [highX, highY]]
+  const low = [
+    x - (dx / 2),
+    y - (dy / 2)
+  ]
+  const high = [
+    x + (dx / 2),
+    y + (dy / 2)
+  ]
+  return [low, high]
 }
 ```
 

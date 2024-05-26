@@ -1,6 +1,6 @@
 # Leaflet HTML
 
-Leaflet expressed in HTML adds maps to Hypermedia Driven Applications (HDA).
+Leaflet expressed in HTML adds map capabilities to Hypermedia Driven Applications (HDA).
 
 [![npm version](http://img.shields.io/npm/v/leaflet-html.svg?style="for-the-badge")](https://npmjs.org/package/leaflet-html)
 [![tests](https://img.shields.io/github/actions/workflow/status/andrewgryan/leaflet-html/tests.yml?branch=master&logo=github&style=for-the-badge)](https://github.com/andrewgryan/leaflet-html/actions/workflows/tests.yml)

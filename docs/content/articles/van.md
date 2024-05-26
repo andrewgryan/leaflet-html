@@ -31,13 +31,13 @@ To play pong in a cylindrical projection of a sphere it is wise to position the 
 </l-map>
 
 <script>
-  const MAX_ANGLE = (65 / 180) * Math.PI
+  const MAX_ANGLE = (55 / 180) * Math.PI
   let ball = {
     x: 0,
     y: 0,
     dx: 0.125,
     dy: 0.125,
-    velocity: -0.0275,
+    velocity: -0.0675,
     angleRadians: Math.PI / 6,
     el: document.getElementById("ball")
   }
@@ -47,7 +47,9 @@ To play pong in a cylindrical projection of a sphere it is wise to position the 
     y: -0.7,
     dx: 0.1,
     dy: 1,
-    el: document.getElementById("paddle-1")
+    el: document.getElementById("paddle-1"),
+    velocity: 0,
+    angleRadians: -1 * Math.PI / 2,
   }
   let paddleTwo = {
     x: 5 - 0.05,
@@ -99,14 +101,13 @@ To play pong in a cylindrical projection of a sphere it is wise to position the 
       nextBall.velocity *= -1
     }
 
+    // Paddle collision dynamics
     if (collideOne(nextBall, paddleOne)) {
       const dy = 2 * (nextBall.y - paddleOne.y) / paddleOne.dy
-      console.log({nextBall, paddleOne, dy})
       nextBall.angleRadians = MAX_ANGLE * dy
       nextBall.x = paddleOne.x + Math.abs(paddleOne.x - ball.x)
     } else if (collideTwo(nextBall, paddleTwo)) {
       const dy = 2 * (nextBall.y - paddleTwo.y) / paddleTwo.dy
-      console.log({nextBall, paddleTwo, dy})
       nextBall.angleRadians = -1 * MAX_ANGLE * dy
       nextBall.x = paddleTwo.x - Math.abs(paddleTwo.x - nextBall.x)
     } else if ((rightFace(nextBall) > leftFace(paddleTwo)) || (leftFace(nextBall) < rightFace(paddleOne))) {
@@ -115,11 +116,30 @@ To play pong in a cylindrical projection of a sphere it is wise to position the 
 
     ball = nextBall
 
+    // Paddle motion
+    nextPaddleOne = integrate(paddleOne)
+    if ((upperExtent(nextPaddleOne) < 2) && (lowerExtent(nextPaddleOne) > -2)) {
+      paddleOne = nextPaddleOne
+    }
+
     render(ball)
     render(paddleOne)
     render(paddleTwo)
     window.requestAnimationFrame(gameLoop)
   }
+  // Keyboard
+  window.addEventListener("keydown", (ev) => {
+    if (ev.key === "j") {
+      paddleOne.velocity = 0.04
+    } else if (ev.key === "k") {
+      paddleOne.velocity = -0.04
+    }
+  })
+  window.addEventListener("keyup", (ev) => {
+    paddleOne.velocity = 0
+  })
+
+  // Start game loop
   window.requestAnimationFrame(gameLoop)
 </script>
 

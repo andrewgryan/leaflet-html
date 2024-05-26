@@ -55,6 +55,16 @@ For simplicity, let's make them rectangles.
 </l-rectangle>
 ```
 
+```js
+const bounds = (entity) => {
+  const lowX = entity.x - entity.dx / 2
+  const lowY = entity.y - entity.dy / 2
+  const highX = entity.x + entity.dx / 2
+  const highY = entity.y + entity.dy / 2
+  return [[lowX, lowY], [highX, highY]]
+}
+```
+
 ### Movement
 
 Each tick of the game loop simulates some elapsed time. Pong is a world of elastic collisions. The only thing that needs to be tracked is position and direction.

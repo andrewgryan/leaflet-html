@@ -14,6 +14,9 @@ To play pong in a cylindrical projection of a sphere it is wise to position the 
   zoom="12"></l-map>
 ```
 
+<div>
+  Scoreboard <span id="player-one">0</span> : <span id="player-two">0</span>
+</div>
 <l-map center="[0, 0]" zoom="6">
   <l-tile-layer
     url-template="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
@@ -31,6 +34,10 @@ To play pong in a cylindrical projection of a sphere it is wise to position the 
 </l-map>
 
 <script>
+  const score = {
+    playerOne: 0,
+    playerTwo: 0
+  }
   const MAX_ANGLE = (55 / 180) * Math.PI
   let ball = {
     x: 0,
@@ -92,12 +99,22 @@ To play pong in a cylindrical projection of a sphere it is wise to position the 
     return (ball.y < upperExtent(paddle)) && (ball.y > lowerExtent(paddle))
   }
 
+  const collideLeftWall = (nextBall) => {
+    return leftFace(nextBall) < rightFace(paddleOne)
+  }
+  const collideRightWall = (nextBall) => {
+    return rightFace(nextBall) > leftFace(paddleTwo)
+  }
+  const collideWall = (nextBall) => {
+    return collideRightWall(nextBall) || collideLeftWall(nextBall)
+  }
+
   const gameLoop = () => {
     let nextBall = integrate(ball)
     if ((upperExtent(nextBall) > 2) || (lowerExtent(nextBall) < -2)) {
       nextBall.angleRadians *= -1
     }
-    if ((rightFace(nextBall) > leftFace(paddleTwo)) || (leftFace(nextBall) < rightFace(paddleOne))) {
+    if (collideWall(nextBall)) {
       nextBall.velocity *= -1
     }
 
@@ -110,9 +127,22 @@ To play pong in a cylindrical projection of a sphere it is wise to position the 
       const dy = 2 * (nextBall.y - paddleTwo.y) / paddleTwo.dy
       nextBall.angleRadians = -1 * MAX_ANGLE * dy
       nextBall.x = paddleTwo.x - Math.abs(paddleTwo.x - nextBall.x)
+    } else if (collideWall(nextBall)) {
+      if (collideLeftWall(nextBall)) {
+        score.playerTwo += 1
+        document.getElementById("player-two").innerHTML = score.playerTwo
+      }
+      if (collideRightWall(nextBall)) {
+        score.playerOne += 1
+        document.getElementById("player-one").innerHTML = score.playerOne
+      }
+      nextBall.x = 0
+      nextBall.y = 0
+      nextBall.angleRadians = (0.5 - Math.random()) * Math.PI / 4
     } else if ((rightFace(nextBall) > leftFace(paddleTwo)) || (leftFace(nextBall) < rightFace(paddleOne))) {
       nextBall.angleRadians *= -1
     }
+
 
     ball = nextBall
 

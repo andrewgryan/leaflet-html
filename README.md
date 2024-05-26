@@ -14,6 +14,8 @@ Fine grained reactive frameworks such as [Solid JS](https://solidjs.com) or [Van
 
 RESTful frameworks, like [HTMX](Https://htmx.org), that serve HTML over the wire are perfect choices for server rendered content.
 
+Even static site generators like [Zola](https://getzola.org) are ideal for this approach.
+
 ## Documentation
 
 A comprehensive documentation site is available.

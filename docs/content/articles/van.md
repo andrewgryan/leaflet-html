@@ -1,5 +1,5 @@
 +++
-title = "Pong with VanJS"
+title = "Arcade games"
 +++
 
 ## Pong
@@ -14,13 +14,61 @@ To play pong in a cylindrical projection of a sphere it is wise to position the 
   zoom="12"></l-map>
 ```
 
-<l-map center="[0, 40]" zoom="12">
+<l-map center="[0, 0]" zoom="6">
   <l-tile-layer
     url-template="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
   ></l-tile-layer>
-  <l-marker lat-lng="[0,40]">
-  </l-marker>
+  <l-rectangle id="ball" lat-lng-bounds="[[0,0],[0.1,0.1]]" weight="1" color="red">
+  </l-rectangle>
+  <l-polyline lat-lngs="[[2,-5],[2,5]]" weight="1" color="#333">
+  </l-polyline>
+  <l-polyline lat-lngs="[[-2,-5],[-2,5]]" weight="1" color="#333">
+  </l-polyline>
 </l-map>
+
+<script>
+  let ball = {
+    x: 0,
+    y: 0,
+    dx: 0.1,
+    dy: 0.1,
+    velocity: -0.02,
+    angleRadians: Math.PI / 6,
+    el: document.getElementById("ball")
+  }
+  const extent = (entity) => {
+    const { x, y, dx, dy } = entity
+    const low = [y - (dy / 2.0), x - (dx / 2.0)]
+    const high = [y + (dy / 2.0), x + (dx / 2.0)]
+    return [low, high]
+  }
+
+  const integrate = (entity) => {
+    const y = entity.y + entity.velocity * Math.sin(entity.angleRadians)
+    const x = entity.x + entity.velocity * Math.cos(entity.angleRadians)
+    return {...entity, x, y}
+  }
+
+  const render = (ball) => {
+    ball.el.setAttribute("lat-lng-bounds", JSON.stringify(extent(ball)))
+  }
+
+  const gameLoop = () => {
+    let nextBall = integrate(ball)
+    if ((nextBall.y > 2) || (nextBall.y < -2)) {
+      nextBall.angleRadians *= -1
+    }
+    if ((nextBall.x > 4) || (nextBall.x < -4)) {
+      nextBall.angleRadians *= -1
+      nextBall.velocity *= -1
+    }
+    ball = nextBall
+
+    render(ball)
+    window.requestAnimationFrame(gameLoop)
+  }
+  window.requestAnimationFrame(gameLoop)
+</script>
 
 ### Game loop
 
@@ -39,7 +87,7 @@ window.requestAnimationFrame(gameLoop)
 
 The game loop is responsible updating the game state and calling the render method to display the latest game state.
 
-In our game re-renders of state are handled by VanJS and LeafletHTML.
+In our game re-renders of state are handled by LeafletHTML tag updates.
 
 ### Entities
 
@@ -161,9 +209,3 @@ if (final.x < leftWall.x) {
 A game that updates state without displaying the game to the user is a meaningless game. 
 
 To render Pong we use Leaflet to embed our entities in a cylindrical projection world. 
-
-To make our game run at 60 frames per second, we can use a light weight reactive framework such as VanJS.
-
-```js
-import van from "vanjs-core"
-```

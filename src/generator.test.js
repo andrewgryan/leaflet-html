@@ -195,6 +195,10 @@ it.each([["circle"], ["rectangle"], ["polyline"], ["polygon"]])(
           [1, 1],
         ])
       );
+    } else if (shape === "circle") {
+      elShape.setAttribute(
+        "lat-lng", "[0, 0]"
+      )
     }
     const elTooltip = document.createElement("l-tooltip");
     elTooltip.setAttribute("content", content);

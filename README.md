@@ -6,7 +6,9 @@ Leaflet expressed in HTML adds maps to Hypermedia Driven Applications (HDA).
 [![tests](https://img.shields.io/github/actions/workflow/status/andrewgryan/leaflet-html/tests.yml?branch=master&logo=github&style=for-the-badge)](https://github.com/andrewgryan/leaflet-html/actions/workflows/tests.yml)
 
 
-Indeed, since it is HTML, any front end framework should work with it.
+## Motivation
+
+Expressing Leaflet in HTML enables compatibility with all front end frameworks.
 
 Fine grained reactive frameworks such as [Solid JS](https://solidjs.com) or [Van JS](https://vanjs.org) are ideal candidates for client side development.
 

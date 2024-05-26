@@ -18,11 +18,15 @@ To play pong in a cylindrical projection of a sphere it is wise to position the 
   <l-tile-layer
     url-template="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
   ></l-tile-layer>
-  <l-rectangle id="ball" lat-lng-bounds="[[0,0],[0.1,0.1]]" weight="1" color="red">
+  <l-rectangle id="ball" lat-lng-bounds="[[0,0],[0.1,0.1]]" weight="1" fill-opacity="1" color="#f44708">
   </l-rectangle>
-  <l-polyline lat-lngs="[[2,-5],[2,5]]" weight="1" color="#333">
+  <l-rectangle id="paddle-1" lat-lng-bounds="[[-0.5,-5], [0.5,-4.9]]" weight="1"></l-rectangle>
+  <l-rectangle id="paddle-2" lat-lng-bounds="[[-0.5,5], [0.5,4.9]]" weight="1"></l-rectangle>
+  <l-polyline lat-lngs="[[2,-5],[2,5]]" weight="1" color="cadetblue">
   </l-polyline>
-  <l-polyline lat-lngs="[[-2,-5],[-2,5]]" weight="1" color="#333">
+  <l-polyline lat-lngs="[[-2,-5],[-2,5]]" weight="1" color="cadetblue">
+  </l-polyline>
+  <l-polyline lat-lngs="[[-2,0],[2,0]]" weight="1" color="cadetblue">
   </l-polyline>
 </l-map>
 
@@ -30,12 +34,28 @@ To play pong in a cylindrical projection of a sphere it is wise to position the 
   let ball = {
     x: 0,
     y: 0,
-    dx: 0.1,
-    dy: 0.1,
-    velocity: -0.02,
+    dx: 0.125,
+    dy: 0.125,
+    velocity: -0.0275,
     angleRadians: Math.PI / 6,
     el: document.getElementById("ball")
   }
+
+  let paddleOne = {
+    x: -5,
+    y: -0.7,
+    dx: 0.1,
+    dy: 1,
+    el: document.getElementById("paddle-1")
+  }
+  let paddleTwo = {
+    x: 5 - 0.05,
+    y: 1.2,
+    dx: 0.1,
+    dy: 1,
+    el: document.getElementById("paddle-2")
+  }
+
   const extent = (entity) => {
     const { x, y, dx, dy } = entity
     const low = [y - (dy / 2.0), x - (dx / 2.0)]
@@ -49,22 +69,29 @@ To play pong in a cylindrical projection of a sphere it is wise to position the 
     return {...entity, x, y}
   }
 
-  const render = (ball) => {
-    ball.el.setAttribute("lat-lng-bounds", JSON.stringify(extent(ball)))
+  const render = (entity) => {
+    entity.el.setAttribute("lat-lng-bounds", JSON.stringify(extent(entity)))
   }
+
+  const upperExtent = (entity) => entity.y + (entity.dy / 2)
+  const lowerExtent = (entity) => entity.y - (entity.dy / 2)
+  const rightFace = (entity) => entity.x + (entity.dx / 2)
+  const leftFace = (entity) => entity.x - (entity.dx / 2)
 
   const gameLoop = () => {
     let nextBall = integrate(ball)
-    if ((nextBall.y > 2) || (nextBall.y < -2)) {
+    if ((upperExtent(nextBall) > 2) || (lowerExtent(nextBall) < -2)) {
       nextBall.angleRadians *= -1
     }
-    if ((nextBall.x > 4) || (nextBall.x < -4)) {
+    if ((rightFace(nextBall) > leftFace(paddleTwo)) || (leftFace(nextBall) < rightFace(paddleOne))) {
       nextBall.angleRadians *= -1
       nextBall.velocity *= -1
     }
     ball = nextBall
 
     render(ball)
+    render(paddleOne)
+    render(paddleTwo)
     window.requestAnimationFrame(gameLoop)
   }
   window.requestAnimationFrame(gameLoop)

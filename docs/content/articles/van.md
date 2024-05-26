@@ -34,7 +34,7 @@ const gameLoop = () => {
   window.requestAnimationFrame(gameLoop)
 }
 
-window requestAnimationFrame(gameLoop)
+window.requestAnimationFrame(gameLoop)
 ```
 
 The game loop is responsible updating the game state and calling the render method to display the latest game state.
@@ -50,7 +50,9 @@ In our game we have three entities, two paddles and a ball.
 For simplicity, let's make them rectangles.
 
 ```html
-<l-rectangle></l-rectangle>
+<l-rectangle
+  lat-lng-bounds="[[-5, -5], [5, 5]]">
+</l-rectangle>
 ```
 
 ### Movement

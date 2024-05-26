@@ -49,14 +49,11 @@ it.each([
 it.each([["smooth-factor", "1.1"]])(
   "should ignore <l-circle> attribute %s",
   (attName, attValue) => {
-    const line = [
-      [0, 0],
-      [1, 1],
-    ];
+    const line = [1, 1];
     const el = document.createElement("l-circle");
-    el.setAttribute("lat-lngs", "[]");
+    el.setAttribute("lat-lng", "[0, 0]");
     document.body.appendChild(el);
-    el.setAttribute("lat-lngs", JSON.stringify(line));
+    el.setAttribute("lat-lng", JSON.stringify(line));
     el.setAttribute(attName, attValue);
     expect(el.layer).toEqual(circle(line));
   }

@@ -31,7 +31,7 @@ To play pong in a cylindrical projection of a sphere it is wise to position the 
 </l-map>
 
 <script>
-  const MAX_ANGLE = (75 / 180) * Math.PI
+  const MAX_ANGLE = (65 / 180) * Math.PI
   let ball = {
     x: 0,
     y: 0,
@@ -100,12 +100,12 @@ To play pong in a cylindrical projection of a sphere it is wise to position the 
     }
 
     if (collideOne(nextBall, paddleOne)) {
-      const dy = (nextBall.y - paddleOne.y) / paddleOne.dy
+      const dy = 2 * (nextBall.y - paddleOne.y) / paddleOne.dy
       console.log({nextBall, paddleOne, dy})
       nextBall.angleRadians = MAX_ANGLE * dy
       nextBall.x = paddleOne.x + Math.abs(paddleOne.x - ball.x)
     } else if (collideTwo(nextBall, paddleTwo)) {
-      const dy = (nextBall.y - paddleTwo.y) / paddleTwo.dy
+      const dy = 2 * (nextBall.y - paddleTwo.y) / paddleTwo.dy
       console.log({nextBall, paddleTwo, dy})
       nextBall.angleRadians = -1 * MAX_ANGLE * dy
       nextBall.x = paddleTwo.x - Math.abs(paddleTwo.x - nextBall.x)

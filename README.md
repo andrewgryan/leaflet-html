@@ -8,7 +8,7 @@ Leaflet expressed in HTML adds map capabilities to Hypermedia Driven Application
 
 ## Motivation
 
-Expressing Leaflet in HTML enables compatibility with all front end frameworks.
+Expressing Leaflet in HTML enables compatibility with a wide range of front end frameworks.
 
 Fine grained reactive frameworks such as [Solid JS](https://solidjs.com) or [Van JS](https://vanjs.org) are ideal candidates for client side development.
 

@@ -31,6 +31,7 @@ To play pong in a cylindrical projection of a sphere it is wise to position the 
 </l-map>
 
 <script>
+  const MAX_ANGLE = (75 / 180) * Math.PI
   let ball = {
     x: 0,
     y: 0,
@@ -78,15 +79,40 @@ To play pong in a cylindrical projection of a sphere it is wise to position the 
   const rightFace = (entity) => entity.x + (entity.dx / 2)
   const leftFace = (entity) => entity.x - (entity.dx / 2)
 
+  const collideOne = (ball, paddle) => {
+    return (leftFace(ball) < rightFace(paddle)) && inside(ball, paddle)
+  }
+  const collideTwo = (ball, paddle) => {
+    return (rightFace(ball) > leftFace(paddle)) && inside(ball, paddle)
+  }
+
+  const inside = (ball, paddle) => {
+    return (ball.y < upperExtent(paddle)) && (ball.y > lowerExtent(paddle))
+  }
+
   const gameLoop = () => {
     let nextBall = integrate(ball)
     if ((upperExtent(nextBall) > 2) || (lowerExtent(nextBall) < -2)) {
       nextBall.angleRadians *= -1
     }
     if ((rightFace(nextBall) > leftFace(paddleTwo)) || (leftFace(nextBall) < rightFace(paddleOne))) {
-      nextBall.angleRadians *= -1
       nextBall.velocity *= -1
     }
+
+    if (collideOne(nextBall, paddleOne)) {
+      const dy = (nextBall.y - paddleOne.y) / paddleOne.dy
+      console.log({nextBall, paddleOne, dy})
+      nextBall.angleRadians = MAX_ANGLE * dy
+      nextBall.x = paddleOne.x + Math.abs(paddleOne.x - ball.x)
+    } else if (collideTwo(nextBall, paddleTwo)) {
+      const dy = (nextBall.y - paddleTwo.y) / paddleTwo.dy
+      console.log({nextBall, paddleTwo, dy})
+      nextBall.angleRadians = -1 * MAX_ANGLE * dy
+      nextBall.x = paddleTwo.x - Math.abs(paddleTwo.x - nextBall.x)
+    } else if ((rightFace(nextBall) > leftFace(paddleTwo)) || (leftFace(nextBall) < rightFace(paddleOne))) {
+      nextBall.angleRadians *= -1
+    }
+
     ball = nextBall
 
     render(ball)

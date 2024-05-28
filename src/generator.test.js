@@ -1,17 +1,7 @@
 // @vitest-environment happy-dom
-import { circle, polyline, polygon, rectangle, tooltip } from "leaflet";
-import { beforeAll, it, expect } from "vitest";
-import generator from "./generator.js";
-import LTooltip from "./l-tooltip.js";
-
-beforeAll(() => {
-  // TODO: use a function to wire up elements to match library usage
-  customElements.define("l-circle", generator(circle, "circle"));
-  customElements.define("l-rectangle", generator(rectangle, "rectangle"));
-  customElements.define("l-polyline", generator(polyline, "polyline"));
-  customElements.define("l-polygon", generator(polygon, "polygon"));
-  customElements.define("l-tooltip", LTooltip);
-});
+import { circle, polyline, polygon, rectangle, latLng, latLngBounds } from "leaflet";
+import { it, expect } from "vitest";
+import "./index.js"
 
 it("should render <l-polyline lat-lng='[]'>", () => {
   const el = document.createElement("l-polyline");
@@ -204,3 +194,62 @@ it.each([["circle"], ["rectangle"], ["polyline"], ["polygon"]])(
     expect(elShape.layer.getTooltip().getContent()).toEqual(content);
   }
 );
+
+/**
+ * Map
+ */
+it("should render <l-map /> tag", () => {
+  const el = document.createElement("l-map")
+  el.setAttribute("zoom", "3")
+  el.setAttribute("center", "[0, 0]")
+  document.body.appendChild(el)
+  expect(el.map.getZoom()).toEqual(3)
+})
+
+it("should change zoom on <l-map /> tag", () => {
+  const el = document.createElement("l-map")
+  el.setAttribute("zoom", "3")
+  el.setAttribute("center", "[0, 0]")
+  document.body.appendChild(el)
+  el.setAttribute("zoom", "5")
+  expect(el.map.getZoom()).toEqual(5)
+})
+
+it("should change center on <l-map /> tag", () => {
+  const el = document.createElement("l-map")
+  el.setAttribute("zoom", "3")
+  el.setAttribute("center", "[0, 0]")
+  document.body.appendChild(el)
+  el.setAttribute("center", "[1, 1]")
+  expect(el.map.getCenter()).toEqual(latLng([1, 1]))
+})
+
+/**
+ * LatLngBounds
+ */
+it("should render <l-map/> with <l-lat-lng-bounds/>", () => {
+  const data = [[-1, -1], [1, 1]]
+  const els = {
+    map: create("l-map", [["zoom", "3"], ["center", "[0, 1]"]]),
+    latLngBounds: create("l-lat-lng-bounds", [["bounds", JSON.stringify(data)]])
+  }
+  document.body.appendChild(els.map)
+
+  // Assert fixture different before system tested
+  const expected = latLngBounds([[0, 0], [0, 0]])
+  expect(els.map.map.getBounds()).not.toEqual(expected)
+
+  // System under test
+  els.map.appendChild(els.latLngBounds)
+
+  // Assert
+  expect(els.map.map.getBounds()).toEqual(expected)
+})
+
+const create = (tagName, attrs) => {
+  const el = document.createElement(tagName)
+  attrs.forEach(([key, value]) => el.setAttribute(key, value))
+  return el
+}
+
+

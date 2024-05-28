@@ -4,6 +4,8 @@ import { layerRemove, mapAddTo } from "./events.js";
 import LLayer from "./l-layer.js";
 
 class LMap extends HTMLElement {
+  static observedAttributes = ["zoom", "center"]
+
   constructor() {
     super();
 
@@ -50,6 +52,16 @@ class LMap extends HTMLElement {
         this.map.removeLayer(ev.detail.layer);
       }
     });
+  }
+
+  attributeChangedCallback(name, _oldValue, newValue) {
+    if (this.map !== null) {
+      if (name === "zoom") {
+          this.map.setZoom(parseInt(newValue))
+      } else if (name === "center") {
+          this.map.setView(JSON.parse(newValue))
+      }
+    }
   }
 }
 

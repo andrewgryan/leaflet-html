@@ -4,11 +4,11 @@
   "version": "0.5.0",
   "description": "Leaflet expressed in HTML",
   "keywords": [
-     "leaflet",
-     "hda",
-     "html",
-     "hypermedia",
-     "maps"
+    "leaflet",
+    "hda",
+    "html",
+    "hypermedia",
+    "maps"
   ],
   "source": "src/index.js",
   "main": "./dist/leaflet-html.cjs",
@@ -26,9 +26,12 @@
   "scripts": {
     "build": "microbundle --format esm",
     "watch": "microbundle watch -o ./docs/static --format esm",
-    "test": "vitest"
+    "test": "vitest",
+    "coverage": "vitest run --coverage",
+    "coverage:watch": "vitest watch --coverage"
   },
   "devDependencies": {
+    "@vitest/coverage-v8": "^1.6.0",
     "happy-dom": "^14.10.1",
     "microbundle": "^0.15.1",
     "prettier": "3.2.5",

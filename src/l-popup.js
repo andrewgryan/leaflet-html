@@ -1,5 +1,5 @@
 // @ts-check
-import { popupAdd } from "./events.js";
+/// <reference path="./index.d.ts" />
 
 class LPopup extends HTMLElement {
   constructor() {
@@ -8,7 +8,8 @@ class LPopup extends HTMLElement {
 
   connectedCallback() {
     const content = this.getAttribute("content");
-    const event = new CustomEvent(popupAdd, {
+    /** @type {BindPopupEvent} */
+    const event = new CustomEvent("bindPopup", {
       cancelable: true,
       bubbles: true,
       detail: {

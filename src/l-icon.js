@@ -1,7 +1,8 @@
+// @ts-check
+/// <reference path="./index.d.ts" />
 // @vitest-environment happy-dom
 import * as L from "leaflet";
-import { kebabToCamel } from "./util.js"; 
-
+import { kebabToCamel } from "./util.js";
 
 class LIcon extends HTMLElement {
   constructor() {
@@ -10,6 +11,7 @@ class LIcon extends HTMLElement {
   }
 
   connectedCallback() {
+    /** @type {import("leaflet").IconOptions} */
     const options = {};
 
     // Strings
@@ -42,11 +44,13 @@ class LIcon extends HTMLElement {
     });
 
     if (this.hasAttribute("cross-origin")) {
-      options.crossOrigin = this.getAttribute("cross-origin") === "true";
+      let k = "crossOrigin";
+      options[k] = this.getAttribute("cross-origin") === "true";
     }
     this.icon = L.icon(options);
 
-    const event = new CustomEvent("icon:add", {
+    /** @type SetIconEvent */
+    const event = new CustomEvent("setIcon", {
       cancelable: true,
       bubbles: true,
       detail: {
@@ -75,8 +79,10 @@ if (import.meta.vitest) {
 
   it("emits icon:add event", async () => {
     const el = document.createElement("l-icon");
+    /** @type {keyof HTMLElementEventMap} */
+    const eventName = "setIcon";
     let promise = new Promise((resolve) => {
-      el.addEventListener("icon:add", (ev) => {
+      el.addEventListener(eventName, (ev) => {
         resolve(ev.detail.icon);
       });
     });

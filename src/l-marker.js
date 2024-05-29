@@ -1,6 +1,8 @@
+// @ts-check
+/// <reference path="./index.d.ts" />
 // @vitest-environment happy-dom
 import * as L from "leaflet";
-import { mapAddTo, popupAdd } from "./events.js";
+import { mapAddTo } from "./events.js";
 import LLayer from "./l-layer.js";
 
 class LMarker extends LLayer {
@@ -9,7 +11,7 @@ class LMarker extends LLayer {
   constructor() {
     super();
     this.layer = null;
-    this.addEventListener("icon:add", (ev) => {
+    this.addEventListener("setIcon", (ev) => {
       ev.stopPropagation();
       this.layer.setIcon(ev.detail.icon);
     });
@@ -24,9 +26,9 @@ class LMarker extends LLayer {
       this.layer.setIcon(icon);
     }
 
-    this.setAttribute("leaflet-id", L.stamp(this.layer));
+    this.setAttribute("leaflet-id", L.stamp(this.layer).toString());
 
-    this.addEventListener(popupAdd, (ev) => {
+    this.addEventListener("bindPopup", (ev) => {
       const { content } = ev.detail;
       this.layer.bindPopup(content);
     });
@@ -41,6 +43,11 @@ class LMarker extends LLayer {
     this.dispatchEvent(event);
   }
 
+  /**
+   * @param {string} name
+   * @param {string} _oldValue
+   * @param {string} newValue
+   */
   attributeChangedCallback(name, _oldValue, newValue) {
     if (this.layer !== null) {
       if (name === "lat-lng") {

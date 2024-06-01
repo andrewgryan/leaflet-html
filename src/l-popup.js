@@ -8,11 +8,17 @@ class LPopup extends HTMLElement {
 
   connectedCallback() {
     const content = this.getAttribute("content");
+    let openPopup = false;
+    const openPopupAttribute = this.getAttribute("open-popup");
+    if (openPopupAttribute !== null) {
+      openPopup = openPopupAttribute !== "false";
+    }
     const event = new CustomEvent(popupAdd, {
       cancelable: true,
       bubbles: true,
       detail: {
         content,
+        openPopup,
       },
     });
     this.dispatchEvent(event);

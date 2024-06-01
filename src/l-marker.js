@@ -27,8 +27,11 @@ class LMarker extends LLayer {
     this.setAttribute("leaflet-id", L.stamp(this.layer));
 
     this.addEventListener(popupAdd, (ev) => {
-      const { content } = ev.detail;
-      this.layer.bindPopup(content);
+      const { content, openPopup } = ev.detail;
+      const popup = this.layer.bindPopup(content);
+      if (openPopup) {
+        popup.openPopup();
+      }
     });
 
     const event = new CustomEvent(mapAddTo, {

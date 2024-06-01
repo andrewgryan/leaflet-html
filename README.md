@@ -91,6 +91,11 @@ l-map {
   block-size: 100vh;
 }
 ```
+> [!NOTE]
+> Only `l-map` tag needs dimensions.
+> All other `l-*` elements are purely semantic.
+> They do not take up space on the page.
+> They just indicate the state of the map.
 
 ## Quick start
 

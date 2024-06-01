@@ -28,7 +28,6 @@ class LMarker extends LLayer {
 
     this.addEventListener(popupAdd, (ev) => {
       const { content, openPopup } = ev.detail;
-      console.log({ content, openPopup });
       const popup = this.layer.bindPopup(content);
       if (openPopup) {
         popup.openPopup();

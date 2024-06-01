@@ -37,11 +37,22 @@ class LMap extends HTMLElement {
 
   connectedCallback() {
     this.map = L.map(this);
-    this.map.on("locationfound", (e) => {
-      this.dispatchEvent(
-        new CustomEvent("locationfound", { bubbles: true, detail: e })
-      );
-    });
+
+    // Connect Leaflet events
+    if (this.hasAttribute("on")) {
+      const on = this.getAttribute("on");
+      if (on !== null) {
+        on.split(/\s+/).forEach((eventName) => {
+          if (this.map !== null) {
+            this.map.on(eventName, (e) => {
+              this.dispatchEvent(
+                new CustomEvent(eventName, { bubbles: true, detail: e })
+              );
+            });
+          }
+        });
+      }
+    }
 
     if (this.hasAttribute("fit-world")) {
       this.map.fitWorld();

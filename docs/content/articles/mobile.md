@@ -10,7 +10,11 @@ This article demonstrates how to achieve the same effect in HTML.
 ## Preparing the page
 
 The method call, `map.fitWorld()`, with no arguments translates into declarative HTML as a kebab-case attribute.
-A nullary funtion is simple, but not all method calls can be invoked without arguments.
+
+**Note** Nullary (zero argument) funtions like this one, and unary (single argument) functions are easy to represent in HTML.
+         But not all Leaflet method calls can be invoked with zero or one arguments.
+         An elegant way to support N-ary functions is being developed.
+
 
 ```html
 <l-map fit-world>

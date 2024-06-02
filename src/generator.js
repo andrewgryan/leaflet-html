@@ -1,6 +1,7 @@
 // @ts-check
 import { Circle, LatLng, Polygon, Polyline, Rectangle } from "leaflet";
 import { camelToKebab } from "./util.js";
+import { LeafletHTMLError, missingAttributeIssue } from "./error.js";
 
 /**
  * @typedef {Object} TagOption
@@ -211,16 +212,6 @@ const settings = (el, methodName) => {
   return result;
 };
 
-class LeafletHTMLError extends Error {
-  /**
-   * @param {string} message
-   */
-  constructor(message) {
-    super(message);
-    this.name = "LeafletHTMLError";
-  }
-}
-
 /**
  * Read positional arguments from HTMLElement
  *
@@ -230,9 +221,11 @@ class LeafletHTMLError extends Error {
 const positional = (el, methodName) => {
   return positionalArguments(methodName).map((option) => {
     if (!el.hasAttribute(option.kebab)) {
-      throw new LeafletHTMLError(
-        `l-${methodName} element missing ${option.kebab} HTML attribute`
-      );
+      const issue = missingAttributeIssue({
+        tag: `l-${methodName}`,
+        attribute: option.kebab,
+      });
+      throw new LeafletHTMLError([issue]);
     }
     return option.parser(el.getAttribute(option.kebab));
   });

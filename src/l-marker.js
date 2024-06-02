@@ -1,5 +1,6 @@
 // @vitest-environment happy-dom
 import * as L from "leaflet";
+import { LeafletHTMLError, missingAttributeIssue } from "./error.js";
 import { mapAddTo, popupAdd } from "./events.js";
 import LLayer from "./l-layer.js";
 
@@ -16,7 +17,16 @@ class LMarker extends LLayer {
   }
 
   connectedCallback() {
-    const latLng = JSON.parse(this.getAttribute("lat-lng"));
+    let attName = "lat-lng";
+    let attValue = this.getAttribute(attName);
+    if (attValue === null) {
+      const issue = missingAttributeIssue({
+        tag: "l-marker",
+        attribute: attName,
+      });
+      throw new LeafletHTMLError([issue]);
+    }
+    const latLng = JSON.parse(attValue);
     const opacity = parseFloat(this.getAttribute("opacity") || "1.0");
     this.layer = L.marker(latLng, { opacity });
     if (this.hasAttribute("icon")) {

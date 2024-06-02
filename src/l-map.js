@@ -1,5 +1,11 @@
 // @ts-check
 import * as L from "leaflet";
+import {
+  jsonParseIssue,
+  LeafletHTMLError,
+  missingAttributeIssue,
+  parseIntIssue,
+} from "./error.js";
 import { layerRemove, mapAddTo } from "./events.js";
 import LLayer from "./l-layer.js";
 
@@ -57,12 +63,45 @@ class LMap extends HTMLElement {
     if (this.hasAttribute("fit-world")) {
       this.map.fitWorld();
     } else {
-      const center = this.getAttribute("center");
-      const zoom = this.getAttribute("zoom");
-      if (center !== null && zoom !== null) {
-        this.map.setView(JSON.parse(center), parseInt(zoom));
+      const issues = [];
+      let center = this.getAttribute("center");
+      if (center === null) {
+        issues.push(
+          missingAttributeIssue({ tag: "l-map", attribute: "center" })
+        );
+      } else {
+        try {
+          center = JSON.parse(center);
+        } catch (error) {
+          issues.push(
+            jsonParseIssue({ tag: "l-map", attribute: "center", error })
+          );
+        }
+      }
+      let zoom;
+      let zoomAttribute = this.getAttribute("zoom");
+      if (zoomAttribute === null) {
+        issues.push(missingAttributeIssue({ tag: "l-map", attribute: "zoom" }));
+      } else {
+        zoom = parseInt(zoomAttribute);
+        if (isNaN(zoom)) {
+          issues.push(
+            parseIntIssue({
+              tag: "l-map",
+              attribute: "zoom",
+              value: zoomAttribute,
+            })
+          );
+        }
+      }
+      if (issues.length > 0) {
+        throw new LeafletHTMLError(issues);
+      }
+      if (center !== null && zoomAttribute !== null) {
+        this.map.setView(center, zoom);
       }
     }
+
     if (this.hasAttribute("locate")) {
       this.map.locate(JSON.parse(this.getAttribute("locate")));
     }

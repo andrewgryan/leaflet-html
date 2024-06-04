@@ -75,6 +75,7 @@ if (import.meta.vitest) {
 
   it("default icon", () => {
     const el = document.createElement("l-marker");
+    el.setAttribute("lat-lng", "[0, 0]");
     document.body.appendChild(el);
     let actual = el.layer.getIcon();
     let expected = new L.Icon.Default();
@@ -83,6 +84,7 @@ if (import.meta.vitest) {
 
   it("adds an icon", () => {
     const el = document.createElement("l-marker");
+    el.setAttribute("lat-lng", "[0, 0]");
     // Set attribute before appendChild
     el.setAttribute("icon", JSON.stringify({ iconUrl: "foo.png" }));
     document.body.appendChild(el);
@@ -93,6 +95,7 @@ if (import.meta.vitest) {
 
   it("changes an icon", () => {
     const el = document.createElement("l-marker");
+    el.setAttribute("lat-lng", "[0, 0]");
     // Set attribute after appendChild
     document.body.appendChild(el);
     el.setAttribute("icon", JSON.stringify({ iconUrl: "bar.png" }));

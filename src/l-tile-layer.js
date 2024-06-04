@@ -14,12 +14,7 @@ class LTileLayer extends LLayer {
     const name = this.getAttribute("name");
     const urlTemplate = this.getAttribute("url-template");
     if (urlTemplate === null) {
-      const issues = [
-        missingAttributeIssue({
-          tag: "l-tile-layer",
-          attribute: "url-template",
-        }),
-      ];
+      const issues = [missingAttributeIssue("l-tile-layer", "url-template")];
       throw new LeafletHTMLError(issues);
     }
     const options = {};

@@ -66,32 +66,22 @@ class LMap extends HTMLElement {
       const issues = [];
       let center = this.getAttribute("center");
       if (center === null) {
-        issues.push(
-          missingAttributeIssue({ tag: "l-map", attribute: "center" })
-        );
+        issues.push(missingAttributeIssue("l-map", "center"));
       } else {
         try {
           center = JSON.parse(center);
         } catch (error) {
-          issues.push(
-            jsonParseIssue({ tag: "l-map", attribute: "center", error })
-          );
+          issues.push(jsonParseIssue("l-map", "center", error));
         }
       }
       let zoom;
       let zoomAttribute = this.getAttribute("zoom");
       if (zoomAttribute === null) {
-        issues.push(missingAttributeIssue({ tag: "l-map", attribute: "zoom" }));
+        issues.push(missingAttributeIssue("l-map", "zoom"));
       } else {
         zoom = parseInt(zoomAttribute);
         if (isNaN(zoom)) {
-          issues.push(
-            parseIntIssue({
-              tag: "l-map",
-              attribute: "zoom",
-              value: zoomAttribute,
-            })
-          );
+          issues.push(parseIntIssue("l-map", "zoom", zoomAttribute));
         }
       }
       if (issues.length > 0) {

@@ -2,11 +2,37 @@
  * Error handling utilities
  */
 
+/**
+ * @typedef {'missing_attribute'|'json_parse'|'parse_int'} Code
+ */
+
+/**
+ * @typedef {Object} MissingAttributeIssue
+ * @property {Code} code
+ * @property {string} tag
+ * @property {string} attribute
+ * @property {string} message
+ */
+
+/**
+ * @typedef {Object} ParseIssue
+ * @property {Code} code
+ * @property {string} tag
+ * @property {string} attribute
+ * @property {string} message
+ * @property {string} error
+ */
+
+/**
+ * @typedef {(MissingAttributeIssue | ParseIssue)} Issue
+ */
+
 export class LeafletHTMLError extends Error {
+  /** @type {Issue[]} */
   issues = [];
 
   /**
-   * @param {string} message
+   * @param {Issue[]} issues
    */
   constructor(issues) {
     super();
@@ -19,7 +45,12 @@ export class LeafletHTMLError extends Error {
   }
 }
 
-export const missingAttributeIssue = ({ tag, attribute }) => {
+/**
+ * @param {string} tag
+ * @param {string} attribute
+ * @returns {MissingAttributeIssue}
+ */
+export const missingAttributeIssue = (tag, attribute) => {
   const code = "missing_attribute";
   const message = `${tag}: missing HTML attribute ${attribute}`;
   return {
@@ -30,7 +61,13 @@ export const missingAttributeIssue = ({ tag, attribute }) => {
   };
 };
 
-export const jsonParseIssue = ({ tag, attribute, error }) => {
+/**
+ * @param {string} tag
+ * @param {string} attribute
+ * @param {SyntaxError} error
+ * @returns {ParseIssue}
+ */
+export const jsonParseIssue = (tag, attribute, error) => {
   const code = "json_parse";
   const message = `${tag}: failed to JSON.parse ${attribute}`;
   return {
@@ -42,7 +79,13 @@ export const jsonParseIssue = ({ tag, attribute, error }) => {
   };
 };
 
-export const parseIntIssue = ({ tag, attribute, value }) => {
+/**
+ * @param {string} tag
+ * @param {string} attribute
+ * @param {string} value
+ * @returns {ParseIssue}
+ */
+export const parseIntIssue = (tag, attribute, value) => {
   const code = "parse_int";
   const message = `${tag}: failed to parse ${attribute}`;
   return {
@@ -50,6 +93,6 @@ export const parseIntIssue = ({ tag, attribute, value }) => {
     tag,
     attribute,
     message,
-    value,
+    error: `could not parseInt ${value}`,
   };
 };

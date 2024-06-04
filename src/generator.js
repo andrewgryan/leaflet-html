@@ -221,10 +221,7 @@ const settings = (el, methodName) => {
 const positional = (el, methodName) => {
   return positionalArguments(methodName).map((option) => {
     if (!el.hasAttribute(option.kebab)) {
-      const issue = missingAttributeIssue({
-        tag: `l-${methodName}`,
-        attribute: option.kebab,
-      });
+      const issue = missingAttributeIssue(`l-${methodName}`, option.kebab);
       throw new LeafletHTMLError([issue]);
     }
     return option.parser(el.getAttribute(option.kebab));

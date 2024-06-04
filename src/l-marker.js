@@ -20,10 +20,7 @@ class LMarker extends LLayer {
     let attName = "lat-lng";
     let attValue = this.getAttribute(attName);
     if (attValue === null) {
-      const issue = missingAttributeIssue({
-        tag: "l-marker",
-        attribute: attName,
-      });
+      const issue = missingAttributeIssue("l-marker", attName);
       throw new LeafletHTMLError([issue]);
     }
     const latLng = JSON.parse(attValue);

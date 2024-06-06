@@ -3,6 +3,7 @@ import * as L from "leaflet";
 import { LeafletHTMLError, missingAttributeIssue } from "./error.js";
 import { mapAddTo, popupAdd } from "./events.js";
 import LLayer from "./l-layer.js";
+import { distribute, float, json, option, parse, partial } from "./parse.js";
 
 class LMarker extends LLayer {
   static observedAttributes = ["lat-lng", "opacity", "icon"];
@@ -17,15 +18,16 @@ class LMarker extends LLayer {
   }
 
   connectedCallback() {
-    let attName = "lat-lng";
-    let attValue = this.getAttribute(attName);
-    if (attValue === null) {
-      const issue = missingAttributeIssue("l-marker", attName);
-      throw new LeafletHTMLError([issue]);
-    }
-    const latLng = JSON.parse(attValue);
-    const opacity = parseFloat(this.getAttribute("opacity") || "1.0");
-    this.layer = L.marker(latLng, { opacity });
+    // Experimental parse/validate API
+    const latLng = parse(option("lat-lng", json()), this);
+    const options = parse(
+      partial({
+        opacity: option("opacity", float()),
+      }),
+      this
+    );
+    this.layer = L.marker(latLng, options);
+
     if (this.hasAttribute("icon")) {
       const icon = L.icon(JSON.parse(this.getAttribute("icon")));
       this.layer.setIcon(icon);

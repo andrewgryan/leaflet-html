@@ -19,6 +19,12 @@ import { LeafletHTMLError } from "./error.js";
 
 /**
  * @template T
+ * @template S
+ * @typedef {(ctx: Context<T>) => Context<S>} Parser
+ */
+
+/**
+ * @template T
  * @param {T} value
  * @returns {Context<T>}
  */
@@ -46,7 +52,7 @@ const unwrap = ({ value }) => value;
  */
 export const parse = (schema, value) => {
   const result = schema(wrap(value));
-  if (result.issues.length > 0) {
+  if (result.status !== "clean") {
     throw new LeafletHTMLError(result.issues);
   } else {
     return unwrap(result);
@@ -89,7 +95,7 @@ export const distribute = (obj) => (ctx) => {
   let { status, issues } = ctx;
   const result = {};
   for (const key of Object.keys(obj)) {
-    let localCtx = obj[key](ctx)
+    let localCtx = obj[key](ctx);
     if (localCtx.status === "abort") {
       status = "abort";
       issues = [...issues, ...localCtx.issues];
@@ -105,6 +111,7 @@ export const partial = (obj) => (ctx) => {
   for (const key of Object.keys(obj)) {
     let localCtx = obj[key](ctx);
     if (localCtx.status === "abort") {
+      issues = [...issues, localCtx.issues];
       continue;
     } else {
       result[key] = localCtx.value;
@@ -125,7 +132,10 @@ export const pipe =
     return ctx;
   };
 
-/** @param {string} attributeName */
+/**
+ * @param {string} attributeName
+ * @returns {Parser<HTMLElement, string>}
+ */
 export const htmlAttribute = (attributeName) => (ctx) => {
   const el = ctx.value;
   let result = el.getAttribute(attributeName);
@@ -173,10 +183,10 @@ export const float = () => (ctx) => {
  * @returns {(ctx: Context<string>) => Context<number>}
  */
 export const json = () => (ctx) => {
-  let result
+  let result;
   try {
     result = JSON.parse(ctx.value);
-  } catch(e) {
+  } catch (e) {
     return {
       status: "abort",
       issues: [...ctx.issues, jsonIssue(e)],
@@ -193,6 +203,12 @@ export const bool = () => (ctx) => {
   return { ...ctx, value: ctx.value.toLowerCase() === "true" };
 };
 
+/**
+ * @template T
+ * @template S
+ * @param {string} key
+ * @param {Parser<T, S>[]} fns
+ */
 export const option = (key, ...fns) => pipe(htmlAttribute(key), ...fns);
 
 /**
@@ -218,7 +234,7 @@ export const floatIssue = (value) => {
 };
 
 /**
- * @param {SyntaxError} e 
+ * @param {SyntaxError} e
  * @returns {Issue}
  */
 export const jsonIssue = (e) => {

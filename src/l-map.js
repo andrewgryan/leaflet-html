@@ -1,13 +1,8 @@
 // @ts-check
 import * as L from "leaflet";
-import {
-  jsonParseIssue,
-  LeafletHTMLError,
-  missingAttributeIssue,
-  parseIntIssue,
-} from "./error.js";
 import { layerRemove, mapAddTo } from "./events.js";
 import LLayer from "./l-layer.js";
+import { distribute, int, json, option, parse } from "./parse.js";
 
 class LMap extends HTMLElement {
   static observedAttributes = ["zoom", "center"];
@@ -63,37 +58,17 @@ class LMap extends HTMLElement {
     if (this.hasAttribute("fit-world")) {
       this.map.fitWorld();
     } else {
-      const issues = [];
-      let center = this.getAttribute("center");
-      if (center === null) {
-        issues.push(missingAttributeIssue("l-map", "center"));
-      } else {
-        try {
-          center = JSON.parse(center);
-        } catch (error) {
-          issues.push(jsonParseIssue("l-map", "center", error));
-        }
-      }
-      let zoom;
-      let zoomAttribute = this.getAttribute("zoom");
-      if (zoomAttribute === null) {
-        issues.push(missingAttributeIssue("l-map", "zoom"));
-      } else {
-        zoom = parseInt(zoomAttribute);
-        if (isNaN(zoom)) {
-          issues.push(parseIntIssue("l-map", "zoom", zoomAttribute));
-        }
-      }
-      if (issues.length > 0) {
-        throw new LeafletHTMLError(issues);
-      }
-      if (center !== null && zoomAttribute !== null) {
-        this.map.setView(center, zoom);
-      }
+      const schema = distribute({
+        zoom: option("zoom", int()),
+        center: option("center", json())
+      })
+      const { zoom, center } = parse(schema, this)
+      this.map.setView(center, zoom);
     }
 
     if (this.hasAttribute("locate")) {
-      this.map.locate(JSON.parse(this.getAttribute("locate")));
+      const schema = option("locate", json())
+      this.map.locate(parse(schema, this));
     }
 
     this.addEventListener(mapAddTo, (ev) => {

@@ -1,12 +1,30 @@
-import { LeafletHTMLError } from "./error.js";
-/**
- * @typedef {'clean'|'abort'} Status
- */
-
 /**
  * @typedef {Object} Issue
  * @property {string} code
  * @property {string} message
+ */
+
+ 
+export class LeafletHTMLError extends Error {
+  /** @type {Issue[]} */
+  issues = [];
+
+  /**
+   * @param {Issue[]} issues
+   */
+  constructor(issues) {
+    super();
+    this.name = "LeafletHTMLError";
+    this.issues = issues;
+  }
+
+  get message() {
+    return JSON.stringify(this.issues, null, 2);
+  }
+}
+
+/**
+ * @typedef {'clean'|'abort'} Status
  */
 
 /**

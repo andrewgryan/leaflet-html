@@ -1,6 +1,5 @@
 // @vitest-environment happy-dom
 import * as L from "leaflet";
-import { LeafletHTMLError, missingAttributeIssue } from "./error.js";
 import { mapAddTo, popupAdd } from "./events.js";
 import LLayer from "./l-layer.js";
 import { chain, float, json, option, optional, htmlAttribute, parse, partial, nullable } from "./parse.js";

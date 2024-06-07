@@ -16,6 +16,7 @@ import {
   htmlAttributeIssue,
   chain,
   nullable,
+  optional,
 } from "./parse.js";
 
 it("should parse a HTMLElement attribute", () => {
@@ -138,11 +139,10 @@ it("should omit missing attributes given object", () => {
   const el = document.createElement("div")
   el.setAttribute("foo", "42")
   const schema = partial({
-    foo: chain(htmlAttribute("foo"), nullable(int())),
-    bar: chain(htmlAttribute("bar"), nullable(int())),
+    foo: chain(optional(htmlAttribute("foo")), nullable(int())),
+    bar: chain(optional(htmlAttribute("bar")), nullable(int())),
   })
   const actual = safeParse(schema, el)
-  actual.issues = actual.issues.filter(issue => issue.code === "missing_attribute")
   const expected = {
     status: "clean",
     issues: [],

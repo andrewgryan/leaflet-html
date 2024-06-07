@@ -1,9 +1,4 @@
-/**
- * @typedef {Object} Issue
- * @property {string} code
- * @property {string} message
- */
-
+/// <reference path="./parser.d.ts" />
  
 export class LeafletHTMLError extends Error {
   /** @type {Issue[]} */
@@ -22,24 +17,6 @@ export class LeafletHTMLError extends Error {
     return JSON.stringify(this.issues, null, 2);
   }
 }
-
-/**
- * @typedef {'clean'|'abort'} Status
- */
-
-/**
- * @template T
- * @typedef {Object} Context
- * @property {T} value
- * @property {Status} status
- * @property {Issue[]} issues
- */
-
-/**
- * @template T
- * @template S
- * @typedef {(ctx: Context<T>) => Context<S>} Parser
- */
 
 /**
  * @template T
@@ -64,7 +41,7 @@ const unwrap = ({ value }) => value;
 /**
  * @template S
  * @template T
- * @param {(ctx: Context<T>) => Context<S>} schema
+ * @param {Parser<T, S>} schema
  * @param {T} value
  * @returns {S}
  */
@@ -80,7 +57,7 @@ export const parse = (schema, value) => {
 /**
  * @template S
  * @template T
- * @param {(ctx: Context<T>) => Context<S>} schema
+ * @param {Parser<T, S>} schema
  * @param {T} value
  * @returns {Context<S>}
  */

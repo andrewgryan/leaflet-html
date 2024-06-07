@@ -6,11 +6,9 @@ import {
   htmlAttribute,
   json,
   nullable,
-  option,
   optional,
   parse,
   partial,
-  safeParse,
 } from "./parse.js";
 import { kebabToCamel } from "./util.js";
 

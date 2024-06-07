@@ -2,6 +2,7 @@
 import * as L from "leaflet";
 import { mapAddTo, popupAdd } from "./events.js";
 import LLayer from "./l-layer.js";
+import { chain, float, json, option, optional, htmlAttribute, parse, partial, nullable } from "./parse.js";
 
 class LMarker extends LLayer {
   static observedAttributes = ["lat-lng", "opacity", "icon"];
@@ -16,9 +17,16 @@ class LMarker extends LLayer {
   }
 
   connectedCallback() {
-    const latLng = JSON.parse(this.getAttribute("lat-lng"));
-    const opacity = parseFloat(this.getAttribute("opacity") || "1.0");
-    this.layer = L.marker(latLng, { opacity });
+    // Experimental parse/validate API
+    const latLng = parse(option("lat-lng", json()), this);
+    const options = parse(
+      partial({
+        opacity: chain(optional(htmlAttribute("opacity")), nullable(float())),
+      }),
+      this
+    );
+    this.layer = L.marker(latLng, options);
+
     if (this.hasAttribute("icon")) {
       const icon = L.icon(JSON.parse(this.getAttribute("icon")));
       this.layer.setIcon(icon);
@@ -68,6 +76,7 @@ if (import.meta.vitest) {
 
   it("default icon", () => {
     const el = document.createElement("l-marker");
+    el.setAttribute("lat-lng", "[0, 0]");
     document.body.appendChild(el);
     let actual = el.layer.getIcon();
     let expected = new L.Icon.Default();
@@ -76,6 +85,7 @@ if (import.meta.vitest) {
 
   it("adds an icon", () => {
     const el = document.createElement("l-marker");
+    el.setAttribute("lat-lng", "[0, 0]");
     // Set attribute before appendChild
     el.setAttribute("icon", JSON.stringify({ iconUrl: "foo.png" }));
     document.body.appendChild(el);
@@ -86,6 +96,7 @@ if (import.meta.vitest) {
 
   it("changes an icon", () => {
     const el = document.createElement("l-marker");
+    el.setAttribute("lat-lng", "[0, 0]");
     // Set attribute after appendChild
     document.body.appendChild(el);
     el.setAttribute("icon", JSON.stringify({ iconUrl: "bar.png" }));

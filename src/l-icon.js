@@ -1,7 +1,16 @@
 // @vitest-environment happy-dom
 import * as L from "leaflet";
-import { kebabToCamel } from "./util.js"; 
-
+import {
+  bool,
+  chain,
+  htmlAttribute,
+  json,
+  nullable,
+  optional,
+  parse,
+  partial,
+} from "./parse.js";
+import { kebabToCamel } from "./util.js";
 
 class LIcon extends HTMLElement {
   constructor() {
@@ -10,10 +19,9 @@ class LIcon extends HTMLElement {
   }
 
   connectedCallback() {
-    const options = {};
-
-    // Strings
-    let keys = [
+    // Experimental parse/validate API
+    const obj = {};
+    const keys = [
       "icon-url",
       "icon-retina-url",
       "shadow-url",
@@ -21,12 +29,8 @@ class LIcon extends HTMLElement {
       "class-name",
     ];
     keys.forEach((key) => {
-      if (this.hasAttribute(key)) {
-        options[kebabToCamel(key)] = this.getAttribute(key);
-      }
+      obj[kebabToCamel(key)] = optional(htmlAttribute(key));
     });
-
-    // Points
     let points = [
       "icon-anchor",
       "icon-size",
@@ -36,14 +40,12 @@ class LIcon extends HTMLElement {
       "popup-anchor",
     ];
     points.forEach((key) => {
-      if (this.hasAttribute(key)) {
-        options[kebabToCamel(key)] = JSON.parse(this.getAttribute(key));
-      }
+      obj[kebabToCamel(key)] = chain(optional(htmlAttribute(key)), nullable(json()));
     });
+    obj["crossOrigin"] = chain(optional(htmlAttribute("cross-origin")), nullable(bool()));
+    const schema = partial(obj);
+    const options = parse(schema, this);
 
-    if (this.hasAttribute("cross-origin")) {
-      options.crossOrigin = this.getAttribute("cross-origin") === "true";
-    }
     this.icon = L.icon(options);
 
     const event = new CustomEvent("icon:add", {

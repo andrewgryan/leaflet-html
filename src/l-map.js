@@ -2,6 +2,7 @@
 import * as L from "leaflet";
 import { layerRemove, mapAddTo } from "./events.js";
 import LLayer from "./l-layer.js";
+import { distribute, int, json, option, parse } from "./parse.js";
 
 class LMap extends HTMLElement {
   static observedAttributes = ["zoom", "center"];
@@ -57,14 +58,17 @@ class LMap extends HTMLElement {
     if (this.hasAttribute("fit-world")) {
       this.map.fitWorld();
     } else {
-      const center = this.getAttribute("center");
-      const zoom = this.getAttribute("zoom");
-      if (center !== null && zoom !== null) {
-        this.map.setView(JSON.parse(center), parseInt(zoom));
-      }
+      const schema = distribute({
+        zoom: option("zoom", int()),
+        center: option("center", json())
+      })
+      const { zoom, center } = parse(schema, this)
+      this.map.setView(center, zoom);
     }
+
     if (this.hasAttribute("locate")) {
-      this.map.locate(JSON.parse(this.getAttribute("locate")));
+      const schema = option("locate", json())
+      this.map.locate(parse(schema, this));
     }
 
     this.addEventListener(mapAddTo, (ev) => {

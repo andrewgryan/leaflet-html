@@ -2,9 +2,12 @@
 import * as L from "leaflet";
 import {
   bool,
+  chain,
   htmlAttribute,
   json,
+  nullable,
   option,
+  optional,
   parse,
   partial,
   safeParse,
@@ -28,7 +31,7 @@ class LIcon extends HTMLElement {
       "class-name",
     ];
     keys.forEach((key) => {
-      obj[kebabToCamel(key)] = htmlAttribute(key);
+      obj[kebabToCamel(key)] = optional(htmlAttribute(key));
     });
     let points = [
       "icon-anchor",
@@ -39,14 +42,11 @@ class LIcon extends HTMLElement {
       "popup-anchor",
     ];
     points.forEach((key) => {
-      obj[kebabToCamel(key)] = option(key, json());
+      obj[kebabToCamel(key)] = chain(optional(htmlAttribute(key)), nullable(json()));
     });
-    obj["crossOrigin"] = option("cross-origin", bool());
+    obj["crossOrigin"] = chain(optional(htmlAttribute("cross-origin")), nullable(bool()));
     const schema = partial(obj);
     const options = parse(schema, this);
-
-    // Detailed debug information
-    console.log(safeParse(schema, this));
 
     this.icon = L.icon(options);
 

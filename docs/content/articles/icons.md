@@ -40,7 +40,7 @@ Both are supported, choose whichever is most convenient.
       icon-size="[38, 95]"
       shadow-size="[50, 64]" 
       icon-anchor="[22, 94]" 
-      shadow-anchor="[4  62]" 
+      shadow-anchor="[4, 62]" 
       popup-anchor="[-3, -76]" 
     ></l-icon>
   </l-marker>

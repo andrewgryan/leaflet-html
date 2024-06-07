@@ -3,7 +3,7 @@ import * as L from "leaflet";
 import { LeafletHTMLError, missingAttributeIssue } from "./error.js";
 import { mapAddTo, popupAdd } from "./events.js";
 import LLayer from "./l-layer.js";
-import { distribute, float, json, option, parse, partial } from "./parse.js";
+import { chain, float, json, option, optional, htmlAttribute, parse, partial, nullable } from "./parse.js";
 
 class LMarker extends LLayer {
   static observedAttributes = ["lat-lng", "opacity", "icon"];
@@ -22,7 +22,7 @@ class LMarker extends LLayer {
     const latLng = parse(option("lat-lng", json()), this);
     const options = parse(
       partial({
-        opacity: option("opacity", float()),
+        opacity: chain(optional(htmlAttribute("opacity")), nullable(float())),
       }),
       this
     );

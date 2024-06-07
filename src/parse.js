@@ -86,6 +86,8 @@ export const object = (obj) => (ctx) => {
   return { status, issues, value: result };
 };
 
+// CONNECTORS
+
 /**
  * @template T
  * @param {Object} obj
@@ -107,17 +109,22 @@ export const distribute = (obj) => (ctx) => {
 
 export const partial = (obj) => (ctx) => {
   let { issues } = ctx;
+  let status = "clean"
   const result = {};
   for (const key of Object.keys(obj)) {
     let localCtx = obj[key](ctx);
-    if (localCtx.status === "abort") {
-      issues = [...issues, localCtx.issues];
-      continue;
+    if (localCtx.status !== "clean") {
+      status = localCtx.status
+    }
+    
+    if ((localCtx.value === null) && (localCtx.status === "clean")) {
+      continue
     } else {
+      issues = [...issues, ...localCtx.issues];
       result[key] = localCtx.value;
     }
   }
-  return { ...ctx, issues, value: result };
+  return { status, issues, value: result };
 };
 
 export const pipe =
@@ -131,6 +138,31 @@ export const pipe =
     }
     return ctx;
   };
+
+export const chain = (...parsers) => (ctx) => {
+  for (let i=0; i<parsers.length; i++) {
+    ctx = parsers[i](ctx)
+  }
+  return ctx
+}
+
+
+// PRIMITIVES
+export const nullable = (parser) => (ctx) => {
+  if (ctx.value === null) {
+    return ctx
+  }
+  return parser(ctx)
+}
+
+export const optional = (parser) => (ctx) => {
+  ctx = parser(ctx)
+  if (ctx.value === null) {
+    return {status: "clean", issues: [], value: null}
+  } else {
+    return ctx
+  }
+}
 
 /**
  * @param {string} attributeName
@@ -210,6 +242,9 @@ export const bool = () => (ctx) => {
  * @param {Parser<T, S>[]} fns
  */
 export const option = (key, ...fns) => pipe(htmlAttribute(key), ...fns);
+
+
+// ISSUES
 
 /**
  * @param {string} value

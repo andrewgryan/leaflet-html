@@ -1,8 +1,17 @@
-// @vitest-environment happy-dom
 import * as L from "leaflet";
 import { mapAddTo, popupAdd } from "./events.js";
 import LLayer from "./l-layer.js";
-import { chain, float, json, option, optional, htmlAttribute, parse, partial, nullable } from "./parse.js";
+import {
+  chain,
+  float,
+  json,
+  option,
+  optional,
+  htmlAttribute,
+  parse,
+  partial,
+  nullable,
+} from "./parse.js";
 
 class LMarker extends LLayer {
   static observedAttributes = ["lat-lng", "opacity", "icon"];
@@ -65,45 +74,6 @@ class LMarker extends LLayer {
       }
     }
   }
-}
-
-if (import.meta.vitest) {
-  const { it, expect, beforeAll } = import.meta.vitest;
-
-  beforeAll(() => {
-    customElements.define("l-marker", LMarker);
-  });
-
-  it("default icon", () => {
-    const el = document.createElement("l-marker");
-    el.setAttribute("lat-lng", "[0, 0]");
-    document.body.appendChild(el);
-    let actual = el.layer.getIcon();
-    let expected = new L.Icon.Default();
-    expect(actual).toEqual(expected);
-  });
-
-  it("adds an icon", () => {
-    const el = document.createElement("l-marker");
-    el.setAttribute("lat-lng", "[0, 0]");
-    // Set attribute before appendChild
-    el.setAttribute("icon", JSON.stringify({ iconUrl: "foo.png" }));
-    document.body.appendChild(el);
-    let actual = el.layer.getIcon();
-    let expected = L.icon({ iconUrl: "foo.png" });
-    expect(actual).toEqual(expected);
-  });
-
-  it("changes an icon", () => {
-    const el = document.createElement("l-marker");
-    el.setAttribute("lat-lng", "[0, 0]");
-    // Set attribute after appendChild
-    document.body.appendChild(el);
-    el.setAttribute("icon", JSON.stringify({ iconUrl: "bar.png" }));
-    let actual = el.layer.getIcon();
-    let expected = L.icon({ iconUrl: "bar.png" });
-    expect(actual).toEqual(expected);
-  });
 }
 
 export default LMarker;

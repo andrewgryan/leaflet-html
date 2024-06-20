@@ -12,17 +12,38 @@ class LTileLayer extends LLayer {
 
   connectedCallback() {
     const urlTemplate = parse(htmlAttribute("url-template"), this)
+    
+    // Template attributes
+    const urlAttributes = LTileLayer.parseTemplateAttributes(urlTemplate)
+    const templateOptions = {}
+    for (const attribute of urlAttributes) {
+      const value = this.getAttribute(attribute)
+      if (value !== null) {
+        templateOptions[attribute] = value
+      }
+    }
+    
+    // Options
     const name = this.getAttribute("name");
     const schema = partial({
       attribution: optional(htmlAttribute("attribution"))
     })
     const options = parse(schema, this)
-    this.layer = tileLayer(urlTemplate, options);
+    this.layer = tileLayer(urlTemplate, { ...templateOptions, ...options });
     const event = new CustomEvent(mapAddTo, {
       detail: { name, layer: this.layer },
       bubbles: true,
     });
     this.dispatchEvent(event);
+  }
+
+  /**
+   * @param {string} urlTemplate
+   * @returns {string[]}
+   */
+  static parseTemplateAttributes(urlTemplate) {
+    const regex = /{(.*?)}/g
+    return [...urlTemplate.matchAll(regex)].map(match => match[1])
   }
 }
 

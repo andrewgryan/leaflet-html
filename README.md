@@ -178,6 +178,29 @@ For example, a marker with a custom icon in Leaflet JS has attributes like `{ sh
 </l-map>
 ```
 
+## Events
+
+Leaflet events are wrapped in CustomElement events and available in the `detail` property of the Event.
+By default, the "ready" event is triggered by the map element.
+
+```
+<l-map id="map" ...>
+  ...
+</l-map>
+
+<script>
+  const el = document.getElementById("map")
+  el.addEventListener("ready", (ev) => {
+    const map = ev.detail
+    console.log({ map })
+  })
+</script>
+```
+
+Arbitrary map events can be listened to by specifying a space-separated list of map events in the on attribute, e.g. `on="resize zoomend"`.
+This adds a forwarding mechanism to the CustomElement, to add custom JS listeners use `addEventListener("resize", ...)`
+and use the `CustomElement` detail property as it is the underlying Leaflet Event.
+
 ## Realistic example
 
 The HTML in `example/index.html` is a simple demonstration of the API.

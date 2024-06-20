@@ -183,7 +183,7 @@ For example, a marker with a custom icon in Leaflet JS has attributes like `{ sh
 Leaflet events are wrapped in CustomElement events and available in the `detail` property of the Event.
 By default, the "ready" event is triggered by the map element.
 
-```
+```html
 <l-map id="map" ...>
   ...
 </l-map>

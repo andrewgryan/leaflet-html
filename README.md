@@ -180,7 +180,7 @@ For example, a marker with a custom icon in Leaflet JS has attributes like `{ sh
 
 ## Events
 
-Leaflet events are wrapped in CustomElement events and available in the `detail` property of the Event.
+Leaflet events are wrapped in CustomEvents and available in the `detail` property of the Event.
 By default, the "ready" event is triggered by the map element.
 
 ```html
@@ -199,8 +199,9 @@ By default, the "ready" event is triggered by the map element.
 
 Arbitrary map events can be listened to by specifying a space-separated list of map events in the on attribute, e.g. `on="resize zoomend"`.
 
-This adds a forwarding mechanism to the CustomElement, to add custom JS listeners use `addEventListener("resize", ...)`
-and use the `CustomElement` detail property as it is the underlying Leaflet Event.
+This adds a forwarding mechanism to the CustomElement.
+To add JS listeners use `addEventListener("resize", ...)`
+and inspect the `CustomEvent` detail property to access the Leaflet Event.
 
 
 ```html

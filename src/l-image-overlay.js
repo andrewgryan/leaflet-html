@@ -34,7 +34,7 @@ class LImageOverlay extends LLayer {
         detail: {
           layer: this.layer,
         },
-      }),
+      })
     );
   }
 

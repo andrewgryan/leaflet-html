@@ -180,8 +180,8 @@ For example, a marker with a custom icon in Leaflet JS has attributes like `{ sh
 
 ## Events
 
-Leaflet events are wrapped in CustomEvents and available in the `detail` property of the Event.
 By default, the "ready" event is triggered by the map element.
+It can be accessed via the detail property of a CustomEvent.
 
 ```html
 <l-map id="map" ...>

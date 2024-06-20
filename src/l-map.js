@@ -39,6 +39,17 @@ class LMap extends HTMLElement {
   connectedCallback() {
     this.map = L.map(this);
 
+    // Allow listeners to know when the map is "ready"
+    this.map.whenReady(() => {
+      this.dispatchEvent(
+        new CustomEvent("ready", {
+          bubbles: true,
+          cancelable: true,
+          detail: this.map
+        })
+      )
+    })
+
     // Connect Leaflet events
     if (this.hasAttribute("on")) {
       const on = this.getAttribute("on");

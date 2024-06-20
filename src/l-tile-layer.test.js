@@ -38,3 +38,16 @@ it.each([
   const expected = tileLayer(urlTemplate, { [key]: value })
   expect(actual).toEqual(expected)
 })
+
+it("should support error-tile-url", () => {
+  const urlTemplate = "/{z}/{x}/{y}.png"
+  const errorTileUrl = "/error.png"
+  const el = document.createElement("l-tile-layer");
+  el.setAttribute("url-template", urlTemplate);
+  el.setAttribute("error-tile-url", errorTileUrl)
+  document.body.appendChild(el);
+
+  const actual = el.layer
+  const expected = tileLayer(urlTemplate, { errorTileUrl })
+  expect(actual).toEqual(expected)
+})

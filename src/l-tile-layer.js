@@ -26,7 +26,8 @@ class LTileLayer extends LLayer {
     // Options
     const name = this.getAttribute("name");
     const schema = partial({
-      attribution: optional(htmlAttribute("attribution"))
+      attribution: optional(htmlAttribute("attribution")),
+      errorTileUrl: optional(htmlAttribute("error-tile-url"))
     })
     const options = parse(schema, this)
     this.layer = tileLayer(urlTemplate, { ...templateOptions, ...options });

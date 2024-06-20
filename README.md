@@ -198,8 +198,25 @@ By default, the "ready" event is triggered by the map element.
 ```
 
 Arbitrary map events can be listened to by specifying a space-separated list of map events in the on attribute, e.g. `on="resize zoomend"`.
+
 This adds a forwarding mechanism to the CustomElement, to add custom JS listeners use `addEventListener("resize", ...)`
 and use the `CustomElement` detail property as it is the underlying Leaflet Event.
+
+
+```html
+<l-map id="map" ... on="resize">
+  ...
+</l-map>
+
+<script>
+  // Note: both addEventListener and on="eventName" needed
+  const el = document.getElementById("map")
+  el.addEventListener("resize", (ev) => {
+    const leafletResizeEvent = ev.detail
+    console.log(leafletResizeEvent)
+  })
+</script>
+```
 
 ## Realistic example
 

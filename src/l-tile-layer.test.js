@@ -23,3 +23,15 @@ it("should cover l-tile-layer", async () => {
   };
   expect(actual).toEqual(expected);
 });
+
+it("should perform arbitrary templating", () => {
+  const urlTemplate = "/tile/{z}/{x}/{y}.png?key={key}";
+  const el = document.createElement("l-tile-layer");
+  el.setAttribute("url-template", urlTemplate);
+  el.setAttribute("key", "value")
+  document.body.appendChild(el);
+
+  const actual = el.layer
+  const expected = tileLayer(urlTemplate, { key: "value" })
+  expect(actual).toEqual(expected)
+})

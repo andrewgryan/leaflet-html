@@ -38,6 +38,10 @@ class LImageOverlay extends LLayer {
     );
   }
 
+  disconnectedCallback() {
+    this.layer?.remove();
+  }
+
   attributeChangedCallback(name, _oldValue, newValue) {
     if (this.layer !== null) {
       if (name === "url") {

@@ -39,7 +39,7 @@ class LImageOverlay extends LLayer {
   }
 
   disconnectedCallback() {
-    this.layer.remove();
+    this.layer?.remove();
   }
 
   attributeChangedCallback(name, _oldValue, newValue) {

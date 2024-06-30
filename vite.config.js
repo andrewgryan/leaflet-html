@@ -8,6 +8,9 @@ export default defineConfig({
       name: "chromium",
       provider: "playwright"
     },
+    coverage: {
+      provider: "istanbul"
+    },
     includeSource: ["src/**/*.{js,ts}"],
   },
 });

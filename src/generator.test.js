@@ -1,6 +1,6 @@
 // @vitest-environment happy-dom
 import { circle, polyline, polygon, rectangle, latLng, latLngBounds } from "leaflet";
-import { it, expect } from "vitest";
+import { it, expect, vi } from "vitest";
 import "./index.js"
 
 it("should render <l-polyline lat-lng='[]'>", () => {
@@ -211,8 +211,9 @@ it("should change zoom on <l-map /> tag", () => {
   el.setAttribute("zoom", "3")
   el.setAttribute("center", "[0, 0]")
   document.body.appendChild(el)
+  const setZoom = vi.spyOn(el.map, "setZoom")
   el.setAttribute("zoom", "5")
-  expect(el.map.getZoom()).toEqual(5)
+  expect(setZoom).toHaveBeenCalledWith(5)
 })
 
 it("should change center on <l-map /> tag", () => {

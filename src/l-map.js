@@ -5,7 +5,7 @@ import LLayer from "./l-layer.js";
 import { distribute, int, json, option, parse } from "./parse.js";
 
 class LMap extends HTMLElement {
-  static observedAttributes = ["zoom", "center"];
+  static observedAttributes = ["zoom", "center", "zoom-control"];
 
   constructor() {
     super();
@@ -37,7 +37,7 @@ class LMap extends HTMLElement {
   }
 
   connectedCallback() {
-    this.map = L.map(this);
+    this.map = L.map(this, { zoomControl: this.hasAttribute("zoom-control") });
 
     // Allow listeners to know when the map is "ready"
     this.map.whenReady(() => {

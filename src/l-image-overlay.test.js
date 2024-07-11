@@ -1,7 +1,7 @@
 // @vitest-environment happy-dom
 import { imageOverlay } from "leaflet";
 import { it, expect } from "vitest";
-import { mapAddTo } from "./events";
+import { layerConnected } from "./events";
 import "./index";
 
 it("should cover l-image-overlay", async () => {
@@ -15,7 +15,7 @@ it("should cover l-image-overlay", async () => {
   el.setAttribute("bounds", JSON.stringify(bounds));
 
   let promise = new Promise((resolve) => {
-    el.addEventListener(mapAddTo, (ev) => {
+    el.addEventListener(layerConnected, (ev) => {
       resolve(ev.detail);
     });
   });

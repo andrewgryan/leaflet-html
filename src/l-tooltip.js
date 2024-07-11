@@ -1,6 +1,7 @@
 // @ts-check
 
 import { tooltip } from "leaflet";
+import { tooltipConnected } from "./events";
 
 class LTooltip extends HTMLElement {
   static observedAttributes = ["content"];
@@ -11,7 +12,7 @@ class LTooltip extends HTMLElement {
   }
 
   connectedCallback() {
-    const event = new CustomEvent("bindTooltip", {
+    const event = new CustomEvent(tooltipConnected, {
       cancelable: true,
       bubbles: true,
       detail: {

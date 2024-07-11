@@ -1,6 +1,6 @@
 // @ts-check
 import * as L from "leaflet";
-import { layerRemove, mapAddTo } from "./events.js";
+import { layerRemoved, layerConnected, latLngBoundsConnected, latLngBoundsChanged } from "./events.js";
 import LLayer from "./l-layer.js";
 import { distribute, int, json, option, parse } from "./parse.js";
 
@@ -11,12 +11,16 @@ class LMap extends HTMLElement {
     super();
 
     this.map = null;
-    this.addEventListener("map:bounds", (ev) => {
+
+    // Handle <l-lat-lng-bounds> connection and modification(s)
+    const boundsListener = (ev) => {
       const { bounds, method } = ev.detail;
       if (this.map !== null) {
         this.map[method](bounds);
       }
-    });
+    };
+    this.addEventListener(latLngBoundsConnected, boundsListener);
+    this.addEventListener(latLngBoundsChanged, boundsListener);
 
     // Observe removed l-tile-layers
     const observer = new MutationObserver(function (mutations) {
@@ -27,7 +31,7 @@ class LMap extends HTMLElement {
             if (node instanceof LLayer) {
               if (el.map !== null && node.layer !== null) {
                 // Notify listeners of layer removal
-                el.dispatchEvent(new CustomEvent(layerRemove, {
+                el.dispatchEvent(new CustomEvent(layerRemoved, {
                   bubbles: true,
                   detail: {
                     layer: node.layer
@@ -89,12 +93,12 @@ class LMap extends HTMLElement {
       this.map.locate(parse(schema, this));
     }
 
-    this.addEventListener(mapAddTo, (ev) => {
+    this.addEventListener(layerConnected, (ev) => {
       const layer = ev.detail.layer;
       layer.addTo(this.map);
     });
 
-    this.addEventListener(layerRemove, (ev) => {
+    this.addEventListener(layerRemoved, (ev) => {
       if (this.map !== null) {
         this.map.removeLayer(ev.detail.layer);
       }

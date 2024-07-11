@@ -1,6 +1,6 @@
 // @vitest-environment happy-dom
 import "./index.js";
-import { layerRemove, mapAddTo } from "./events"
+import { layerRemoved, layerConnected } from "./events"
 import { it, expect } from "vitest";
 import LTileLayer from "./l-tile-layer";
 import LMap from "./l-map.js";
@@ -15,7 +15,7 @@ it("should emit map:addTo event(s)", async () => {
   tileLayer.setAttribute("url-template", "fake-url")
   el.appendChild(tileLayer)
   const promise = new Promise((resolve) => {
-    el.addEventListener(mapAddTo, (ev) => {
+    el.addEventListener(layerConnected, (ev) => {
       resolve(ev.detail);
     })
   })
@@ -60,7 +60,7 @@ it("should bubble layer remove events", async () => {
   tileLayer.setAttribute("url-template", "fake-url")
   el.appendChild(tileLayer)
   const promise = new Promise((resolve) => {
-    el.addEventListener(layerRemove, (ev) => {
+    el.addEventListener(layerRemoved, (ev) => {
       resolve(ev.detail);
     })
   })

@@ -2,6 +2,7 @@
 import { it, expect } from "vitest";
 import * as L from "leaflet";
 import "./index.js";
+import { iconConnected } from "./events.js";
 
 it("default", () => {
   const el = document.createElement("l-icon");
@@ -15,7 +16,7 @@ it("default", () => {
 it("emits icon:add event", async () => {
   const el = document.createElement("l-icon");
   let promise = new Promise((resolve) => {
-    el.addEventListener("icon:add", (ev) => {
+    el.addEventListener(iconConnected, (ev) => {
       resolve(ev.detail.icon);
     });
   });

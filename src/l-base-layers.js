@@ -1,5 +1,5 @@
 // @ts-check
-import { mapAddTo } from "./events.js";
+import { layerConnected } from "./events.js";
 
 class LBaseLayers extends HTMLElement {
   constructor() {
@@ -7,7 +7,7 @@ class LBaseLayers extends HTMLElement {
   }
 
   connectedCallback() {
-    this.addEventListener(mapAddTo, (ev) => {
+    this.addEventListener(layerConnected, (ev) => {
       ev.detail["type"] = "base";
     });
   }

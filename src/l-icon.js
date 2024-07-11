@@ -1,4 +1,5 @@
 import { icon } from "leaflet";
+import { iconConnected } from "./events.js";
 import {
   bool,
   chain,
@@ -53,7 +54,7 @@ class LIcon extends HTMLElement {
 
     this.icon = icon(options);
 
-    const event = new CustomEvent("icon:add", {
+    const event = new CustomEvent(iconConnected, {
       cancelable: true,
       bubbles: true,
       detail: {

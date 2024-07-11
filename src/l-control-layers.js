@@ -1,7 +1,7 @@
 // @ts-check
 /** @typedef {import("leaflet").Layer} Layer */
 import { control } from "leaflet";
-import { mapAddTo } from "./events.js";
+import { layerConnected } from "./events.js";
 
 class LControlLayers extends HTMLElement {
   constructor() {
@@ -15,7 +15,7 @@ class LControlLayers extends HTMLElement {
     const overlay = {};
     const controlLayers = control.layers(base, overlay);
 
-    this.addEventListener(mapAddTo, (ev) => {
+    this.addEventListener(layerConnected, (ev) => {
       const { type, name, layer } = ev.detail;
       if (type === "overlay") {
         controlLayers.addOverlay(layer, name);
@@ -25,7 +25,7 @@ class LControlLayers extends HTMLElement {
       ev.preventDefault();
     });
 
-    const event = new CustomEvent(mapAddTo, {
+    const event = new CustomEvent(layerConnected, {
       cancelable: true,
       bubbles: true,
       detail: {

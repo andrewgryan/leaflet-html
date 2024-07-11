@@ -1,7 +1,7 @@
 // @vitest-environment happy-dom
 import { tileLayer } from "leaflet";
 import { it, expect } from "vitest";
-import { mapAddTo } from "./events";
+import { layerConnected } from "./events";
 import "./index";
 
 it("should cover l-tile-layer", async () => {
@@ -10,7 +10,7 @@ it("should cover l-tile-layer", async () => {
   el.setAttribute("url-template", urlTemplate);
 
   let promise = new Promise((resolve) => {
-    el.addEventListener(mapAddTo, (ev) => {
+    el.addEventListener(layerConnected, (ev) => {
       resolve(ev.detail);
     });
   });

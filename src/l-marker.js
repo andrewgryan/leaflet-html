@@ -1,5 +1,5 @@
 import * as L from "leaflet";
-import { mapAddTo, popupAdd } from "./events.js";
+import { layerConnected, popupConnected, iconConnected } from "./events.js";
 import LLayer from "./l-layer.js";
 import {
   chain,
@@ -19,7 +19,7 @@ class LMarker extends LLayer {
   constructor() {
     super();
     this.layer = null;
-    this.addEventListener("icon:add", (ev) => {
+    this.addEventListener(iconConnected, (ev) => {
       ev.stopPropagation();
       this.layer.setIcon(ev.detail.icon);
     });
@@ -43,7 +43,7 @@ class LMarker extends LLayer {
 
     this.setAttribute("leaflet-id", L.stamp(this.layer));
 
-    this.addEventListener(popupAdd, (ev) => {
+    this.addEventListener(popupConnected, (ev) => {
       const { content, openPopup } = ev.detail;
       const popup = this.layer.bindPopup(content);
       if (openPopup) {
@@ -51,7 +51,7 @@ class LMarker extends LLayer {
       }
     });
 
-    const event = new CustomEvent(mapAddTo, {
+    const event = new CustomEvent(layerConnected, {
       cancelable: true,
       bubbles: true,
       detail: {

@@ -1,6 +1,6 @@
 // @ts-check
 import * as L from "leaflet";
-import { layerRemoved, layerConnected, latLngBoundsConnected, latLngBoundsChanged } from "./events.js";
+import { layerRemoved, layerConnected, latLngBoundsConnected, latLngBoundsChanged, paneConnected } from "./events.js";
 import LLayer from "./l-layer.js";
 import { distribute, int, json, option, parse } from "./parse.js";
 
@@ -21,6 +21,12 @@ class LMap extends HTMLElement {
     };
     this.addEventListener(latLngBoundsConnected, boundsListener);
     this.addEventListener(latLngBoundsChanged, boundsListener);
+
+    // Observe l-pane
+    this.addEventListener(paneConnected, (ev) => {
+      const { name, el } = ev.detail
+      this.map.createPane(name, el)
+    })
 
     // Observe removed l-tile-layers
     const observer = new MutationObserver(function (mutations) {

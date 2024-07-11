@@ -12,6 +12,7 @@ class LImageOverlay extends LLayer {
   }
 
   connectedCallback() {
+    
     const url = this.getAttribute("url");
     if (url === null) {
       console.warn("attribute 'url' not set");
@@ -26,6 +27,12 @@ class LImageOverlay extends LLayer {
       opacity: parseFloat(this.getAttribute("opacity") || "1.0"),
       alt: this.getAttribute("alt") || "",
     };
+
+    // Support <l-pane> parent element
+    if (this.parentElement.tagName.toLowerCase() === "l-pane") {
+      options["pane"] = this.parentElement.getAttribute("name")
+    }
+    
     this.layer = imageOverlay(url, JSON.parse(bounds), options);
     this.dispatchEvent(
       new CustomEvent(layerConnected, {

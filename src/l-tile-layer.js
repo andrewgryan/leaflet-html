@@ -1,6 +1,6 @@
 // @ts-check
 import { tileLayer } from "leaflet";
-import { mapAddTo } from "./events.js";
+import { layerConnected } from "./events.js";
 import LLayer from "./l-layer.js";
 import { htmlAttribute, optional, parse, partial } from "./parse.js";
 
@@ -31,7 +31,7 @@ class LTileLayer extends LLayer {
     })
     const options = parse(schema, this)
     this.layer = tileLayer(urlTemplate, { ...templateOptions, ...options });
-    const event = new CustomEvent(mapAddTo, {
+    const event = new CustomEvent(layerConnected, {
       detail: { name, layer: this.layer },
       bubbles: true,
     });

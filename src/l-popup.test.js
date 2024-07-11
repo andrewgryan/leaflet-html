@@ -1,7 +1,7 @@
 // @vitest-environment happy-dom
 import { it, expect } from "vitest";
 import "./index";
-import { popupAdd } from "./events.js";
+import { popupConnected } from "./events.js";
 
 it.each([[true], [false]])(
   "should render l-popup given openPopup %s",
@@ -12,7 +12,7 @@ it.each([[true], [false]])(
     }
 
     let promise = new Promise((resolve) => {
-      el.addEventListener(popupAdd, (ev) => {
+      el.addEventListener(popupConnected, (ev) => {
         resolve(ev.detail);
       });
     });

@@ -1,6 +1,6 @@
 // @ts-check
 import { imageOverlay } from "leaflet";
-import { mapAddTo } from "./events.js";
+import { layerConnected } from "./events.js";
 import LLayer from "./l-layer.js";
 
 class LImageOverlay extends LLayer {
@@ -28,7 +28,7 @@ class LImageOverlay extends LLayer {
     };
     this.layer = imageOverlay(url, JSON.parse(bounds), options);
     this.dispatchEvent(
-      new CustomEvent(mapAddTo, {
+      new CustomEvent(layerConnected, {
         cancelable: true,
         bubbles: true,
         detail: {

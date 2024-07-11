@@ -1,5 +1,5 @@
 // @ts-check
-import { popupAdd } from "./events.js";
+import { popupConnected } from "./events.js";
 
 class LPopup extends HTMLElement {
   constructor() {
@@ -13,7 +13,7 @@ class LPopup extends HTMLElement {
     if (openPopupAttribute !== null) {
       openPopup = openPopupAttribute !== "false";
     }
-    const event = new CustomEvent(popupAdd, {
+    const event = new CustomEvent(popupConnected, {
       cancelable: true,
       bubbles: true,
       detail: {

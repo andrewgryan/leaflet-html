@@ -219,6 +219,17 @@ and inspect the `CustomEvent` detail property to access the Leaflet Event.
 </script>
 ```
 
+### CustomEvents
+
+Leaflet HTML wires up a Leaflet JS application by firing and listening to CustomEvents.
+These events can be observed to add additional functionality to an application.
+
+| Key               | Description                                                                                 |
+| --                | --                                                                                          |
+| l:layer:connected | Triggered when a layer is connected to the DOM                                              |
+| l:layer:removed   | Triggered when a layer is removed from the DOM but before the disconnectedCallback fires    |
+| l:popup:connected | Triggered when a popup element is connected to the DOM. Used to bind popup to parent marker |
+
 ## Realistic example
 
 The HTML in `example/index.html` is a simple demonstration of the API.

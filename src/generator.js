@@ -2,7 +2,7 @@
 import { Circle, LatLng, Polygon, Polyline, Rectangle } from "leaflet";
 import { camelToKebab } from "./util.js";
 import { htmlAttribute, parse } from "./parse.js";
-import { mapAddTo } from "./events.js";
+import { layerConnected } from "./events.js";
 
 /**
  * @typedef {Object} TagOption
@@ -248,7 +248,7 @@ const generator = (method, methodName) => {
       const args = positional(this, methodName);
       const options = settings(this, methodName);
       this.layer = method(...args, options);
-      const event = new CustomEvent(mapAddTo, {
+      const event = new CustomEvent(layerConnected, {
         cancelable: true,
         bubbles: true,
         detail: {

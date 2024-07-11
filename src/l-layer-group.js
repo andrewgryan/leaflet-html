@@ -1,6 +1,6 @@
 // @ts-check
 import { layerGroup } from "leaflet";
-import { mapAddTo } from "./events.js";
+import { layerConnected } from "./events.js";
 import LLayer from "./l-layer.js";
 
 class LLayerGroup extends LLayer {
@@ -14,7 +14,7 @@ class LLayerGroup extends LLayer {
     const group = layerGroup();
     this.layer = group;
 
-    const event = new CustomEvent(mapAddTo, {
+    const event = new CustomEvent(layerConnected, {
       cancelable: true,
       bubbles: true,
       detail: {
@@ -24,7 +24,7 @@ class LLayerGroup extends LLayer {
     });
     this.dispatchEvent(event);
 
-    this.addEventListener(mapAddTo, (ev) => {
+    this.addEventListener(layerConnected, (ev) => {
       ev.stopPropagation();
       group.addLayer(ev.detail.layer);
     });

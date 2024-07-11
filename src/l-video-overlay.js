@@ -1,6 +1,6 @@
 // @ts-check
 import { videoOverlay } from "leaflet";
-import { mapAddTo } from "./events.js";
+import { layerConnected } from "./events.js";
 import LLayer from "./l-layer.js";
 
 class LVideoOverlay extends LLayer {
@@ -20,7 +20,7 @@ class LVideoOverlay extends LLayer {
     };
     const layer = videoOverlay(url, bounds, options);
     this.dispatchEvent(
-      new CustomEvent(mapAddTo, {
+      new CustomEvent(layerConnected, {
         cancelable: true,
         bubbles: true,
         detail: {

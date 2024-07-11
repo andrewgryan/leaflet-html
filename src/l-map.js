@@ -1,6 +1,6 @@
 // @ts-check
 import * as L from "leaflet";
-import { layerRemoved, layerConnected } from "./events.js";
+import { layerRemoved, layerConnected, latLngBoundsConnected, latLngBoundsChanged } from "./events.js";
 import LLayer from "./l-layer.js";
 import { distribute, int, json, option, parse } from "./parse.js";
 
@@ -11,12 +11,16 @@ class LMap extends HTMLElement {
     super();
 
     this.map = null;
-    this.addEventListener("map:bounds", (ev) => {
+
+    // Handle <l-lat-lng-bounds> connection and modification(s)
+    const boundsListener = (ev) => {
       const { bounds, method } = ev.detail;
       if (this.map !== null) {
         this.map[method](bounds);
       }
-    });
+    };
+    this.addEventListener(latLngBoundsConnected, boundsListener);
+    this.addEventListener(latLngBoundsChanged, boundsListener);
 
     // Observe removed l-tile-layers
     const observer = new MutationObserver(function (mutations) {

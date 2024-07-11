@@ -1,5 +1,6 @@
 // @ts-check
 import { LatLngBounds } from "leaflet";
+import { latLngBoundsChanged, latLngBoundsConnected } from "./events"; 
 
 class LLatLngBounds extends HTMLElement {
   static observedAttributes = ["bounds"];
@@ -11,19 +12,19 @@ class LLatLngBounds extends HTMLElement {
   connectedCallback() {
     let value = this.getAttribute("bounds")
     if (value !== null) {
-      this.dispatchEvent(this.getEvent(JSON.parse(value)))
+      this.dispatchEvent(this.getEvent(latLngBoundsConnected, JSON.parse(value)))
     }
   }
 
   attributeChangedCallback(_name, _oldValue, newValue) {
-    this.dispatchEvent(this.getEvent(JSON.parse(newValue)));
+    this.dispatchEvent(this.getEvent(latLngBoundsChanged, JSON.parse(newValue)));
   }
 
   /**
    * @param {LatLngBounds} bounds
    */
-  getEvent(bounds) {
-    return new CustomEvent("map:bounds", {
+  getEvent(key, bounds) {
+    return new CustomEvent(key, {
       bubbles: true,
       detail: {
         bounds,

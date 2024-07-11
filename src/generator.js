@@ -2,7 +2,7 @@
 import { Circle, LatLng, Polygon, Polyline, Rectangle } from "leaflet";
 import { camelToKebab } from "./util.js";
 import { htmlAttribute, parse } from "./parse.js";
-import { layerConnected } from "./events.js";
+import { layerConnected, tooltipConnected } from "./events.js";
 
 /**
  * @typedef {Object} TagOption
@@ -237,7 +237,7 @@ const generator = (method, methodName) => {
     constructor() {
       super();
       this.layer = null;
-      this.addEventListener("bindTooltip", (ev) => {
+      this.addEventListener(tooltipConnected, (ev) => {
         if (this.layer !== null) {
           this.layer.bindTooltip(ev.detail.tooltip);
         }

@@ -4,3 +4,4 @@ node_modules
 dist
 docs/public
 docs/static/leaflet-html.js*
+coverage

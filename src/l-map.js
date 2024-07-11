@@ -26,6 +26,13 @@ class LMap extends HTMLElement {
           mutation.removedNodes.forEach((node) => {
             if (node instanceof LLayer) {
               if (el.map !== null && node.layer !== null) {
+                // Notify listeners of layer removal
+                el.dispatchEvent(new CustomEvent(layerRemove, {
+                  bubbles: true,
+                  detail: {
+                    layer: node.layer
+                  }
+                }))
                 el.map.removeLayer(node.layer);
               }
             }

@@ -36,7 +36,7 @@
       <l-geojson id="feature" geojson='{"type":"Feature","properties":{"name":"Coors Field","amenity":"Baseball Stadium","popupContent":"This is where the Rockies play!"},"geometry":{"type":"Point","coordinates":[-104.99404,39.75621]}}'></l-geojson>
     </l-map>
     <script>
-      document.getElementById("feature").addEventListener("map:addTo", (ev) => {
+      document.getElementById("feature").addEventListener("l:layer:connected", (ev) => {
         console.log({ message: "Hello, World!", ev })
       })
     </script>

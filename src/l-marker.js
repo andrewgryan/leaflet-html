@@ -1,5 +1,5 @@
 import * as L from "leaflet";
-import { layerConnected, popupConnected } from "./events.js";
+import { layerConnected, popupConnected, iconConnected } from "./events.js";
 import LLayer from "./l-layer.js";
 import {
   chain,
@@ -19,7 +19,7 @@ class LMarker extends LLayer {
   constructor() {
     super();
     this.layer = null;
-    this.addEventListener("icon:add", (ev) => {
+    this.addEventListener(iconConnected, (ev) => {
       ev.stopPropagation();
       this.layer.setIcon(ev.detail.icon);
     });

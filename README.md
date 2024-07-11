@@ -229,6 +229,7 @@ These events can be observed to add additional functionality to an application.
 | l:layer:connected | Triggered when a layer is connected to the DOM                                              |
 | l:layer:removed   | Triggered when a layer is removed from the DOM but before the disconnectedCallback fires    |
 | l:popup:connected | Triggered when a popup element is connected to the DOM. Used to bind popup to parent marker |
+| l:icon:connected  | Triggered when a icon element is connected to the DOM. Used to bind icon to parent marker   |
 
 ## Realistic example
 

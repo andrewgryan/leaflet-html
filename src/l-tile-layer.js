@@ -22,6 +22,13 @@ class LTileLayer extends LLayer {
         templateOptions[attribute] = value
       }
     }
+
+    // Pane options
+    const paneOptions = {}
+    // Support <l-pane> parent element
+    if (this.parentElement.tagName.toLowerCase() === "l-pane") {
+      paneOptions["pane"] = this.parentElement.getAttribute("name")
+    }
     
     // Options
     const name = this.getAttribute("name");
@@ -30,7 +37,8 @@ class LTileLayer extends LLayer {
       errorTileUrl: optional(htmlAttribute("error-tile-url"))
     })
     const options = parse(schema, this)
-    this.layer = tileLayer(urlTemplate, { ...templateOptions, ...options });
+    this.layer = tileLayer(urlTemplate, { ...templateOptions, ...paneOptions, ...options });
+    console.log(this.layer)
     const event = new CustomEvent(layerConnected, {
       detail: { name, layer: this.layer },
       bubbles: true,

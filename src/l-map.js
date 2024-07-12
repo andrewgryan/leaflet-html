@@ -25,7 +25,8 @@ class LMap extends HTMLElement {
     // Observe l-pane
     this.addEventListener(paneConnected, (ev) => {
       const { name, el } = ev.detail
-      this.map.createPane(name, el)
+      console.log("create pane: ", { name })
+      this.map.createPane(name)
     })
 
     // Observe removed l-tile-layers

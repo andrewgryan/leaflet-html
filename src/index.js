@@ -20,6 +20,7 @@ import { circle, polyline, polygon, rectangle } from "leaflet";
 const init = (() => {
   // Custom elements (order of definition is important)
   customElements.define("l-map", LMap);
+  customElements.define("l-pane", LPane);
   customElements.define("l-control-layers", LControlLayers);
   customElements.define("l-base-layers", LBaseLayers);
   customElements.define("l-overlay-layers", LOverlayLayers);
@@ -37,7 +38,6 @@ const init = (() => {
   customElements.define("l-polygon", generator(polygon, "polygon"));
   customElements.define("l-rectangle", generator(rectangle, "rectangle"));
   customElements.define("l-tooltip", LTooltip);
-  customElements.define("l-pane", LPane);
 })();
 
 export default init;

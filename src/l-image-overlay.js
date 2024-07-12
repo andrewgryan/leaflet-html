@@ -28,11 +28,6 @@ class LImageOverlay extends LLayer {
       alt: this.getAttribute("alt") || "",
     };
 
-    // Support <l-pane> parent element
-    if (this.parentElement.tagName.toLowerCase() === "l-pane") {
-      options["pane"] = this.parentElement.getAttribute("name")
-    }
-    
     this.layer = imageOverlay(url, JSON.parse(bounds), options);
     this.dispatchEvent(
       new CustomEvent(layerConnected, {

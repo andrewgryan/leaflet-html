@@ -38,7 +38,6 @@ class LTileLayer extends LLayer {
     })
     const options = parse(schema, this)
     this.layer = tileLayer(urlTemplate, { ...templateOptions, ...paneOptions, ...options });
-    console.log(this.layer)
     const event = new CustomEvent(layerConnected, {
       detail: { name, layer: this.layer },
       bubbles: true,

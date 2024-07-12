@@ -24,8 +24,7 @@ class LMap extends HTMLElement {
 
     // Observe l-pane
     this.addEventListener(paneConnected, (ev) => {
-      const { name, el } = ev.detail
-      console.log("create pane: ", { name })
+      const { name } = ev.detail
       this.map.createPane(name)
     })
 

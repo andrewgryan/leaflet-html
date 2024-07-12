@@ -21,6 +21,7 @@ This tutorial illustrates how to make effective use of Leaflet panes.
   <l-geojson id="countries"></l-geojson>
 </l-map>
 
+<script type="text/javascript" src="/leaflet-html/panes/eu-countries.js"></script>
 <script type="text/javascript" src="/panes/eu-countries.js"></script>
 <script>
 document.getElementById("countries").setAttribute("geojson", JSON.stringify(euCountries))

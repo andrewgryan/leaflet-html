@@ -6,13 +6,14 @@ export default class CustomElement extends HTMLElement {
   }
 
   connectedCallback() {
-    this.dispatchEvent(new CustomEvent(paneConnected, {
-      bubbles: true,
-      cancelable: true,
-      detail: {
-        name: this.getAttribute("name"),
-        el: this
-      }
-    }))
+    this.dispatchEvent(
+      new CustomEvent(paneConnected, {
+        bubbles: true,
+        cancelable: true,
+        detail: {
+          name: this.getAttribute("name"),
+        },
+      })
+    );
   }
 }

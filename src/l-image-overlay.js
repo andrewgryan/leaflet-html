@@ -26,6 +26,13 @@ class LImageOverlay extends LLayer {
       opacity: parseFloat(this.getAttribute("opacity") || "1.0"),
       alt: this.getAttribute("alt") || "",
     };
+
+    // Pane
+    const pane = this.closest("l-pane");
+    if (pane !== null) {
+      options["pane"] = pane.getAttribute("name");
+    }
+
     this.layer = imageOverlay(url, JSON.parse(bounds), options);
     this.dispatchEvent(
       new CustomEvent(layerConnected, {

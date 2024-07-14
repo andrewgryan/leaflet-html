@@ -8,7 +8,16 @@ export default class CustomElement extends HTMLElement {
   }
 
   connectedCallback() {
-    this.icon = divIcon({ html: this.innerHTML });
+    // Leaflet JS DivIcon options
+    const options = {
+      html: this.innerHTML,
+    };
+    const className = this.getAttribute("class-name");
+    if (className !== null) {
+      options["className"] = className;
+    }
+
+    this.icon = divIcon(options);
     this.dispatchEvent(
       new CustomEvent(iconConnected, {
         bubbles: true,

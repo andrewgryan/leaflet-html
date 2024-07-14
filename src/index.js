@@ -13,12 +13,14 @@ import LVideoOverlay from "./l-video-overlay.js";
 import LGeoJSON from "./l-geojson.js";
 import LIcon from "./l-icon.js";
 import LTooltip from "./l-tooltip.js";
+import LPane from "./l-pane.js";
 import generator from "./generator.js";
 import { circle, polyline, polygon, rectangle } from "leaflet";
 
 const init = (() => {
   // Custom elements (order of definition is important)
   customElements.define("l-map", LMap);
+  customElements.define("l-pane", LPane);
   customElements.define("l-control-layers", LControlLayers);
   customElements.define("l-base-layers", LBaseLayers);
   customElements.define("l-overlay-layers", LOverlayLayers);

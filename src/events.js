@@ -6,3 +6,4 @@ export const layerRemoved = "l:layer:removed";
 export const latLngBoundsConnected = "l:latlngbounds:connected";
 export const latLngBoundsChanged = "l:latlngbounds:changed";
 export const tooltipConnected = "l:tooltip:connected";
+export const paneConnected = "l:pane:connected";

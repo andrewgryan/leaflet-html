@@ -36,31 +36,27 @@ h3 {
 }
 
 h1 {
-  --color-1: #550527;
-  --color-2: #688e26;
-  --color-3: #faa613;
-  --color-4: #f44708;
-  --color-5: #a10702;
+  --angle: 160deg;
+  --color-1: hsl(var(--angle) 70% 50%);
+  --color-2: hsl(from var(--color-1) calc(180deg + var(--angle)) s l);
+  --color-3: hsl(from var(--color-1) calc(180deg - var(--angle)) s l);
+  --color-4: hsl(from var(--color-1) calc(360deg - var(--angle)) s l);
   color: transparent;
   text-wrap: balance;
   background: linear-gradient(
-    135deg,
-    var(--color-1) calc(19% - 1px),
-    transparent 19%,
-    transparent calc(20% - 1px),
-    var(--color-2) 20%,
-    var(--color-2) calc(39% - 1px),
-    transparent 39%,
-    transparent calc(40% - 1px),
-    var(--color-3) 40%,
-    var(--color-3) calc(59% - 1px),
-    transparent 59%,
-    transparent calc(60% - 1px),
-    var(--color-4) 60%,
-    var(--color-4) calc(79% - 1px),
-    transparent 79%,
-    transparent calc(80% - 1px),
-    var(--color-5) 80%
+    30deg,
+    var(--color-1) 12.5%,
+    var(--color-2) 12.5%,
+    var(--color-2) 25%,
+    var(--color-3) 25%,
+    var(--color-3) 37.5%,
+    var(--color-4) 37.5%,
+    var(--color-4) 50%,
+    var(--color-1) 50%,
+    var(--color-1) 62.5%,
+    var(--color-2) 62.5%,
+    var(--color-2) 75%,
+    var(--color-3) 75%
   );
   background-clip: text;
   -webkit-background-clip: text;

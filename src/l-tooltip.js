@@ -4,11 +4,14 @@ import { tooltip } from "leaflet";
 import { tooltipConnected } from "./events";
 
 class LTooltip extends HTMLElement {
-  static observedAttributes = ["content"];
+  static observedAttributes = ["content", "permanent", "direction"];
 
   constructor() {
     super();
-    this.tooltip = tooltip();
+    this.tooltip = tooltip({
+      permanent: this.hasAttribute("permanent") ,
+      direction: this.getAttribute("direction")
+    });
   }
 
   connectedCallback() {

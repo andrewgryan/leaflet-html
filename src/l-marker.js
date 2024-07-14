@@ -34,6 +34,13 @@ class LMarker extends LLayer {
       }),
       this
     );
+
+    // Pane
+    const pane = this.closest("l-pane");
+    if (pane !== null) {
+      options["pane"] = pane.getAttribute("name");
+    }
+
     this.layer = L.marker(latLng, options);
 
     if (this.hasAttribute("icon")) {

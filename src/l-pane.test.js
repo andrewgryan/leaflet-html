@@ -1,7 +1,6 @@
 // @vitest-environment happy-dom
 import "./index.js";
 import { expect, it } from "vitest";
-import { imageOverlay } from "leaflet";
 
 const createMapElement = (zoom, center) => {
   const root = document.createElement("l-map");
@@ -22,23 +21,42 @@ it("should support pane", () => {
   expect(actual).toBeDefined();
 });
 
-it("should capture layers in pane", () => {
-  const root = createMapElement(0, [0, 0]);
-  const pane = document.createElement("l-pane");
-  pane.setAttribute("name", "test-pane");
-  root.appendChild(pane);
-  const layerEl = document.createElement("l-image-overlay");
-  const url = "fake/url";
-  const bounds = [
-    [0, 0],
-    [1, 1],
-  ];
-  layerEl.setAttribute("url", url);
-  layerEl.setAttribute("bounds", JSON.stringify(bounds));
-  pane.appendChild(layerEl);
-  document.body.appendChild(root);
+// Add minimum attributes to each Custom Element
+const fakeElement = (key) => {
+  const el = document.createElement(key);
+  switch (key) {
+    case "l-image-overlay":
+      el.setAttribute("url", "fake/url");
+      el.setAttribute("bounds", "[[0,0],[1,1]]");
+      break;
+    case "l-marker":
+      el.setAttribute("lat-lng", "[0, 0]");
+      break;
+    case "l-tile-layer":
+      el.setAttribute("url-template", "fake/{z}/{x}/{y}.png");
+      break;
+    case "l-geojson":
+      el.setAttribute("geojson", '{"type": "Feature", "properties": {}}');
+      break;
+  }
+  return el;
+};
 
-  const actual = root.map.getPane("test-pane");
-  const expected = layerEl.layer.getPane();
-  expect(actual).toEqual(expected);
-});
+// Check each layer supports custom pane
+it.each([["l-image-overlay"], ["l-marker"], ["l-tile-layer"], ["l-geojson"]])(
+  "should capture %s in pane",
+  (key) => {
+    const root = createMapElement(0, [0, 0]);
+    const pane = document.createElement("l-pane");
+    pane.setAttribute("name", "test-pane");
+    root.appendChild(pane);
+    const layerEl = fakeElement(key);
+    pane.appendChild(layerEl);
+    document.body.appendChild(root);
+
+    // Assert pane on map is the pane on the layer
+    const actual = root.map.getPane("test-pane");
+    const expected = layerEl.layer.getPane();
+    expect(actual).toEqual(expected);
+  }
+);

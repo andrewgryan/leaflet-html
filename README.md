@@ -1,3 +1,7 @@
+<p align="center">
+<img width="160" src="https://github.com/user-attachments/assets/c0885f79-45ce-4619-a565-fd5cdb265824">
+</p>
+
 # Leaflet HTML
 
 Leaflet expressed in HTML adds map capabilities to Hypermedia Driven Applications (HDA).

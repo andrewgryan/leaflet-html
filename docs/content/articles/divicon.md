@@ -54,7 +54,9 @@ it is best to use the JS attribute `className` by using the `class-name` equival
 
 ## Mark-up
 
-```html
+The usual rules for converting from JS to HTML apply.
+
+```html,hl_lines=6 9,linenos
 <l-map zoom="5" center="[45, 0]">
   <l-tile-layer
     url-template="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
@@ -67,6 +69,8 @@ it is best to use the JS attribute `className` by using the `class-name` equival
   </l-marker>
 </l-map>
 ```
+
+Line 6 and 9 above show how to use a div icon to create a pink and blue circle icon.
 
 # Conclusion
 

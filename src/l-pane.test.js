@@ -60,3 +60,21 @@ it.each([["l-image-overlay"], ["l-marker"], ["l-tile-layer"], ["l-geojson"]])(
     expect(actual).toEqual(expected);
   }
 );
+
+// Check each layer supports custom pane
+it.each([
+  ["l-image-overlay", "overlayPane"],
+  ["l-marker", "markerPane"],
+  ["l-tile-layer", "tilePane"],
+  ["l-geojson", "overlayPane"],
+])("should match default pane %s", (key, pane) => {
+  const root = createMapElement(0, [0, 0]);
+  const layerEl = fakeElement(key);
+  root.appendChild(layerEl);
+  document.body.appendChild(root);
+
+  // Assert pane on map is the pane on the layer
+  const actual = root.map.getPane(pane);
+  const expected = layerEl.layer.getPane();
+  expect(actual).toEqual(expected);
+});

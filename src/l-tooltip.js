@@ -2,13 +2,17 @@
 
 import { tooltip } from "leaflet";
 import { tooltipConnected } from "./events";
+import { json, option, parse } from "./parse.js";
 
 class LTooltip extends HTMLElement {
-  static observedAttributes = ["content"];
+  static observedAttributes = ["content", "permanent", "direction"];
 
   constructor() {
     super();
-    this.tooltip = tooltip();
+    this.tooltip = tooltip({
+      permanent: this.hasAttribute("permanent"),
+      direction: this.getAttribute("direction") ?? "auto"
+    });
   }
 
   connectedCallback() {
@@ -16,8 +20,8 @@ class LTooltip extends HTMLElement {
       cancelable: true,
       bubbles: true,
       detail: {
-        tooltip: this.tooltip,
-      },
+        tooltip: this.tooltip
+      }
     });
     this.dispatchEvent(event);
   }

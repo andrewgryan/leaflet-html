@@ -293,3 +293,12 @@ To build the source code run.
 ```sh
 yarn build
 ```
+
+## Contributing
+
+Leaflet HTML, while a simple idea,
+requires contributions from talented and generous people.
+Please see our contributing guide for how to help make this library better.
+
+[CONTRIBUTING.md](CONTRIBUTING.md)
+

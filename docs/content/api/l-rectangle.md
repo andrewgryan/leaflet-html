@@ -19,7 +19,7 @@ Mandatory HTML properties to successfully instantiate.
 
 | Attribute | Example | Description |
 | -- | -- | -- |
-| lat-lng | [[0, 0], [5, 5]] | LatLngBounds to define extent |
+| lat-lng-bounds | [[0, 0], [5, 5]] | LatLngBounds to define extent |
 
 ## Properties
 

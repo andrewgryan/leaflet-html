@@ -25,11 +25,14 @@ body {
   min-height: 100vh;
   display: grid;
   grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto;
+  row-gap: 1ch;
 }
 
 h1,
 h2,
-h3 {
+h3,
+th {
   font-family: var(--font-family);
   font-weight: 400;
   font-style: normal;
@@ -108,4 +111,22 @@ footer {
     text-transform: uppercase;
     font-family: var(--font-family);
   }
+}
+
+table {
+  inline-size: 100%;
+  background-color: var(--gray-2);
+  border-radius: var(--size-1);
+  border-collapse: collapse;
+  overflow: hidden;
+}
+
+th {
+  background-color: var(--gray-9);
+  color: var(--gray-1);
+}
+
+td, th {
+  padding: var(--size-2);
+  text-align: left;
 }

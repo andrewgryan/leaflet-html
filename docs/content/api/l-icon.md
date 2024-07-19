@@ -5,6 +5,8 @@ title = "Icon"
 HTML equivalent to `L.icon` function.
 Can be a child of `l-map` or `l-layer-group` elements.
 
+See [Leaflet docs](https://leafletjs.com/reference.html#icon).
+
 ## Example
 
 A standard way to initialise.
@@ -25,26 +27,39 @@ A standard way to initialise.
   ></l-icon>
 ```
 
+## Related elements
+
+- [l-marker](@/api/l-marker.md)
+
 ## Parameters
 
 Mandatory HTML properties to successfully instantiate.
 
-| Attribute | Example | Description |
-| -- | -- | -- |
-| icon-url | image.png | URL to define icon image |
+| Attribute         | Example   | Description              |
+| --                | --        | --                       |
 
 ## Properties
 
-| Attribute | Type    | Description |
-| --        | --      | --          |
-| opacity   | number  | 1.0         |
-| icon      | string | JSON options to `setIcon` method |
+| Attribute         | Type      | Description              |
+| --                | --        | --                       |
+| class-name        | string    | Custom class name        |
+| cross-origin      | bool      |                          |
+| icon-anchor       | Point     | Coordinates of the "tip" of the icon |
+| icon-retina-url   | string    |                          |
+| icon-size         | Point     | Size of the icon in pixels |
+| icon-url          | string    | URL to define icon image |
+| popup-anchor      | Point     |                          |
+| shadow-anchor     | Point     |                          |
+| shadow-retina-url | string    | Coordinates of the "tip" of the shadow |
+| shadow-size       | Point     | Size in pixels           |
+| shadow-url        | string    | Url for shadow, no shadow if not specified |
+| tooltip-anchor    | Point     | Coordinates relative to anchor |
 
 ## Events
 
 | Event key | Detail | Description |
 | -- | -- | -- |
-| l:layer:connected | | Triggered when connected to the document |
+| l:icon:connected | | Triggered when connected to the document |
 
 
 

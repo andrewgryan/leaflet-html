@@ -13,6 +13,13 @@ A standard way to initialise.
 <l-marker lat-lng="[0,0]"></l-marker>
 ```
 
+## Related elements
+
+- [l-div-icon](@/api/l-div-icon.md)
+- [l-icon](@/api/l-icon.md)
+- [l-popup](@/api/l-popup.md)
+- [l-tooltip](@/api/l-tooltip.md)
+
 ## Parameters
 
 Mandatory HTML properties to successfully instantiate.

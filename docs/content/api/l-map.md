@@ -20,6 +20,10 @@ To detect mobile device location, zoom to it and enable location event handlers.
 </l-map>
 ```
 
+## Related elements
+
+- [l-pane](@/api/l-pane.md)
+
 ## Parameters
 
 Mandatory HTML properties to successfully instantiate a map.

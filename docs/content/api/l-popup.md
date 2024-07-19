@@ -1,5 +1,5 @@
 +++
-title = "DivIcon"
+title = "Popup"
 +++
 
 HTML equivalent to `L.` function.

@@ -130,3 +130,8 @@ td, th {
   padding: var(--size-2);
   text-align: left;
 }
+
+:where(a):where(:not(:hover)) {
+  text-decoration: inherit;
+}
+

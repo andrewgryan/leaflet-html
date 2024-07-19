@@ -1,5 +1,5 @@
 +++
-title = "DivIcon"
+title = "TileLayer"
 +++
 
 HTML equivalent to `L.` function.

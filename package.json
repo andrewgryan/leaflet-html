@@ -1,14 +1,15 @@
 {
   "name": "leaflet-html",
   "type": "module",
-  "version": "0.8.3",
-  "description": "Leaflet expressed in HTML",
+  "version": "0.8.4",
+  "description": "Leaflet expressed in HTML, optimized for HTMX",
   "keywords": [
     "leaflet",
     "hda",
     "html",
     "hypermedia",
-    "maps"
+    "maps",
+    "htmx"
   ],
   "source": "src/index.js",
   "main": "./dist/leaflet-html.cjs",

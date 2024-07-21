@@ -1,8 +1,8 @@
 {
   "name": "leaflet-html",
   "type": "module",
-  "version": "0.8.4",
-  "description": "Leaflet expressed in HTML, optimized for HTMX",
+  "version": "0.8.5",
+  "description": "Leaflet maps expressed in HTML suitable for HTMX",
   "keywords": [
     "leaflet",
     "hda",

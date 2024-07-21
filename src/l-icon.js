@@ -12,13 +12,30 @@ import {
 } from "./parse.js";
 import { kebabToCamel } from "./util.js";
 
+const STRING_ATTRIBUTES = [
+  "icon-url",
+  "icon-retina-url",
+  "shadow-url",
+  "shadow-retina-url",
+  "class-name",
+];
+
+const JSON_ATTRIBUTES = [
+  "icon-anchor",
+  "icon-size",
+  "shadow-anchor",
+  "shadow-size",
+  "tooltip-anchor",
+  "popup-anchor",
+];
+
+const BOOL_ATTRIBUTES = ["cross-origin"];
+
 class LIcon extends HTMLElement {
   static observedAttributes = [
-    "icon-url",
-    "icon-size",
-    "icon-anchor",
-    "shadow-size",
-    "shadow-anchor",
+    ...STRING_ATTRIBUTES,
+    ...JSON_ATTRIBUTES,
+    ...BOOL_ATTRIBUTES,
   ];
 
   constructor() {
@@ -48,8 +65,10 @@ class LIcon extends HTMLElement {
     if (LIcon.observedAttributes.indexOf(name) !== -1) {
       if (this.icon !== null) {
         let update = {};
-        if (name === "icon-url") {
+        if (STRING_ATTRIBUTES.indexOf(name) !== -1) {
           update[kebabToCamel(name)] = newValue;
+        } else if (BOOL_ATTRIBUTES.indexOf(name) !== -1) {
+          update[kebabToCamel(name)] = newValue.toLowerCase() === "true";
         } else {
           update[kebabToCamel(name)] = JSON.parse(newValue);
         }
@@ -75,25 +94,10 @@ class LIcon extends HTMLElement {
   _parseOptions() {
     // Experimental parse/validate API
     const obj = {};
-    const keys = [
-      "icon-url",
-      "icon-retina-url",
-      "shadow-url",
-      "shadow-retina-url",
-      "class-name",
-    ];
-    keys.forEach((key) => {
+    STRING_ATTRIBUTES.forEach((key) => {
       obj[kebabToCamel(key)] = optional(htmlAttribute(key));
     });
-    let points = [
-      "icon-anchor",
-      "icon-size",
-      "shadow-anchor",
-      "shadow-size",
-      "tooltip-anchor",
-      "popup-anchor",
-    ];
-    points.forEach((key) => {
+    JSON_ATTRIBUTES.forEach((key) => {
       obj[kebabToCamel(key)] = chain(
         optional(htmlAttribute(key)),
         nullable(json())

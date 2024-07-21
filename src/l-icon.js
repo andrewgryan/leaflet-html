@@ -14,6 +14,7 @@ import { kebabToCamel } from "./util.js";
 
 class LIcon extends HTMLElement {
   static observedAttributes = [
+    "icon-url",
     "icon-size",
     "icon-anchor",
     "shadow-size",
@@ -46,9 +47,15 @@ class LIcon extends HTMLElement {
   attributeChangedCallback(name, _, newValue) {
     if (LIcon.observedAttributes.indexOf(name) !== -1) {
       if (this.icon !== null) {
+        let update = {};
+        if (name === "icon-url") {
+          update[kebabToCamel(name)] = newValue;
+        } else {
+          update[kebabToCamel(name)] = JSON.parse(newValue);
+        }
         this.icon = icon({
           ...this.icon.options,
-          [kebabToCamel(name)]: JSON.parse(newValue),
+          ...update,
         });
         const event = new CustomEvent(iconConnected, {
           cancelable: true,

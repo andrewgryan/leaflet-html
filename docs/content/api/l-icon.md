@@ -38,6 +38,15 @@ A more detailed approach is to specify custom icon and shadow images.
 <input type="range" min="0" max="100" value="38" id="icon-size" name="icon-size" />
 </div>
 
+<div>
+<input type="radio" id="icon-red" name="icon-color" value="red" />
+<label for="icon-red">Red</label>
+<input type="radio" id="icon-orange" name="icon-color" value="orange" />
+<label for="icon-orange">Orange</label>
+<input type="radio" id="icon-green" name="icon-color" value="green" checked />
+<label for="icon-green">Green</label>
+</div>
+
 <script>
     const icon = document.getElementById("example-icon")
     document.getElementById("icon-size").addEventListener("change", (ev) => {
@@ -50,6 +59,12 @@ A more detailed approach is to specify custom icon and shadow images.
         icon.setAttribute("icon-anchor", JSON.stringify(anchor))
         icon.setAttribute("shadow-size", JSON.stringify(shadowSize))
         icon.setAttribute("shadow-anchor", JSON.stringify(shadowAnchor))
+    });
+    document.querySelectorAll("input[name='icon-color']").forEach((el) => {
+      el.addEventListener("change", (ev) => {
+        const color = ev.target.value;
+        icon.setAttribute("icon-url", `/icons/leaf-${color}.png`)
+      });
     })
 
 </script>

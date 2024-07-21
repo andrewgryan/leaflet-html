@@ -13,12 +13,59 @@ import {
 import { kebabToCamel } from "./util.js";
 
 class LIcon extends HTMLElement {
+  static observedAttributes = [
+    "icon-size",
+    "icon-anchor",
+    "shadow-size",
+    "shadow-anchor",
+  ];
+
   constructor() {
     super();
     this.icon = null;
   }
 
   connectedCallback() {
+    this.icon = icon(this._parseOptions());
+
+    const event = new CustomEvent(iconConnected, {
+      cancelable: true,
+      bubbles: true,
+      detail: {
+        icon: this.icon,
+      },
+    });
+    this.dispatchEvent(event);
+  }
+
+  /**
+   * @param {string} name
+   * @param {string} _
+   * @param {string} newValue
+   */
+  attributeChangedCallback(name, _, newValue) {
+    if (LIcon.observedAttributes.indexOf(name) !== -1) {
+      if (this.icon !== null) {
+        this.icon = icon({
+          ...this.icon.options,
+          [kebabToCamel(name)]: JSON.parse(newValue),
+        });
+        const event = new CustomEvent(iconConnected, {
+          cancelable: true,
+          bubbles: true,
+          detail: {
+            icon: this.icon,
+          },
+        });
+        this.dispatchEvent(event);
+      }
+    }
+  }
+
+  /**
+   * @returns {import("leaflet").IconOptions}
+   */
+  _parseOptions() {
     // Experimental parse/validate API
     const obj = {};
     const keys = [
@@ -50,18 +97,7 @@ class LIcon extends HTMLElement {
       nullable(bool())
     );
     const schema = partial(obj);
-    const options = parse(schema, this);
-
-    this.icon = icon(options);
-
-    const event = new CustomEvent(iconConnected, {
-      cancelable: true,
-      bubbles: true,
-      detail: {
-        icon: this.icon,
-      },
-    });
-    this.dispatchEvent(event);
+    return parse(schema, this);
   }
 }
 

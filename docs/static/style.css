@@ -126,7 +126,8 @@ th {
   color: var(--gray-1);
 }
 
-td, th {
+td,
+th {
   padding: var(--size-2);
   text-align: left;
 }
@@ -135,3 +136,6 @@ td, th {
   text-decoration: inherit;
 }
 
+input[type="range"] {
+  inline-size: 100%;
+}

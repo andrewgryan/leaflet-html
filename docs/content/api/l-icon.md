@@ -26,8 +26,8 @@ A more detailed approach is to specify custom icon and shadow images.
       id="example-icon"
       icon-size="[38, 95]"
       icon-anchor="[22, 94]"
-      icon-url="/icons/leaf-green.png"
-      shadow-url="/icons/leaf-shadow.png"
+      icon-url={{ url(path='icons/leaf-green.png') }}
+      shadow-url={{ url(path='icons/leaf-shadow.png') }}
       shadow-size="[50, 64]"
       shadow-anchor="[4, 62]"
     ></l-icon>
@@ -49,6 +49,7 @@ A more detailed approach is to specify custom icon and shadow images.
 
 <script>
     const icon = document.getElementById("example-icon")
+    const templateUrl = icon.getAttribute("icon-url")
     document.getElementById("icon-size").addEventListener("change", (ev) => {
         const scale = parseInt(ev.target.value) / 38
         const size = [38 * scale, 95 * scale]
@@ -63,7 +64,7 @@ A more detailed approach is to specify custom icon and shadow images.
     document.querySelectorAll("input[name='icon-color']").forEach((el) => {
       el.addEventListener("change", (ev) => {
         const color = ev.target.value;
-        icon.setAttribute("icon-url", `/icons/leaf-${color}.png`)
+        icon.setAttribute("icon-url", templateUrl.replace("green", color))
       });
     })
 

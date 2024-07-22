@@ -17,8 +17,35 @@ A standard way to initialise.
 
 <style>
   .example-div-icon {
-    background-color: hotpink;
-    transform: scale(4, 0.5);
+    position: relative;
+  }
+
+  .example-div-icon::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 0.125rem;
+    transform: rotate(45deg);
+    animation: spin 2s infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      background-color: hotpink;
+      transform: rotate(0deg) scale(1);
+    }
+    10% {
+      background-color: hotpink;
+      transform: rotate(15deg) scale(1);
+    }
+    50% {
+      background-color: cadetblue;
+      transform: rotate(180deg) scale(1.4);
+    }
+    100% {
+      background-color: hotpink;
+      transform: rotate(-360deg) scale(1);
+    }
   }
 </style>
 

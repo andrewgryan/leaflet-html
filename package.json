@@ -38,6 +38,7 @@
     "vitest": "^1.6.0"
   },
   "dependencies": {
-    "leaflet": "^1.9.4"
+    "leaflet": "^1.9.4",
+    "leaflet.markercluster": "^1.5.3"
   }
 }

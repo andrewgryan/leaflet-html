@@ -17,6 +17,7 @@ import LTooltip from "./l-tooltip.js";
 import LPane from "./l-pane.js";
 import generator from "./generator.js";
 import { circle, polyline, polygon, rectangle } from "leaflet";
+import LMarkerClusterGroup from "./l-marker-cluster-group.js";
 
 const init = (() => {
   // Custom elements (order of definition is important)
@@ -27,6 +28,7 @@ const init = (() => {
   customElements.define("l-overlay-layers", LOverlayLayers);
   customElements.define("l-layer-group", LLayerGroup);
   customElements.define("l-tile-layer", LTileLayer);
+  customElements.define("l-marker-cluster-group", LMarkerClusterGroup);
   customElements.define("l-marker", LMarker);
   customElements.define("l-popup", LPopup);
   customElements.define("l-lat-lng-bounds", LLatLngBounds);

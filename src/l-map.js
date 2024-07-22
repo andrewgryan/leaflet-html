@@ -101,7 +101,7 @@ class LMap extends HTMLElement {
 
     this.addEventListener(layerConnected, (ev) => {
       const layer = ev.detail.layer;
-      layer.addTo(this.map);
+      this.map.addLayer(layer);
     });
 
     this.addEventListener(layerRemoved, (ev) => {

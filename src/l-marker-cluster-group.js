@@ -16,12 +16,10 @@ class LMarkerClusterGroup extends LLayer {
 
   connectedCallback() {
     const name = this.getAttribute("name");
-
     const iconOptions = this.getAttribute("icon-options");
-
-    this.layer = L.markerClusterGroup({
+    this.layer =  L.markerClusterGroup({
       showCoverageOnHover: this.hasAttribute("show-coverage-on-hover"),
-      iconCreateFunction: this.#createIconCreateFunction(iconOptions)
+      iconCreateFunction: this._createIconCreateFunction(iconOptions)
     });
 
     const event = new CustomEvent(layerConnected, {
@@ -40,13 +38,13 @@ class LMarkerClusterGroup extends LLayer {
     });
   }
 
-  #createIconCreateFunction(iconOptions) {
+  _createIconCreateFunction(iconOptions) {
     if (iconOptions) {
       let { size, content, className } = JSON.parse(iconOptions);
 
       return (cluster) => {
-        const resolvedSize = this.#callClusterFunction(cluster, size);
-        const resolvedContent = this.#callClusterFunction(cluster, content);
+        const resolvedSize = this._callClusterFunction(cluster, size);
+        const resolvedContent = this._callClusterFunction(cluster, content);
 
         return L.divIcon({
           html: resolvedContent,
@@ -57,7 +55,7 @@ class LMarkerClusterGroup extends LLayer {
     }
   }
 
-  #callClusterFunction(cluster, body) {
+  _callClusterFunction(cluster, body) {
     return Function("cluster", `"use strict";return (${body})`)(cluster);
   }
 }

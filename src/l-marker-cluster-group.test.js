@@ -66,23 +66,13 @@ it("should create icon function using icon-options", async () => {
 
   const mockCluster = { getChildCount: () => 100 };
   const actual = await promise;
-  const expected = {
-    name: null,
-    layer: L.markerClusterGroup({
-      showCoverageOnHover: false,
-      iconCreateFunction: (cluster) => {
-        const resolvedSize = 50;
-        const resolvedContent = "<div>100</div>";
-        return L.divIcon({
-          html: resolvedContent,
+  const expectedClusterIcon = L.divIcon({
+          html: "<div>100</div>",
           className: "mavis-marker-cluster",
-          iconSize: new L.Point(resolvedSize, resolvedSize)
+          iconSize: new L.Point(50, 50)
         });
-      }
-    })
-  };
 
-  expect(actual.layer.options.iconCreateFunction(mockCluster)).toEqual(expected.layer.options.iconCreateFunction(mockCluster));
+  expect(actual.layer.options.iconCreateFunction(mockCluster)).toEqual(expectedClusterIcon);
 });
 
 function _removePropertiesToIgnore(element) {

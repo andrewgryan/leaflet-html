@@ -3,7 +3,7 @@ title = "Icon"
 +++
 
 HTML equivalent to `L.icon` function.
-Can be a child of `l-map` or `l-layer-group` elements.
+Can be a child of `l-marker` element.
 
 See [Leaflet docs](https://leafletjs.com/reference.html#icon).
 

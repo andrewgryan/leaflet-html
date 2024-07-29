@@ -1,5 +1,10 @@
 import * as L from "leaflet";
-import { layerConnected, popupConnected, iconConnected, tooltipConnected } from "./events.js";
+import {
+  layerConnected,
+  popupConnected,
+  iconConnected,
+  tooltipConnected,
+} from "./events.js";
 import LLayer from "./l-layer.js";
 import {
   chain,
@@ -19,10 +24,14 @@ class LMarker extends LLayer {
   constructor() {
     super();
     this.layer = null;
+
+    // Icon connected
     this.addEventListener(iconConnected, (ev) => {
       ev.stopPropagation();
       this.layer.setIcon(ev.detail.icon);
     });
+
+    // Tooltip connected
     this.addEventListener(tooltipConnected, (ev) => {
       ev.stopPropagation();
       this.layer.bindTooltip(ev.detail.tooltip);
@@ -50,6 +59,22 @@ class LMarker extends LLayer {
     if (this.hasAttribute("icon")) {
       const icon = L.icon(JSON.parse(this.getAttribute("icon")));
       this.layer.setIcon(icon);
+    }
+
+    // Connect Leaflet events
+    if (this.hasAttribute("on")) {
+      const on = this.getAttribute("on");
+      if (on !== null) {
+        on.split(/\s+/).forEach((eventName) => {
+          if (this.layer !== null) {
+            this.layer.on(eventName, (e) => {
+              this.dispatchEvent(
+                new CustomEvent(eventName, { bubbles: true, detail: e })
+              );
+            });
+          }
+        });
+      }
     }
 
     this.setAttribute("leaflet-id", L.stamp(this.layer));

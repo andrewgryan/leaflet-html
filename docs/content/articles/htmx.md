@@ -82,4 +82,35 @@ It is just the contents of `<l-map>` that needs careful consideration.
 
 A more elegant mechanism in the future will make it clear which part of the document is controlled by Leaflet.
 
+### Marker as a hypermedia control
 
+```html
+  <l-marker
+    lat-lng="[55,-5]"
+    on="click"
+    hx-trigger="click"
+    hx-target="#placeholder"
+    hx-get="/clicked"></l-marker>
+
+  <div id="placeholder">Hello, World!</div>
+```
+
+<div id="placeholder"><h2>Hello, World!</h2></div>
+
+When the marker is clicked HTMX replaces the content of the above heading.
+
+<l-map center="[55,-5]" zoom="4">
+  <l-tile-layer
+    url-template="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+  ></l-tile-layer>
+<l-marker
+    lat-lng="[55,-5]"
+    on="click"
+    hx-trigger="click"
+    hx-target="#placeholder"
+    hx-get={{ url(path="htmx/clicked.html") }}
+></l-marker>
+</l-map>
+
+Leaflet-HTML connects Leaflet's event system to browser native DOM events.
+HTMX uses browser DOM events to orchestrate network requests and DOM updates.

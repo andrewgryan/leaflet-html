@@ -33,3 +33,24 @@ it("changes an icon", () => {
   let expected = L.icon({ iconUrl: "bar.png" });
   expect(actual).toEqual(expected);
 });
+
+it("should register on click handler", async () => {
+  const el = document.createElement("l-marker");
+  el.setAttribute("lat-lng", "[0, 0]");
+  el.setAttribute("on", "click");
+  document.body.appendChild(el);
+  const customEventDetail = new Promise((resolve) => {
+    el.addEventListener("click", (ev) => {
+      resolve(ev.detail);
+    });
+  });
+  const leafletEvent = new Promise((resolve) => {
+    el.layer.on("click", (e) => {
+      resolve(e);
+    });
+  });
+  el.layer.fire("click");
+  const actual = await customEventDetail;
+  const expected = await leafletEvent;
+  expect(actual).toEqual(expected);
+});

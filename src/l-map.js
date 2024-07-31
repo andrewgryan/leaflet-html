@@ -1,6 +1,6 @@
 // @ts-check
 import * as L from "leaflet";
-import { layerRemoved, layerConnected, latLngBoundsConnected, latLngBoundsChanged, paneConnected } from "./events.js";
+import { layerRemoved, layerConnected, latLngBoundsConnected, latLngBoundsChanged, paneConnected, connectLeafletEvents } from "./events.js";
 import LLayer from "./l-layer.js";
 import { distribute, int, json, option, parse } from "./parse.js";
 
@@ -68,20 +68,7 @@ class LMap extends HTMLElement {
     })
 
     // Connect Leaflet events
-    if (this.hasAttribute("on")) {
-      const on = this.getAttribute("on");
-      if (on !== null) {
-        on.split(/\s+/).forEach((eventName) => {
-          if (this.map !== null) {
-            this.map.on(eventName, (e) => {
-              this.dispatchEvent(
-                new CustomEvent(eventName, { bubbles: true, detail: e })
-              );
-            });
-          }
-        });
-      }
-    }
+    connectLeafletEvents(this, this.map);
 
     if (this.hasAttribute("fit-world")) {
       this.map.fitWorld();

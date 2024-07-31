@@ -4,6 +4,7 @@ import {
   popupConnected,
   iconConnected,
   tooltipConnected,
+  connectLeafletEvents,
 } from "./events.js";
 import LLayer from "./l-layer.js";
 import {
@@ -62,20 +63,7 @@ class LMarker extends LLayer {
     }
 
     // Connect Leaflet events
-    if (this.hasAttribute("on")) {
-      const on = this.getAttribute("on");
-      if (on !== null) {
-        on.split(/\s+/).forEach((eventName) => {
-          if (this.layer !== null) {
-            this.layer.on(eventName, (e) => {
-              this.dispatchEvent(
-                new CustomEvent(eventName, { bubbles: true, detail: e })
-              );
-            });
-          }
-        });
-      }
-    }
+    connectLeafletEvents(this, this.layer);
 
     this.setAttribute("leaflet-id", L.stamp(this.layer));
 

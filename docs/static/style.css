@@ -2,7 +2,53 @@
 @import url("https://fonts.googleapis.com/css2?family=Saira+Stencil+One&display=swap");
 
 :root {
+  --accent: hsl(160deg 70% 50%);
   --font-family: "Saira Stencil One", system-ui;
+}
+
+:root {
+  --surface-table: var(--gray-2);
+  --surface-table-head: var(--gray-9);
+  --text-table-head: var(--gray-1);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --text: var(--gray-9);
+    --surface: white;
+    --text-negative: var(--surface);
+    --surface-negative: var(--text);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: white;
+    --surface: var(--gray-9);
+    --text-negative: var(--surface);
+    --surface-negative: var(--text);
+    --surface-table: var(--gray-9);
+    --surface-table-head: var(--gray-9);
+    --text-table-head: var(--accent);
+  }
+
+  .leaflet-tile-pane {
+    filter: grayscale();
+  }
+
+  pre {
+    color: var(--text) !important;
+    background-color: var(--surface) !important;
+    font-size: 1rem;
+  }
+
+  code {
+    filter: brightness(1.5);
+  }
+
+  a {
+    color: var(--accent);
+  }
 }
 
 l-map {
@@ -27,6 +73,8 @@ body {
   grid-template-columns: 1fr;
   grid-template-rows: auto 1fr auto;
   row-gap: 1ch;
+  color: var(--text);
+  background-color: var(--surface);
 }
 
 h1,
@@ -36,6 +84,18 @@ th {
   font-family: var(--font-family);
   font-weight: 400;
   font-style: normal;
+}
+
+@keyframes gentleColors {
+  0% {
+    background-position: 100% 50%;
+  }
+  50% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
 }
 
 h1 {
@@ -61,9 +121,14 @@ h1 {
     var(--color-2) 75%,
     var(--color-3) 75%
   );
+  background-size: 200% 100%;
   background-clip: text;
   -webkit-background-clip: text;
+
+  animation: 30s gentleColors ease infinite;
 }
+
+
 
 pre {
   padding-inline: 0.75rem;
@@ -80,7 +145,7 @@ main {
 
 nav {
   z-index: 2;
-  background-color: white;
+  background-color: var(--surface);
   position: sticky;
   top: 0;
   display: flex;
@@ -95,35 +160,36 @@ nav {
     display: flex;
     align-items: center;
     gap: var(--size-1);
-    color: var(--gray-9);
+    color: var(--text);
   }
 }
 
 footer {
   margin-block-start: auto;
   min-height: 15ch;
-  background-color: var(--gray-9);
+  background-color: var(--surface-negative);
   padding: var(--size-3);
 
   & .logo {
-    color: white;
+    color: var(--text-negative);
     font-size: var(--font-size-0);
     text-transform: uppercase;
     font-family: var(--font-family);
   }
 }
 
+
 table {
   inline-size: 100%;
-  background-color: var(--gray-2);
+  background-color: var(--surface-table);
   border-radius: var(--size-1);
   border-collapse: collapse;
   overflow: hidden;
 }
 
 th {
-  background-color: var(--gray-9);
-  color: var(--gray-1);
+  background-color: var(--surface-table-head);
+  color: var(--text-table-head);
 }
 
 td,

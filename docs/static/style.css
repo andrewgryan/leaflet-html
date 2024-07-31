@@ -10,6 +10,11 @@
   --surface-table: var(--gray-2);
   --surface-table-head: var(--gray-9);
   --text-table-head: var(--gray-1);
+  --scroll-thumb-color: var(--text);
+}
+
+:where(html) {
+  scrollbar-color: var(--scroll-thumb-color) transparent;
 }
 
 @media (prefers-color-scheme: light) {
@@ -26,10 +31,11 @@
     --text: white;
     --surface: var(--gray-9);
     --text-negative: var(--surface);
-    --surface-negative: var(--text);
+    --surface-negative: hsl(from var(--accent) h s 85%);
     --surface-table: var(--gray-9);
     --surface-table-head: var(--gray-9);
     --text-table-head: var(--accent);
+    --scroll-thumb-color: var(--accent);
   }
 
   .leaflet-tile-pane {
@@ -49,6 +55,16 @@
   a {
     color: var(--accent);
   }
+
+}
+
+:where(button) {
+  background-color: var(--surface-negative);
+  padding-block: var(--size-1);
+  padding-inline: var(--size-3);
+  border: 1px solid transparent;
+  cursor: pointer;
+  color: var(--text-negative);
 }
 
 l-map {
@@ -98,15 +114,13 @@ th {
   }
 }
 
-h1 {
+:root {
   --angle: 160deg;
   --color-1: hsl(var(--angle) 70% 50%);
   --color-2: hsl(from var(--color-1) calc(180deg + var(--angle)) s l);
   --color-3: hsl(from var(--color-1) calc(180deg - var(--angle)) s l);
   --color-4: hsl(from var(--color-1) calc(360deg - var(--angle)) s l);
-  color: transparent;
-  text-wrap: balance;
-  background: linear-gradient(
+  --background-gradient: linear-gradient(
     30deg,
     var(--color-1) 12.5%,
     var(--color-2) 12.5%,
@@ -121,10 +135,16 @@ h1 {
     var(--color-2) 75%,
     var(--color-3) 75%
   );
+  
+}
+
+h1 {
+  color: transparent;
+  text-wrap: balance;
+  background: var(--background-gradient);
   background-size: 200% 100%;
   background-clip: text;
   -webkit-background-clip: text;
-
   animation: 30s gentleColors ease infinite;
 }
 

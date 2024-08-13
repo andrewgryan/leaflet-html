@@ -13,8 +13,9 @@ export const paneConnected = "l:pane:connected";
 /**
  * @param {HTMLElement} el
  * @param {Evented} evented
+ * @param bubble determines whether events should bubble (defaults to true)
  */
-export const connectLeafletEvents = (el, evented) => {
+export const connectLeafletEvents = (el, evented, bubble = true) => {
   if (el.hasAttribute("on")) {
     const on = el.getAttribute("on");
     if (on !== null) {
@@ -22,7 +23,7 @@ export const connectLeafletEvents = (el, evented) => {
         if (evented !== null) {
           evented.on(eventName, (e) => {
             el.dispatchEvent(
-              new CustomEvent(eventName, { bubbles: true, detail: e })
+              new CustomEvent(eventName, { bubbles: bubble, detail: e })
             );
           });
         }

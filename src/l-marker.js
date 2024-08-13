@@ -63,7 +63,7 @@ class LMarker extends LLayer {
     }
 
     // Connect Leaflet events
-    connectLeafletEvents(this, this.layer);
+    connectLeafletEvents(this, this.layer, false);
 
     this.setAttribute("leaflet-id", L.stamp(this.layer));
 

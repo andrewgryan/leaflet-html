@@ -39,9 +39,9 @@ it("should register on click handler", async () => {
   el.setAttribute("lat-lng", "[0, 0]");
   el.setAttribute("on", "click");
   document.body.appendChild(el);
-  const customEventDetail = new Promise((resolve) => {
+  const customEvent = new Promise((resolve) => {
     el.addEventListener("click", (ev) => {
-      resolve(ev.detail);
+      resolve(ev);
     });
   });
   const leafletEvent = new Promise((resolve) => {
@@ -50,7 +50,8 @@ it("should register on click handler", async () => {
     });
   });
   el.layer.fire("click");
-  const actual = await customEventDetail;
+  const actual = await customEvent;
   const expected = await leafletEvent;
-  expect(actual).toEqual(expected);
+  expect(actual.detail).toEqual(expected);
+  expect(actual.bubbles).toEqual(false);
 });

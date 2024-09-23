@@ -1,7 +1,7 @@
 {
   "name": "leaflet-html",
   "type": "module",
-  "version": "0.9.5",
+  "version": "0.10.0",
   "description": "Leaflet maps expressed in HTML suitable for HTMX",
   "keywords": ["leaflet", "hda", "html", "hypermedia", "maps", "htmx"],
   "source": "src/index.js",

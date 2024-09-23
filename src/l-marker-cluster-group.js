@@ -1,10 +1,10 @@
 // @ts-check
 
 // Make L.markerClusterGroup optional
-import("leaflet.markercluster").catch((error) => {
-  console.warn("Failed to import leaflet.markercluster", error)
-});
-
+// import("leaflet.markercluster").catch((error) => {
+//   console.warn("Failed to import leaflet.markercluster", error)
+// });
+import "leaflet.markercluster";
 import { layerConnected } from "./events.js";
 import LLayer from "./l-layer.js";
 

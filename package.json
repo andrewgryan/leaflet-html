@@ -23,6 +23,9 @@
     "coverage:watch": "vitest watch --coverage"
   },
   "devDependencies": {
+    "@playwright/test": "^1.44.1",
+    "@vitest/browser": "^1.6.0",
+    "@vitest/coverage-istanbul": "^1.6.0",
     "@vitest/coverage-v8": "^1.6.0",
     "happy-dom": "^14.10.1",
     "microbundle": "^0.15.1",

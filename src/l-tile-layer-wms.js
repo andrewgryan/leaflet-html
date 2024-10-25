@@ -1,16 +1,15 @@
 // @ts-check
-import LLayer from "./l-layer.js";
+import LTileLayer from "./l-tile-layer.js";
 
-class LTileLayerWMS extends LLayer {
+class LTileLayerWMS extends LTileLayer {
   constructor() {
     super();
     this.layer = null;
   }
 
   connectedCallback() {
-    // do stuff 
+    // do stuff
   }
-
 }
 
 export default LTileLayerWMS;

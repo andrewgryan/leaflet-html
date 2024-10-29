@@ -1,0 +1,32 @@
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+  crossorigin=""
+/>
+
+<style>
+body {
+  margin: 0;
+}
+l-map {
+  display: block;
+  block-size: 100vh;
+}
+</style>
+
+<l-map center="[53, 0]" zoom="4">
+  <l-tile-layer
+    url-template="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+  ></l-tile-layer>
+  <l-marker-cluster-group>
+    <l-marker lat-lng="[45, 0]"></l-marker>
+    <l-marker lat-lng="[45, 1]"></l-marker>
+    <l-marker lat-lng="[45, 2]"></l-marker>
+  </l-marker-cluster-group>
+</l-map>
+
+<script type="module">
+  // import "./src/index.js"
+  import "./dist/leaflet-html.js"
+</script>

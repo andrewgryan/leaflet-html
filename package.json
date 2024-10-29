@@ -25,18 +25,15 @@
   "homepage": "https://andrewgryan.github.io/leaflet-html",
   "license": "MIT",
   "scripts": {
-    "build": "microbundle --format esm",
-    "watch": "microbundle watch -o ./docs/static --format esm",
+    "start": "vite",
+    "build": "vite build",
     "test": "vitest",
     "coverage": "vitest run --coverage",
-    "coverage:watch": "vitest watch --coverage",
-    "vite": "vite",
-    "vite-build": "vite build"
+    "coverage:watch": "vitest watch --coverage"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^1.6.0",
     "happy-dom": "^14.10.1",
-    "microbundle": "^0.15.1",
     "prettier": "3.2.5",
     "vite": "^5.4.10",
     "vitest": "^1.6.0"

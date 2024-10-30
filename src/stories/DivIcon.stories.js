@@ -1,7 +1,5 @@
-import { html } from "lit";
-import { fn } from '@storybook/test';
-
 import "../index.js"
+import "./divicon.css"
 
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories
@@ -16,7 +14,7 @@ export default {
     return `<l-marker lat-lng="[55, 0]">${ icon }</l-marker>`
   },
   argTypes: {
-    className: { type: "string", description: "HTML attribute **class-name**, passed to Leaflet as **className** option.", control: "select", options: ["none", "red", "blue"]},
+    className: { type: "string", description: "HTML attribute **class-name**, passed to Leaflet as **className** option.", control: "select", options: ["none", "red", "blue", "yellow"]},
   },
   args: {
   },

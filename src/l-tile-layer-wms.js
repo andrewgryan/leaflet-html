@@ -11,8 +11,8 @@ class LTileLayerWMS extends LLayer {
   }
 
   connectedCallback() {
-    const urlTemplate = parse(htmlAttribute("url-template"), this)
-  
+    const urlTemplate = parse(htmlAttribute("url-template"), this);
+
     const name = this.getAttribute("name");
     const schema = partial({
       // Leaflet.tileLayer default options: https://leafletjs.com/reference.html#tilelayer-wms-layers
@@ -26,19 +26,31 @@ class LTileLayerWMS extends LLayer {
 
       // Inherited option from Layer: https://leafletjs.com/reference.html#tilelayer-wms-attribution
       attribution: optional(htmlAttribute("attribution")),
-
-      // Optional options
-      options: optional(htmlAttribute("options")),
     });
 
-    const wmsOptions = parse(schema, this);    
-    this.layer = tileLayer.wms(urlTemplate, { ...wmsOptions });
+    const standardOptions = parse(schema, this);
+    const nonStandardOptionsElement = this.getAttribute("options");
+    const nonStandardOptions = () => {
+      try {
+        return JSON.parse(nonStandardOptionsElement);
+      } catch (e) {
+        console.error(
+          "Error whilst parsing JSON for options attribute in l-tile-layer-wms",
+          e,
+        );
+        return null;
+      }
+    };
+
+    this.layer = tileLayer.wms(urlTemplate, {
+      ...standardOptions,
+      ...nonStandardOptions(),
+    });
     const event = new CustomEvent(layerConnected, {
       detail: { name, layer: this.layer },
       bubbles: true,
     });
     this.dispatchEvent(event);
   }
-  
 }
 export default LTileLayerWMS;

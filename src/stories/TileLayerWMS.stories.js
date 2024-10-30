@@ -85,8 +85,11 @@ export const BritishGeologicalSurveyHeatPump = {
   },
   render: ({ urlTemplate, layers, transparent }) => {
     return `
-      <l-tile-layer-wms url-template="http://ows.mundialis.de/services/service?" layers="TOPO-WMS"></l-tile-layer-wms>
       <l-tile-layer-wms url-template=${urlTemplate} layers=${layers} transparent=${transparent}></l-tile-layer-wms>
+      <l-tile-layer-wms
+          transparent="true"
+          url-template="http://ows.mundialis.de/services/service?"
+          layers="OSM-Overlay-WMS"></l-tile-layer-wms>
     `;
   },
 };

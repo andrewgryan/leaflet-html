@@ -5,3 +5,5 @@ dist
 docs/public
 docs/static/leaflet-html.js*
 coverage
+
+*storybook.log

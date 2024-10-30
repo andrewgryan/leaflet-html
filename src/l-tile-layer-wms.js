@@ -39,10 +39,10 @@ class LTileLayerWMS extends LLayer {
             "Error whilst parsing JSON for options attribute in l-tile-layer-wms",
             e,
           );
-          return "";
+          return {};
         }
       } else {
-        return "";
+        return {};
       }
     };
 

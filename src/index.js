@@ -7,6 +7,7 @@ import LMarker from "./l-marker.js";
 import LOverlayLayers from "./l-overlay-layers.js";
 import LPopup from "./l-popup.js";
 import LTileLayer from "./l-tile-layer.js";
+import LTileLayerWMS from "./l-tile-layer-wms.js";
 import LLatLngBounds from "./l-lat-lng-bounds.js";
 import LImageOverlay from "./l-image-overlay.js";
 import LVideoOverlay from "./l-video-overlay.js";
@@ -28,6 +29,7 @@ const init = (() => {
   customElements.define("l-overlay-layers", LOverlayLayers);
   customElements.define("l-layer-group", LLayerGroup);
   customElements.define("l-tile-layer", LTileLayer);
+  customElements.define("l-tile-layer-wms", LTileLayerWMS);
   customElements.define("l-marker-cluster-group", LMarkerClusterGroup);
   customElements.define("l-marker", LMarker);
   customElements.define("l-popup", LPopup);

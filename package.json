@@ -1,14 +1,23 @@
 {
   "name": "leaflet-html",
   "type": "module",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "Leaflet maps expressed in HTML suitable for HTMX",
-  "keywords": ["leaflet", "hda", "html", "hypermedia", "maps", "htmx"],
+  "keywords": [
+    "leaflet",
+    "hda",
+    "html",
+    "hypermedia",
+    "maps",
+    "htmx"
+  ],
   "source": "src/index.js",
   "main": "./dist/leaflet-html.cjs",
   "module": "./dist/leaflet-html.js",
   "author": "andrewgryan",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/andrewgryan/leaflet-html.git"
@@ -16,8 +25,8 @@
   "homepage": "https://andrewgryan.github.io/leaflet-html",
   "license": "MIT",
   "scripts": {
-    "build": "microbundle --format esm",
-    "watch": "microbundle watch -o ./docs/static --format esm",
+    "start": "vite",
+    "build": "vite build",
     "test": "vitest",
     "coverage": "vitest run --coverage",
     "coverage:watch": "vitest watch --coverage"
@@ -25,8 +34,8 @@
   "devDependencies": {
     "@vitest/coverage-v8": "^1.6.0",
     "happy-dom": "^14.10.1",
-    "microbundle": "^0.15.1",
     "prettier": "3.2.5",
+    "vite": "^5.4.10",
     "vitest": "^1.6.0"
   },
   "dependencies": {

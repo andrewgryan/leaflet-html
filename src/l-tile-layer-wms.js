@@ -31,14 +31,18 @@ class LTileLayerWMS extends LLayer {
     const standardOptions = parse(schema, this);
     const nonStandardOptionsElement = this.getAttribute("options");
     const nonStandardOptions = () => {
-      try {
-        return JSON.parse(nonStandardOptionsElement);
-      } catch (e) {
-        console.error(
-          "Error whilst parsing JSON for options attribute in l-tile-layer-wms",
-          e,
-        );
-        return null;
+      if (nonStandardOptionsElement) {
+        try {
+          return JSON.parse(nonStandardOptionsElement);
+        } catch (e) {
+          console.error(
+            "Error whilst parsing JSON for options attribute in l-tile-layer-wms",
+            e,
+          );
+          return "";
+        }
+      } else {
+        return "";
       }
     };
 

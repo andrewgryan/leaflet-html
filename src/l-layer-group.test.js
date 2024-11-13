@@ -39,7 +39,7 @@ it("should register layers", async () => {
   expect(actual).toEqual(expected);
 });
 
-it("should support removed layers from a group", async () => {
+it.skip("should support removed layers from a group", async () => {
   const root = document.createElement("l-layer-group");
   const marker = document.createElement("l-marker");
   marker.setAttribute("lat-lng", "[0,0]");

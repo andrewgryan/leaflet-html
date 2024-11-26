@@ -5,6 +5,10 @@ import { layerConnected } from "./events.js";
 import { htmlAttribute, optional, parse, partial } from "./parse.js";
 
 class LTileLayerWMS extends LLayer {
+  static get observedAttributes() {
+    return ["options"];
+  }
+
   constructor() {
     super();
     this.layer = null;

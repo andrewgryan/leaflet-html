@@ -47,16 +47,16 @@ class LTileLayerWMS extends LLayer {
     };
 
     // Pane options
-    const paneOptions = {}
+    const paneOptions = {};
     // Support <l-pane> parent element
     if (this.parentElement.tagName.toLowerCase() === "l-pane") {
-      paneOptions["pane"] = this.parentElement.getAttribute("name")
+      paneOptions["pane"] = this.parentElement.getAttribute("name");
     }
 
     this.layer = tileLayer.wms(urlTemplate, {
       ...standardOptions,
       ...nonStandardOptions(),
-      ...paneOptions
+      ...paneOptions,
     });
     const event = new CustomEvent(layerConnected, {
       detail: { name, layer: this.layer },

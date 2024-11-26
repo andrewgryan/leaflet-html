@@ -102,8 +102,10 @@ it("should reload the layer when the options attribute changes", async () => {
   el.setAttribute("layers", "example layer ere");
   el.setAttribute("options", initialOptions);
 
+  let layerConnectedEventEmittedCount = 0;
   let promise = new Promise((resolve) => {
     el.addEventListener(layerConnected, (ev) => {
+      layerConnectedEventEmittedCount += 1;
       resolve(ev.detail);
     });
   });
@@ -121,11 +123,13 @@ it("should reload the layer when the options attribute changes", async () => {
       resolve(ev.detail);
     });
   });
+
+  // Update the options attribute
   el.setAttribute("options", updatedOptions);
 
   // Wait for the layer to reload
   detail = await promise;
   expect(detail.layer.options.height).toBe(202);
   expect(detail.layer.options.bbox).toBe("new coords");
+  expect(layerConnectedEventEmittedCount).toBe(2); // initial layer creation + reload
 });
-

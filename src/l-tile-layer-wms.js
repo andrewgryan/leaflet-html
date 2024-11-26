@@ -15,6 +15,11 @@ class LTileLayerWMS extends LLayer {
   }
 
   connectedCallback() {
+    this.initLayer();
+  }
+
+
+  initLayer() {
     const urlTemplate = parse(htmlAttribute("url-template"), this);
 
     const name = this.getAttribute("name");

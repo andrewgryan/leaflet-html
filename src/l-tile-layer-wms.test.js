@@ -91,3 +91,41 @@ it("should handle invalid JSON in the options attribute gracefully", () => {
   const expected = tileLayer.wms(urlTemplate, { layers: "example layer ere" });
   expect(actual).toEqual(expected);
 });
+
+it("should reload the layer when the options attribute changes", async () => {
+  const urlTemplate = "http://example.com/wms";
+  const initialOptions = JSON.stringify({ height: 101, bbox: "coords ere" });
+  const updatedOptions = JSON.stringify({ height: 202, bbox: "new coords" });
+
+  const el = document.createElement("l-tile-layer-wms");
+  el.setAttribute("url-template", urlTemplate);
+  el.setAttribute("layers", "example layer ere");
+  el.setAttribute("options", initialOptions);
+
+  let promise = new Promise((resolve) => {
+    el.addEventListener(layerConnected, (ev) => {
+      resolve(ev.detail);
+    });
+  });
+
+  document.body.appendChild(el);
+
+  // Wait for the initial layer to be created
+  let detail = await promise;
+  expect(detail.layer.options.height).toBe(101);
+  expect(detail.layer.options.bbox).toBe("coords ere");
+
+  // Change the options attribute
+  promise = new Promise((resolve) => {
+    el.addEventListener(layerConnected, (ev) => {
+      resolve(ev.detail);
+    });
+  });
+  el.setAttribute("options", updatedOptions);
+
+  // Wait for the layer to reload
+  detail = await promise;
+  expect(detail.layer.options.height).toBe(202);
+  expect(detail.layer.options.bbox).toBe("new coords");
+});
+

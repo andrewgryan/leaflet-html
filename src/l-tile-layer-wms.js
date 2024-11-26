@@ -18,6 +18,13 @@ class LTileLayerWMS extends LLayer {
     this.initLayer();
   }
 
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (name === "options" && oldValue !== newValue) {
+      if (this.isConnected) {
+        this.reloadLayer();
+      }
+    }
+  }
 
   initLayer() {
     const urlTemplate = parse(htmlAttribute("url-template"), this);
@@ -73,5 +80,13 @@ class LTileLayerWMS extends LLayer {
     });
     this.dispatchEvent(event);
   }
+
+  reloadLayer() {
+    if (this.layer) {
+      this.layer.remove();
+    }
+    this.initLayer();
+  }
 }
+
 export default LTileLayerWMS;

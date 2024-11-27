@@ -86,10 +86,19 @@ class LMap extends HTMLElement {
       this.map.locate(parse(schema, this));
     }
 
+    const layerConnectedHandlers = {
+      "l-control-layers": (layer, map) => layer.addTo(map),
+      "default": (layer, map) => map.addLayer(layer),
+    };
+    
     this.addEventListener(layerConnected, (ev) => {
-      const layer = ev.detail.layer;
-      this.map.addLayer(layer);
+      const { layer } = ev.detail;
+      const target = ev.target.localName ;
+      
+      const layerConnectedHandler = layerConnectedHandlers[target] || layerConnectedHandlers["default"];
+      layerConnectedHandler(layer, this.map);
     });
+    
 
     this.addEventListener(layerRemoved, (ev) => {
       if (this.map !== null) {

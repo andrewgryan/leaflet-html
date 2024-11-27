@@ -5,12 +5,28 @@ import { layerConnected } from "./events.js";
 import { htmlAttribute, optional, parse, partial } from "./parse.js";
 
 class LTileLayerWMS extends LLayer {
+  static get observedAttributes() {
+    return ["options"];
+  }
+
   constructor() {
     super();
     this.layer = null;
   }
 
   connectedCallback() {
+    this.initLayer();
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (name === "options" && oldValue !== newValue) {
+      if (this.isConnected) {
+        this.reloadLayer();
+      }
+    }
+  }
+
+  initLayer() {
     const urlTemplate = parse(htmlAttribute("url-template"), this);
 
     const name = this.getAttribute("name");
@@ -47,16 +63,16 @@ class LTileLayerWMS extends LLayer {
     };
 
     // Pane options
-    const paneOptions = {}
+    const paneOptions = {};
     // Support <l-pane> parent element
     if (this.parentElement.tagName.toLowerCase() === "l-pane") {
-      paneOptions["pane"] = this.parentElement.getAttribute("name")
+      paneOptions["pane"] = this.parentElement.getAttribute("name");
     }
 
     this.layer = tileLayer.wms(urlTemplate, {
       ...standardOptions,
       ...nonStandardOptions(),
-      ...paneOptions
+      ...paneOptions,
     });
     const event = new CustomEvent(layerConnected, {
       detail: { name, layer: this.layer },
@@ -64,5 +80,13 @@ class LTileLayerWMS extends LLayer {
     });
     this.dispatchEvent(event);
   }
+
+  reloadLayer() {
+    if (this.layer) {
+      this.layer.remove();
+    }
+    this.initLayer();
+  }
 }
+
 export default LTileLayerWMS;

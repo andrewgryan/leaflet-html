@@ -1,7 +1,7 @@
 {
   "name": "leaflet-html",
   "type": "module",
-  "version": "0.13.3",
+  "version": "0.13.4",
   "description": "Leaflet maps expressed in HTML suitable for HTMX",
   "keywords": [
     "leaflet",

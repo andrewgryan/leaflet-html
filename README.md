@@ -1,6 +1,5 @@
-<p align="left">
-<img width="180" src="https://github.com/user-attachments/assets/c0885f79-45ce-4619-a565-fd5cdb265824">
-</p>
+
+![f26c08f1-ab0e-47de-ae8d-fbd062383555~3.jpg](https://github.com/user-attachments/assets/38887c1b-1c20-48de-be01-df264ee6cdeb)
 
 # Leaflet HTML
 

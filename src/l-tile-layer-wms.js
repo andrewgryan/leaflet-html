@@ -20,10 +20,8 @@ class LTileLayerWMS extends LLayer {
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
-    if (name === "options" && oldValue !== newValue) {
-      if (this.isConnected) {
-        this.reloadLayer();
-      }
+    if (name === "options" && oldValue !== newValue && this.layer) {
+      this.layer.setParams(this._parseNonStandardOptions(newValue));
     }
   }
 
@@ -47,21 +45,6 @@ class LTileLayerWMS extends LLayer {
 
     const standardOptions = parse(schema, this);
     const nonStandardOptionsElement = this.getAttribute("options");
-    const nonStandardOptions = () => {
-      if (nonStandardOptionsElement) {
-        try {
-          return JSON.parse(nonStandardOptionsElement);
-        } catch (e) {
-          console.error(
-            "Error whilst parsing JSON for options attribute in l-tile-layer-wms",
-            e,
-          );
-          return {};
-        }
-      } else {
-        return {};
-      }
-    };
 
     // Pane options
     const paneOptions = {};
@@ -75,7 +58,7 @@ class LTileLayerWMS extends LLayer {
 
     this.layer = tileLayer.wms(urlTemplate, {
       ...standardOptions,
-      ...nonStandardOptions(),
+      ...this._parseNonStandardOptions(nonStandardOptionsElement),
       ...paneOptions,
       ...gridOptions,
     });
@@ -86,11 +69,19 @@ class LTileLayerWMS extends LLayer {
     this.dispatchEvent(event);
   }
 
-  reloadLayer() {
-    if (this.layer) {
-      this.layer.remove();
+  _parseNonStandardOptions(nonStandardOptionsElement) {
+    if (nonStandardOptionsElement) {
+      try {
+        return JSON.parse(nonStandardOptionsElement);
+      } catch (e) {
+        console.error(
+          "Error whilst parsing JSON for options attribute in l-tile-layer-wms",
+          e,
+        );
+      }
     }
-    this.initLayer();
+
+    return {};
   }
 }
 

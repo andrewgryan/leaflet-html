@@ -39,6 +39,14 @@ class LTileLayer extends LLayer {
     });
     const options = parse(schema, this);
 
+    const zoomOffset = this.getAttribute("zoom-offset");
+    if (zoomOffset) {
+      const number = parseInt(zoomOffset);
+      if (!isNaN(number)) {
+        options["zoomOffset"] = number;
+      }
+    }
+
     // GridLayer options
     const gridOptions = gridLayerOptions(this);
 

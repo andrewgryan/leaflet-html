@@ -76,3 +76,17 @@ it("should support tile-size attribute default value", () => {
   const expected = tileLayer(urlTemplate, {});
   expect(actual).toEqual(expected);
 });
+
+it.each([["-1", -1]])(
+  "should support zoom-offset attribute",
+  (text, zoomOffset) => {
+    const urlTemplate = "/";
+    const el = document.createElement("l-tile-layer");
+    el.setAttribute("url-template", urlTemplate);
+    el.setAttribute("zoom-offset", text);
+    document.body.appendChild(el);
+    const actual = el.layer;
+    const expected = tileLayer(urlTemplate, { zoomOffset });
+    expect(actual).toEqual(expected);
+  },
+);

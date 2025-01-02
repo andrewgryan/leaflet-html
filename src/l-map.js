@@ -54,7 +54,11 @@ class LMap extends HTMLElement {
   }
 
   connectedCallback() {
-    this.map = L.map(this, { zoomControl: this.hasAttribute("zoom-control") });
+    const options = { zoomControl: this.hasAttribute("zoom-control") };
+    if (this.hasAttribute("attribution-control")) {
+      options["attributionControl"] = this.getAttribute("attribution-control").toLowerCase() === "true";
+    }
+    this.map = L.map(this, options);
 
     // Allow listeners to know when the map is "ready"
     this.map.whenReady(() => {

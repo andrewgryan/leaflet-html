@@ -4,6 +4,7 @@ import { layerRemoved, layerConnected } from "./events"
 import { vi, it, expect } from "vitest";
 import LTileLayer from "./l-tile-layer";
 import LMap from "./l-map.js";
+import { map } from "leaflet";
 
 it("should emit map:addTo event(s)", async () => {
   // Arrange: create a <l-map><l-tile-layer>... arrangement
@@ -112,3 +113,32 @@ it("should handle layerConnected event from l-control-layers correctly", async (
   const map = el.map; // Map instance from <l-map>
   expect(mockLayer.addTo).toHaveBeenCalledWith(map);
 });
+
+
+it("should have attributionControl by default", () => {
+  const el = document.createElement("l-map")
+  el.setAttribute("zoom", "0");
+  el.setAttribute("center", "[0,0]");
+  document.body.appendChild(el);
+  expect(el.map.attributionControl).not.toBe(undefined);
+})
+
+
+it("should remove attributionControl given attribution-control=false attribute", () => {
+  const el = document.createElement("l-map")
+  el.setAttribute("zoom", "0");
+  el.setAttribute("center", "[0,0]");
+  el.setAttribute("attribution-control", "false");
+  document.body.appendChild(el);
+  expect(el.map.attributionControl).toBe(undefined);
+})
+
+
+it("should remove attributionControl given attribution-control=true attribute", () => {
+  const el = document.createElement("l-map")
+  el.setAttribute("zoom", "0");
+  el.setAttribute("center", "[0,0]");
+  el.setAttribute("attribution-control", "true");
+  document.body.appendChild(el);
+  expect(el.map.attributionControl).not.toBe(undefined);
+})

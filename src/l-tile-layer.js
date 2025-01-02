@@ -3,6 +3,8 @@ import { tileLayer } from "leaflet";
 import { layerConnected } from "./events.js";
 import LLayer from "./l-layer.js";
 import { htmlAttribute, optional, parse, partial } from "./parse.js";
+import { gridLayerOptions } from "./grid-layer.js";
+
 
 class LTileLayer extends LLayer {
   constructor() {
@@ -34,10 +36,14 @@ class LTileLayer extends LLayer {
     const name = this.getAttribute("name");
     const schema = partial({
       attribution: optional(htmlAttribute("attribution")),
-      errorTileUrl: optional(htmlAttribute("error-tile-url"))
+      errorTileUrl: optional(htmlAttribute("error-tile-url")),
     })
     const options = parse(schema, this)
-    this.layer = tileLayer(urlTemplate, { ...templateOptions, ...paneOptions, ...options });
+
+    // GridLayer options
+    const gridOptions = gridLayerOptions(this);
+    
+    this.layer = tileLayer(urlTemplate, { ...templateOptions, ...paneOptions, ...options, ...gridOptions });
     const event = new CustomEvent(layerConnected, {
       detail: { name, layer: this.layer },
       bubbles: true,

@@ -3,6 +3,7 @@ import { tileLayer } from "leaflet";
 import LLayer from "./l-layer.js";
 import { layerConnected } from "./events.js";
 import { htmlAttribute, optional, parse, partial } from "./parse.js";
+import { gridLayerOptions } from "./grid-layer.js";
 
 class LTileLayerWMS extends LLayer {
   static get observedAttributes() {
@@ -69,10 +70,14 @@ class LTileLayerWMS extends LLayer {
       paneOptions["pane"] = this.parentElement.getAttribute("name");
     }
 
+    // GridLayer options
+    const gridOptions = gridLayerOptions(this);
+
     this.layer = tileLayer.wms(urlTemplate, {
       ...standardOptions,
       ...nonStandardOptions(),
       ...paneOptions,
+      ...gridOptions,
     });
     const event = new CustomEvent(layerConnected, {
       detail: { name, layer: this.layer },

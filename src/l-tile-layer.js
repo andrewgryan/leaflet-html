@@ -3,6 +3,7 @@ import { tileLayer } from "leaflet";
 import { layerConnected } from "./events.js";
 import LLayer from "./l-layer.js";
 import { htmlAttribute, optional, parse, partial } from "./parse.js";
+import { gridLayerOptions } from "./grid-layer.js";
 
 class LTileLayer extends LLayer {
   constructor() {
@@ -11,33 +12,42 @@ class LTileLayer extends LLayer {
   }
 
   connectedCallback() {
-    const urlTemplate = parse(htmlAttribute("url-template"), this)
-    
+    const urlTemplate = parse(htmlAttribute("url-template"), this);
+
     // Template attributes
-    const urlAttributes = LTileLayer.parseTemplateAttributes(urlTemplate)
-    const templateOptions = {}
+    const urlAttributes = LTileLayer.parseTemplateAttributes(urlTemplate);
+    const templateOptions = {};
     for (const attribute of urlAttributes) {
-      const value = this.getAttribute(attribute)
+      const value = this.getAttribute(attribute);
       if (value !== null) {
-        templateOptions[attribute] = value
+        templateOptions[attribute] = value;
       }
     }
 
     // Pane options
-    const paneOptions = {}
+    const paneOptions = {};
     // Support <l-pane> parent element
     if (this.parentElement.tagName.toLowerCase() === "l-pane") {
-      paneOptions["pane"] = this.parentElement.getAttribute("name")
+      paneOptions["pane"] = this.parentElement.getAttribute("name");
     }
-    
+
     // Options
     const name = this.getAttribute("name");
     const schema = partial({
       attribution: optional(htmlAttribute("attribution")),
-      errorTileUrl: optional(htmlAttribute("error-tile-url"))
-    })
-    const options = parse(schema, this)
-    this.layer = tileLayer(urlTemplate, { ...templateOptions, ...paneOptions, ...options });
+      errorTileUrl: optional(htmlAttribute("error-tile-url")),
+    });
+    const options = parse(schema, this);
+
+    // GridLayer options
+    const gridOptions = gridLayerOptions(this);
+
+    this.layer = tileLayer(urlTemplate, {
+      ...templateOptions,
+      ...paneOptions,
+      ...options,
+      ...gridOptions,
+    });
     const event = new CustomEvent(layerConnected, {
       detail: { name, layer: this.layer },
       bubbles: true,
@@ -50,8 +60,8 @@ class LTileLayer extends LLayer {
    * @returns {string[]}
    */
   static parseTemplateAttributes(urlTemplate) {
-    const regex = /{(.*?)}/g
-    return [...urlTemplate.matchAll(regex)].map(match => match[1])
+    const regex = /{(.*?)}/g;
+    return [...urlTemplate.matchAll(regex)].map((match) => match[1]);
   }
 }
 

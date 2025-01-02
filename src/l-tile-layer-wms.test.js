@@ -170,17 +170,17 @@ it("should not reload the layer when non-options attributes are changed", async 
 
 it.each([
   ["512", 512],
-  ["[256, 512]", point({x: 256, y: 512})],
-  ['{"x": 256, "y": 512}', point({x: 256, y: 512})]
+  ["[256, 512]", point({ x: 256, y: 512 })],
+  ['{"x": 256, "y": 512}', point({ x: 256, y: 512 })],
 ])("should support tile-size attribute", (text, tileSize) => {
-  const baseUrl = "/"
-  const layers = "layer-1"
+  const baseUrl = "/";
+  const layers = "layer-1";
   const el = document.createElement("l-tile-layer-wms");
   el.setAttribute("url-template", baseUrl);
-  el.setAttribute("layers", layers)
-  el.setAttribute("tile-size", text)
+  el.setAttribute("layers", layers);
+  el.setAttribute("tile-size", text);
   document.body.appendChild(el);
   const actual = el.layer;
-  const expected = tileLayer.wms(baseUrl, {layers, tileSize});
+  const expected = tileLayer.wms(baseUrl, { layers, tileSize });
   expect(actual).toEqual(expected);
-})
+});

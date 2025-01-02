@@ -1,13 +1,12 @@
 // Helpers to support GridLayer inherited Leaflet functions
 import { point } from "leaflet";
 
-
 /**
  * @param {Element} el
  * @returns {import("leaflet").GridLayerOptions}
  */
 export const gridLayerOptions = (el) => {
-  const options = {}
+  const options = {};
   if (el.hasAttribute("tile-size")) {
     let tileSize = null;
     const text = el.getAttribute("tile-size");
@@ -20,4 +19,4 @@ export const gridLayerOptions = (el) => {
     options["tileSize"] = tileSize;
   }
   return options;
-}
+};

@@ -27,52 +27,52 @@ it("should cover l-tile-layer", async () => {
 it.each([
   ["/tile/{z}/{x}/{y}.png?key={key}", "key", "value"],
   ["/tile/{z}/{x}/{y}.png?key={camelCase}", "camelCase", "value"],
-  ["/tile/{z}/{x}/{y}.png?key={kebab-case}", "kebab-case", "value"]
+  ["/tile/{z}/{x}/{y}.png?key={kebab-case}", "kebab-case", "value"],
 ])("should perform arbitrary templating %s %s", (urlTemplate, key, value) => {
   const el = document.createElement("l-tile-layer");
   el.setAttribute("url-template", urlTemplate);
-  el.setAttribute(key, value)
+  el.setAttribute(key, value);
   document.body.appendChild(el);
 
-  const actual = el.layer
-  const expected = tileLayer(urlTemplate, { [key]: value })
-  expect(actual).toEqual(expected)
-})
+  const actual = el.layer;
+  const expected = tileLayer(urlTemplate, { [key]: value });
+  expect(actual).toEqual(expected);
+});
 
 it("should support error-tile-url", () => {
-  const urlTemplate = "/{z}/{x}/{y}.png"
-  const errorTileUrl = "/error.png"
+  const urlTemplate = "/{z}/{x}/{y}.png";
+  const errorTileUrl = "/error.png";
   const el = document.createElement("l-tile-layer");
   el.setAttribute("url-template", urlTemplate);
-  el.setAttribute("error-tile-url", errorTileUrl)
+  el.setAttribute("error-tile-url", errorTileUrl);
   document.body.appendChild(el);
 
-  const actual = el.layer
-  const expected = tileLayer(urlTemplate, { errorTileUrl })
-  expect(actual).toEqual(expected)
-})
+  const actual = el.layer;
+  const expected = tileLayer(urlTemplate, { errorTileUrl });
+  expect(actual).toEqual(expected);
+});
 
 it.each([
   ["512", 512],
-  ["[256, 512]", {x: 256, y: 512}],
-  ['{"x": 256, "y": 512}', {x: 256, y: 512}]
+  ["[256, 512]", { x: 256, y: 512 }],
+  ['{"x": 256, "y": 512}', { x: 256, y: 512 }],
 ])("should support tile-size attribute", (text, value) => {
-  const urlTemplate = "/"
+  const urlTemplate = "/";
   const el = document.createElement("l-tile-layer");
   el.setAttribute("url-template", urlTemplate);
-  el.setAttribute("tile-size", text)
+  el.setAttribute("tile-size", text);
   document.body.appendChild(el);
   const actual = el.layer;
-  const expected = tileLayer(urlTemplate, { tileSize: value })
+  const expected = tileLayer(urlTemplate, { tileSize: value });
   expect(actual).toEqual(expected);
-})
+});
 
 it("should support tile-size attribute default value", () => {
-  const urlTemplate = "/"
+  const urlTemplate = "/";
   const el = document.createElement("l-tile-layer");
   el.setAttribute("url-template", urlTemplate);
   document.body.appendChild(el);
   const actual = el.layer;
-  const expected = tileLayer(urlTemplate, {})
+  const expected = tileLayer(urlTemplate, {});
   expect(actual).toEqual(expected);
-})
+});

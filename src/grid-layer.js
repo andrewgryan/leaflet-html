@@ -7,16 +7,10 @@ import { point } from "leaflet";
  */
 export const gridLayerOptions = (el) => {
   const options = {};
-  if (el.hasAttribute("tile-size")) {
-    let tileSize = null;
-    const text = el.getAttribute("tile-size");
+  const text = el.getAttribute("tile-size");
+  if (text) {
     const number = parseInt(text);
-    if (isNaN(number)) {
-      tileSize = point(JSON.parse(text));
-    } else {
-      tileSize = number;
-    }
-    options["tileSize"] = tileSize;
+    options["tileSize"] = isNaN(number) ? point(JSON.parse(text)) : number;
   }
   return options;
 };

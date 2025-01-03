@@ -1,0 +1,86 @@
+
+  
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+  </style>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="/leaflet-html/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <script type="importmap">
+      {
+        "imports": {
+          "leaflet": "https://unpkg.com/leaflet@1.9.4/dist/leaflet-src.esm.js",
+          "leaflet-html": "https://unpkg.com/leaflet-html@latest/dist/leaflet-html.js"
+        }
+      }
+    </script>
+    <script type="module">
+      import "leaflet-html";
+    </script>
+    <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+</head>
+<body>
+<nav>
+<div>
+  <a href="https://andrewgryan.github.io/leaflet-html/"><iconify-icon icon="mdi:home"></iconify-icon> Home</a>
+  <a href="https://andrewgryan.github.io/leaflet-html/articles/"><iconify-icon icon="material-symbols:article-outline-sharp"></iconify-icon> Articles</a>
+  <a href="https://andrewgryan.github.io/leaflet-html/api/"><iconify-icon icon="material-symbols:api"></iconify-icon> API</a>
+</div>
+<a href="Https://GitHub.com/andrewgryan/leaflet-html"><iconify-icon icon="mdi:github"></iconify-icon></a>
+</nav>
+
+<main>
+  <h1>Map</h1>
+  <p>HTML equivalent to <code>L.map</code> function. Can call methods, e.g. <code>map.fitWorld()</code>.</p>
+<h2 id="example">Example</h2>
+<p>A standard way to initialise a map is with a center and a zoom level.</p>
+<pre data-lang="html" style="background-color:#f5f5f5;color:#1f1f1f;" class="language-html "><code class="language-html" data-lang="html"><span style="color:#6486ab;">&lt;l-map center=</span><span style="color:#d07711;">&quot;[0,0]&quot; </span><span style="color:#6486ab;">zoom=</span><span style="color:#d07711;">&quot;0&quot;</span><span style="color:#6486ab;">&gt;&lt;/l-map&gt;
+</span></code></pre>
+<p>To detect mobile device location, zoom to it and enable location event handlers.</p>
+<pre data-lang="html" style="background-color:#f5f5f5;color:#1f1f1f;" class="language-html "><code class="language-html" data-lang="html"><span style="color:#6486ab;">&lt;l-map fit-world locate=</span><span style="color:#d07711;">&#39;{&quot;setView&quot;: true, &quot;maxZoom&quot;: 16}&#39; </span><span style="color:#6486ab;">on=</span><span style="color:#d07711;">&quot;locationfound locationerror&quot;</span><span style="color:#6486ab;">&gt;
+</span><span>  ...
+</span><span style="color:#6486ab;">&lt;/l-map&gt;
+</span></code></pre>
+<h2 id="related-elements">Related elements</h2>
+<ul>
+<li><a href="https://andrewgryan.github.io/leaflet-html/api/l-pane/">l-pane</a></li>
+</ul>
+<h2 id="parameters">Parameters</h2>
+<p>Mandatory HTML properties to successfully instantiate a map.</p>
+<table><thead><tr><th>Attribute</th><th>Example</th><th>Description</th></tr></thead><tbody>
+<tr><td>center</td><td>[0, 0]</td><td>LatLng position</td></tr>
+<tr><td>zoom</td><td>0</td><td>Zoom level</td></tr>
+</tbody></table>
+<p>OR</p>
+<table><thead><tr><th>Attribute</th><th>Example</th><th>Description</th></tr></thead><tbody>
+<tr><td>fit-world</td><td></td><td>Existence of this property calls <code>map.fitWorld()</code></td></tr>
+</tbody></table>
+<h2 id="properties">Properties</h2>
+<table><thead><tr><th>Attribute</th><th>Value</th><th>Description</th></tr></thead><tbody>
+<tr><td>fit-world</td><td></td><td>Auto-fits map to world extent</td></tr>
+<tr><td>on</td><td></td><td>Used to connect <code>map.on</code> Leaflet event handler to HTML CusomEvent</td></tr>
+<tr><td>locate</td><td></td><td><code>map.locate</code> method call options</td></tr>
+</tbody></table>
+<h2 id="events">Events</h2>
+<table><thead><tr><th>Event key</th><th>Detail</th><th>Description</th></tr></thead><tbody>
+<tr><td>ready</td><td></td><td>Triggered by <code>map.whenReady</code> method</td></tr>
+<tr><td>l:layer:connected</td><td></td><td>Triggered by child elements when a layer is connected to the document</td></tr>
+</tbody></table>
+
+</main>
+
+<footer>
+  <div class="logo">Leaflet-HTML</div>
+</footer>
+</body>
+</html>

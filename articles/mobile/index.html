@@ -1,0 +1,151 @@
+
+  
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+  </style>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="/leaflet-html/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <script type="importmap">
+      {
+        "imports": {
+          "leaflet": "https://unpkg.com/leaflet@1.9.4/dist/leaflet-src.esm.js",
+          "leaflet-html": "https://unpkg.com/leaflet-html@latest/dist/leaflet-html.js"
+        }
+      }
+    </script>
+    <script type="module">
+      import "leaflet-html";
+    </script>
+    <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+</head>
+<body>
+<nav>
+<div>
+  <a href="https://andrewgryan.github.io/leaflet-html/"><iconify-icon icon="mdi:home"></iconify-icon> Home</a>
+  <a href="https://andrewgryan.github.io/leaflet-html/articles/"><iconify-icon icon="material-symbols:article-outline-sharp"></iconify-icon> Articles</a>
+  <a href="https://andrewgryan.github.io/leaflet-html/api/"><iconify-icon icon="material-symbols:api"></iconify-icon> API</a>
+</div>
+<a href="Https://GitHub.com/andrewgryan/leaflet-html"><iconify-icon icon="mdi:github"></iconify-icon></a>
+</nav>
+
+<main>
+  <h1>Leaflet HTML on mobile</h1>
+  <p>Leaflet has a nice <a href="https://leafletjs.com/examples/mobile/">tutorial for mobile</a> users.
+The initial steps follow standard Leaflet map and tile layer configuration.</p>
+<p>This article demonstrates how to achieve the same effect in HTML.</p>
+<h2 id="preparing-the-page">Preparing the page</h2>
+<p>The method call, <code>map.fitWorld()</code>, with no arguments translates into declarative HTML as a kebab-case attribute.</p>
+<p><strong>Note</strong> Nullary (zero argument) funtions like this one, and unary (single argument) functions are easy to represent in HTML.
+But not all Leaflet method calls can be invoked with zero or one arguments.
+An elegant way to support N-ary functions is being developed.</p>
+<pre data-lang="html" style="background-color:#f5f5f5;color:#1f1f1f;" class="language-html "><code class="language-html" data-lang="html"><span style="color:#6486ab;">&lt;l-map fit-world&gt;
+</span><span>  </span><span style="color:#6486ab;">&lt;l-tile-layer
+</span><span style="color:#6486ab;">    url-template=</span><span style="color:#d07711;">&quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;
+</span><span style="color:#6486ab;">    max-zoom=</span><span style="color:#d07711;">19
+</span><span style="color:#6486ab;">    attribution=</span><span style="color:#d07711;">&quot;© &lt;a href=&#39;http://www.openstreetmap.org/copyright&#39;&gt;OpenStreetMap&lt;/a&gt;&quot;
+</span><span style="color:#6486ab;">  &gt;&lt;/l-tile-layer&gt;
+</span><span style="color:#6486ab;">&lt;/l-map&gt;
+</span></code></pre>
+<l-map fit-world locate='{"setView": true, "maxZoom": 16}' on="locationfound locationerror">
+  <l-tile-layer
+    url-template="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+    max-zoom=19
+    attribution="© <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a>"
+  ></l-tile-layer>
+</l-map>
+<p>The tutorial then goes on to fit the bounds to device location.</p>
+<h2 id="geolocation">Geolocation</h2>
+<p>To activate device location, <code>map.locate({ setView: true, maxZoom: 16})</code>, is required.</p>
+<p>As we've seen before <code>leaflet-html</code> takes a literal approach to converting JS methods into HTML.
+Attributes must be expressed as strings, in this case a JSON formatted string maps to JS Object directly.</p>
+<pre data-lang="html" style="background-color:#f5f5f5;color:#1f1f1f;" class="language-html "><code class="language-html" data-lang="html"><span style="color:#6486ab;">&lt;l-map locate=</span><span style="color:#d07711;">&#39;{&quot;setView&quot;: true, &quot;maxZoom&quot;: 16}&#39;</span><span style="color:#6486ab;">&gt;</span><span>...</span><span style="color:#6486ab;">&lt;/l-map&gt;
+</span></code></pre>
+<p>Applying, the additional <code>locate</code> attribute, should prompt the user for their device location.</p>
+<h2 id="event">Event</h2>
+<p>Leaflet map events should bubble up through the document.
+To expose internal Leaflet events to the outside world list them in the <code>on</code> attribute.</p>
+<pre data-lang="html" style="background-color:#f5f5f5;color:#1f1f1f;" class="language-html "><code class="language-html" data-lang="html"><span style="color:#6486ab;">&lt;l-map on=</span><span style="color:#d07711;">&quot;locationfound locationerror&quot;</span><span style="color:#6486ab;">&gt;</span><span>...</span><span style="color:#6486ab;">&lt;/l-map&gt;
+</span></code></pre>
+<p>To add custom behaviour, listen to the events forwarded by the <code>l-map</code> element.</p>
+<pre data-lang="js" style="background-color:#f5f5f5;color:#1f1f1f;" class="language-js "><code class="language-js" data-lang="js"><span style="color:#668f14;">const </span><span style="color:#5597d6;">el </span><span style="color:#72ab00;">= </span><span style="color:#a2a001;">document</span><span>.</span><span style="color:#b39f04;">querySelector</span><span>(</span><span style="color:#d07711;">&quot;l-map&quot;</span><span>)
+</span><span>
+</span><span style="color:#668f14;">function </span><span style="color:#c23f31;">onLocationFound</span><span>(</span><span style="color:#5597d6;">e</span><span>) {
+</span><span>  </span><span style="color:#668f14;">let </span><span>{ </span><span style="color:#5597d6;">latlng</span><span>, </span><span style="color:#5597d6;">accuracy </span><span>} </span><span style="color:#72ab00;">= </span><span style="color:#5597d6;">e</span><span>.</span><span style="color:#5597d6;">detail
+</span><span>  </span><span style="color:#5597d6;">latlng </span><span style="color:#72ab00;">= </span><span style="color:#da5d42;">JSON</span><span>.</span><span style="color:#b39f04;">stringify</span><span>(</span><span style="color:#5597d6;">latlng</span><span>)
+</span><span>
+</span><span>  </span><span style="color:#7f8989;">// Marker
+</span><span>  </span><span style="color:#668f14;">const </span><span style="color:#5597d6;">marker </span><span style="color:#72ab00;">= </span><span style="color:#a2a001;">document</span><span>.</span><span style="color:#b39f04;">createElement</span><span>(</span><span style="color:#d07711;">&quot;l-marker&quot;</span><span>)
+</span><span>  </span><span style="color:#5597d6;">marker</span><span>.</span><span style="color:#b39f04;">setAttribute</span><span>(</span><span style="color:#d07711;">&quot;lat-lng&quot;</span><span>, </span><span style="color:#5597d6;">latlng</span><span>)
+</span><span>  </span><span style="color:#5597d6;">e</span><span>.</span><span style="color:#a2a001;">target</span><span>.</span><span style="color:#b39f04;">appendChild</span><span>(</span><span style="color:#5597d6;">marker</span><span>)
+</span><span>
+</span><span>  </span><span style="color:#7f8989;">// Popup
+</span><span>  </span><span style="color:#668f14;">const </span><span style="color:#5597d6;">message </span><span style="color:#72ab00;">= </span><span style="color:#d07711;">`You are within ${</span><span style="color:#acb3c2;">accuracy</span><span style="color:#d07711;">} meters from this point`
+</span><span>  </span><span style="color:#5597d6;">marker</span><span>.</span><span style="color:#5597d6;">innerHTML </span><span style="color:#72ab00;">= </span><span style="color:#d07711;">`&lt;l-popup content=&#39;${</span><span style="color:#acb3c2;">message</span><span style="color:#d07711;">}&#39; open-popup&gt;&lt;/l-popup&gt;`
+</span><span>
+</span><span>  </span><span style="color:#7f8989;">// Circle
+</span><span>  </span><span style="color:#668f14;">const </span><span style="color:#5597d6;">circle </span><span style="color:#72ab00;">= </span><span style="color:#a2a001;">document</span><span>.</span><span style="color:#b39f04;">createElement</span><span>(</span><span style="color:#d07711;">&quot;l-circle&quot;</span><span>)
+</span><span>  </span><span style="color:#5597d6;">circle</span><span>.</span><span style="color:#b39f04;">setAttribute</span><span>(</span><span style="color:#d07711;">&quot;lat-lng&quot;</span><span>, </span><span style="color:#5597d6;">latlng</span><span>)
+</span><span>  </span><span style="color:#5597d6;">circle</span><span>.</span><span style="color:#b39f04;">setAttribute</span><span>(</span><span style="color:#d07711;">&quot;radius&quot;</span><span>, </span><span style="color:#5597d6;">accuracy</span><span>)
+</span><span>  </span><span style="color:#5597d6;">e</span><span>.</span><span style="color:#a2a001;">target</span><span>.</span><span style="color:#b39f04;">appendChild</span><span>(</span><span style="color:#5597d6;">circle</span><span>)
+</span><span>}
+</span><span style="color:#5597d6;">el</span><span>.</span><span style="color:#b39f04;">addEventListener</span><span>(</span><span style="color:#d07711;">&quot;locationfound&quot;</span><span>, </span><span style="color:#5597d6;">onLocationFound</span><span>)
+</span></code></pre>
+<p>In the event of an <code>error</code> it is nice to tell the user that something went wrong.</p>
+<pre data-lang="js" style="background-color:#f5f5f5;color:#1f1f1f;" class="language-js "><code class="language-js" data-lang="js"><span style="color:#7f8989;">// LocationError
+</span><span style="color:#668f14;">function </span><span style="color:#c23f31;">onLocationFound</span><span>(</span><span style="color:#5597d6;">e</span><span>) {
+</span><span>  </span><span style="color:#c23f31;">alert</span><span>(</span><span style="color:#5597d6;">e</span><span>.</span><span style="color:#5597d6;">detail</span><span>.</span><span style="color:#5597d6;">message</span><span>)
+</span><span>}
+</span><span style="color:#5597d6;">el</span><span>.</span><span style="color:#b39f04;">addEventListener</span><span>(</span><span style="color:#d07711;">&quot;locationerror&quot;</span><span>, </span><span style="color:#5597d6;">onLocationError</span><span>)
+</span></code></pre>
+<p>This concludes the tutorial.
+The mapping from Leaflet to LeafletHTML should be clearer now.</p>
+<p>This library is a work in progress,
+the API design will be refined in the coming releases.</p>
+<p><strong>Note</strong> Not all methods, events and attributes are covered by LeafletHTML at the time of writing.
+Work is underway to fill in the missing gaps.</p>
+<script>
+// LocationFound
+function onLocationFound(e) {
+  let { latlng, accuracy } = e.detail
+  latlng = JSON.stringify(latlng)
+
+  const marker = document.createElement("l-marker")
+  marker.setAttribute("lat-lng", latlng)
+  e.target.appendChild(marker)
+
+  const message = `You are within ${accuracy} meters from this point`
+  marker.innerHTML = `<l-popup content='${message}' open-popup></l-popup>`
+
+  const circle = document.createElement("l-circle")
+  circle.setAttribute("lat-lng", latlng)
+  circle.setAttribute("radius", accuracy)
+  e.target.appendChild(circle)
+}
+const el = document.querySelector("l-map")
+el.addEventListener("locationfound", onLocationFound)
+
+// LocationError
+function onLocationError(e) {
+  alert(e.detail.message)
+}
+el.addEventListener("locationerror", onLocationError)
+</script>
+
+</main>
+
+<footer>
+  <div class="logo">Leaflet-HTML</div>
+</footer>
+</body>
+</html>

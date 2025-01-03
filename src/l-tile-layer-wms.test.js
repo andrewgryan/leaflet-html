@@ -1,8 +1,9 @@
 // @vitest-environment happy-dom
 import { point, tileLayer } from "leaflet";
-import { it, expect } from "vitest";
+import { it, expect, vi } from "vitest";
 import { layerConnected } from "./events";
 import "./index";
+import { waitFor } from "@storybook/test";
 
 it("should create an l-tile-layer-wms with the correct options", async () => {
   const urlTemplate = "http://ows.mundialis.de/services/service?";
@@ -92,82 +93,6 @@ it("should handle invalid JSON in the options attribute gracefully", () => {
   expect(actual).toEqual(expected);
 });
 
-it("should reload the layer when the options attribute changes", async () => {
-  const urlTemplate = "http://example.com/wms";
-  const initialOptions = JSON.stringify({ height: 101, bbox: "coords ere" });
-  const updatedOptions = JSON.stringify({ height: 202, bbox: "new coords" });
-
-  const el = document.createElement("l-tile-layer-wms");
-  el.setAttribute("url-template", urlTemplate);
-  el.setAttribute("layers", "example layer ere");
-  el.setAttribute("options", initialOptions);
-
-  let layerConnectedEventEmittedCount = 0;
-  let promise = new Promise((resolve) => {
-    el.addEventListener(layerConnected, (ev) => {
-      layerConnectedEventEmittedCount += 1;
-      resolve(ev.detail);
-    });
-  });
-
-  document.body.appendChild(el);
-
-  // Wait for the initial layer to be created
-  let detail = await promise;
-  expect(detail.layer.options.height).toBe(101);
-  expect(detail.layer.options.bbox).toBe("coords ere");
-
-  // Change the options attribute
-  promise = new Promise((resolve) => {
-    el.addEventListener(layerConnected, (ev) => {
-      resolve(ev.detail);
-    });
-  });
-
-  // Update the options attribute
-  el.setAttribute("options", updatedOptions);
-
-  // Wait for the layer to reload
-  detail = await promise;
-  expect(detail.layer.options.height).toBe(202);
-  expect(detail.layer.options.bbox).toBe("new coords");
-  expect(layerConnectedEventEmittedCount).toBe(2); // initial layer creation + reload
-});
-
-it("should not reload the layer when non-options attributes are changed", async () => {
-  const urlTemplate = "http://example.com/wms";
-  const initialOptions = JSON.stringify({ height: 101, bbox: "coords ere" });
-
-  const el = document.createElement("l-tile-layer-wms");
-  el.setAttribute("url-template", urlTemplate);
-  el.setAttribute("layers", "example layer ere");
-  el.setAttribute("options", initialOptions);
-
-  let layerConnectedEventEmittedCount = 0;
-  let promise = new Promise((resolve) => {
-    el.addEventListener(layerConnected, (ev) => {
-      layerConnectedEventEmittedCount += 1;
-      resolve(ev.detail);
-    });
-  });
-
-  document.body.appendChild(el);
-
-  // Wait for the initial layer to be created
-  let detail = await promise;
-  expect(detail.layer.options.height).toBe(101);
-  expect(detail.layer.options.bbox).toBe("coords ere");
-
-  // Update the a different attribute to options
-  el.setAttribute("a-different-attribute", "with different value");
-
-  // Give the layer a chance to reload
-  detail = await promise;
-  expect(detail.layer.options.height).toBe(101);
-  expect(detail.layer.options.bbox).toBe("coords ere");
-  expect(layerConnectedEventEmittedCount).toBe(1); // initial layer creation only
-});
-
 it.each([
   ["512", 512],
   ["[256, 512]", point({ x: 256, y: 512 })],
@@ -183,4 +108,23 @@ it.each([
   const actual = el.layer;
   const expected = tileLayer.wms(baseUrl, { layers, tileSize });
   expect(actual).toEqual(expected);
+});
+
+it.each([
+  ["options", '{"banana": "yo"}', '{"banana": "ok"}', true],
+  ["transparent", "TRUE", "FALSE", false],
+])("should update layer params when non-standard or standard attributes change", (attributeName, attributeInitialValue, attributeNewValue, isJson) => {
+  const baseUrl = "/";
+  const layers = "layer-1";
+  const el = document.createElement("l-tile-layer-wms");
+  el.setAttribute("url-template", baseUrl);
+  el.setAttribute("layers", layers);
+  el.setAttribute(attributeName, attributeInitialValue);
+
+  document.body.appendChild(el);
+  const setParams = vi.spyOn(el.layer, "setParams");
+
+  el.setAttribute(attributeName, attributeNewValue);
+
+  expect(setParams).toHaveBeenCalledWith(isJson ? JSON.parse(attributeNewValue) : {[attributeName]: attributeNewValue})
 });

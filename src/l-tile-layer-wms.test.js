@@ -1,8 +1,9 @@
 // @vitest-environment happy-dom
 import { point, tileLayer } from "leaflet";
-import { it, expect } from "vitest";
+import { it, expect, vi } from "vitest";
 import { layerConnected } from "./events";
 import "./index";
+import { waitFor } from "@storybook/test";
 
 it("should create an l-tile-layer-wms with the correct options", async () => {
   const urlTemplate = "http://ows.mundialis.de/services/service?";
@@ -107,4 +108,23 @@ it.each([
   const actual = el.layer;
   const expected = tileLayer.wms(baseUrl, { layers, tileSize });
   expect(actual).toEqual(expected);
+});
+
+it.each([
+  ["options", '{"banana": "yo"}', '{"banana": "ok"}', true],
+  ["transparent", "TRUE", "FALSE", false],
+])("should update layer params when non-standard or standard attributes change", (attributeName, attributeInitialValue, attributeNewValue, isJson) => {
+  const baseUrl = "/";
+  const layers = "layer-1";
+  const el = document.createElement("l-tile-layer-wms");
+  el.setAttribute("url-template", baseUrl);
+  el.setAttribute("layers", layers);
+  el.setAttribute(attributeName, attributeInitialValue);
+
+  document.body.appendChild(el);
+  const setParams = vi.spyOn(el.layer, "setParams");
+
+  el.setAttribute(attributeName, attributeNewValue);
+
+  expect(setParams).toHaveBeenCalledWith(isJson ? JSON.parse(attributeNewValue) : {[attributeName]: attributeNewValue})
 });

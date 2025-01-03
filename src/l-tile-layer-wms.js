@@ -7,7 +7,7 @@ import { gridLayerOptions } from "./grid-layer.js";
 
 class LTileLayerWMS extends LLayer {
   static get observedAttributes() {
-    return ["options"];
+    return ["options", "layers", "styles", "format", "transparent", "version", "crs", "uppercase"];
   }
 
   constructor() {
@@ -20,8 +20,15 @@ class LTileLayerWMS extends LLayer {
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
-    if (name === "options" && oldValue !== newValue && this.layer) {
-      this.layer.setParams(this._parseNonStandardOptions(newValue));
+    if (this.layer && oldValue !== newValue) {
+      switch (name) {
+        case "options":
+          this.layer.setParams(this._parseNonStandardOptions(newValue));
+          break;
+        default:
+          this.layer.setParams({ [name]: newValue });
+          break;
+      }
     }
   }
 
@@ -40,11 +47,11 @@ class LTileLayerWMS extends LLayer {
       uppercase: optional(htmlAttribute("uppercase")),
 
       // Inherited option from Layer: https://leafletjs.com/reference.html#tilelayer-wms-attribution
-      attribution: optional(htmlAttribute("attribution")),
+      attribution: optional(htmlAttribute("attribution"))
     });
 
     const standardOptions = parse(schema, this);
-    const nonStandardOptionsElement = this.getAttribute("options");
+    const nonStandardOptions = this.getAttribute("options");
 
     // Pane options
     const paneOptions = {};
@@ -58,25 +65,25 @@ class LTileLayerWMS extends LLayer {
 
     this.layer = tileLayer.wms(urlTemplate, {
       ...standardOptions,
-      ...this._parseNonStandardOptions(nonStandardOptionsElement),
+      ...this._parseNonStandardOptions(nonStandardOptions),
       ...paneOptions,
-      ...gridOptions,
+      ...gridOptions
     });
     const event = new CustomEvent(layerConnected, {
       detail: { name, layer: this.layer },
-      bubbles: true,
+      bubbles: true
     });
     this.dispatchEvent(event);
   }
 
-  _parseNonStandardOptions(nonStandardOptionsElement) {
-    if (nonStandardOptionsElement) {
+  _parseNonStandardOptions(nonStandardOptions) {
+    if (nonStandardOptions) {
       try {
-        return JSON.parse(nonStandardOptionsElement);
+        return JSON.parse(nonStandardOptions);
       } catch (e) {
         console.error(
           "Error whilst parsing JSON for options attribute in l-tile-layer-wms",
-          e,
+          e
         );
       }
     }

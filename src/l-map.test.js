@@ -4,7 +4,7 @@ import { layerRemoved, layerConnected } from "./events"
 import { vi, it, expect } from "vitest";
 import LTileLayer from "./l-tile-layer";
 import LMap from "./l-map.js";
-import { map } from "leaflet";
+import { map, latLngBounds } from "leaflet";
 
 it("should emit map:addTo event(s)", async () => {
   // Arrange: create a <l-map><l-tile-layer>... arrangement
@@ -141,4 +141,23 @@ it("should remove attributionControl given attribution-control=true attribute", 
   el.setAttribute("attribution-control", "true");
   document.body.appendChild(el);
   expect(el.map.attributionControl).not.toBe(undefined);
+})
+
+it("should set maxZoom and minZoom given max-zoom and min-zoom attribute", () => {
+  const el = document.createElement("l-map");
+  el.setAttribute("zoom", "0");
+  el.setAttribute("center", "[0,0]");
+  el.setAttribute("max-zoom", "5");
+  el.setAttribute("min-zoom", "0");
+  document.body.appendChild(el);
+  expect(el.map.options).toEqual({ zoomControl: false, maxZoom: 5, minZoom: 0 });
+})
+
+it("should set maxBounds given max-bounds attribute", () => {
+  const el = document.createElement("l-map");
+  el.setAttribute("zoom", "0");
+  el.setAttribute("center", "[0,0]");
+  el.setAttribute("max-bounds", "[[0, 0], [1, 1]]");
+  document.body.appendChild(el);
+  expect(el.map.options).toEqual({ zoomControl: false, maxBounds: latLngBounds([[0, 0], [1, 1]]) });
 })

@@ -55,6 +55,15 @@ class LMap extends HTMLElement {
 
   connectedCallback() {
     const options = { zoomControl: this.hasAttribute("zoom-control") };
+    if (this.hasAttribute("max-zoom")) {
+      options.maxZoom = parseFloat(this.getAttribute("max-zoom"));
+    }
+    if (this.hasAttribute("min-zoom")) {
+      options.minZoom = parseFloat(this.getAttribute("min-zoom"));
+    }
+    if (this.hasAttribute("max-bounds")) {
+      options.maxBounds = JSON.parse(this.getAttribute("max-bounds"));
+    }
     if (this.hasAttribute("attribution-control")) {
       options["attributionControl"] = this.getAttribute("attribution-control").toLowerCase() === "true";
     }

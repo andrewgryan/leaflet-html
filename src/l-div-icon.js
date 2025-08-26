@@ -16,6 +16,10 @@ export default class CustomElement extends HTMLElement {
     if (className !== null) {
       options["className"] = className;
     }
+    const iconAnchor = this.getAttribute("icon-anchor");
+    if (iconAnchor !== null) {
+      options["iconAnchor"] = iconAnchor;
+    }
 
     this.icon = divIcon(options);
     this.dispatchEvent(

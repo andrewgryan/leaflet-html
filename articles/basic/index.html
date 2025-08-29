@@ -1,0 +1,126 @@
+
+  
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+  </style>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="/leaflet-html/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <script type="importmap">
+      {
+        "imports": {
+          "leaflet": "https://unpkg.com/leaflet@1.9.4/dist/leaflet-src.esm.js",
+          "leaflet-html": "https://unpkg.com/leaflet-html@latest/dist/leaflet-html.js"
+        }
+      }
+    </script>
+    <script type="module">
+      import "leaflet-html";
+    </script>
+    <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+</head>
+<body>
+<nav>
+<div>
+  <a href="https://andrewgryan.github.io/leaflet-html/"><iconify-icon icon="mdi:home"></iconify-icon> Home</a>
+  <a href="https://andrewgryan.github.io/leaflet-html/articles/"><iconify-icon icon="material-symbols:article-outline-sharp"></iconify-icon> Articles</a>
+  <a href="https://andrewgryan.github.io/leaflet-html/api/"><iconify-icon icon="material-symbols:api"></iconify-icon> API</a>
+</div>
+<a href="Https://GitHub.com/andrewgryan/leaflet-html"><iconify-icon icon="mdi:github"></iconify-icon></a>
+</nav>
+
+<main>
+  <h1>Basic usage</h1>
+  <p>The minimal <code>leaflet-html</code> app is a basemap centered and zoomed on a location.</p>
+<pre data-lang="html" style="background-color:#f5f5f5;color:#1f1f1f;" class="language-html "><code class="language-html" data-lang="html"><span style="color:#6486ab;">&lt;l-map center=</span><span style="color:#d07711;">&quot;[53, 0]&quot; </span><span style="color:#6486ab;">zoom=</span><span style="color:#d07711;">&quot;4&quot;</span><span style="color:#6486ab;">&gt;
+</span><span>  </span><span style="color:#6486ab;">&lt;l-tile-layer
+</span><span style="color:#6486ab;">    url-template=</span><span style="color:#d07711;">&quot;https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png&quot;
+</span><span style="color:#6486ab;">  &gt;&lt;/l-tile-layer&gt;
+</span><span style="color:#6486ab;">&lt;/l-map&gt;
+</span></code></pre>
+<l-map center="[53, 0]" zoom="4">
+  <l-tile-layer
+    url-template="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+  ></l-tile-layer>
+</l-map>
+<p>To add the above widget to a HTML document both JS and CSS tags need to be included in the <code>&lt;head&gt;</code> of the page.</p>
+<h2 id="assets">Assets</h2>
+<p>Basic HTML recommended settings, e.g. <code>charset</code>, <code>lang</code>, and <code>viewport</code> to help with cross device support.
+Can be placed in the <code>&lt;head&gt;</code> tag, along with CSS and JS assets.</p>
+<pre data-lang="html" style="background-color:#f5f5f5;color:#1f1f1f;" class="language-html "><code class="language-html" data-lang="html"><span style="color:#6486ab;">&lt;head lang=</span><span style="color:#d07711;">&quot;en&quot;</span><span style="color:#6486ab;">&gt;
+</span><span>  </span><span style="color:#7f902a;">&lt;meta charset=</span><span style="color:#d07711;">&quot;utf-8&quot; </span><span style="color:#7f902a;">/&gt;
+</span><span>  </span><span style="color:#7f902a;">&lt;meta name=</span><span style="color:#d07711;">&quot;viewport&quot; </span><span style="color:#7f902a;">content=</span><span style="color:#d07711;">&quot;width=device-width, initial-scale=1&quot; </span><span style="color:#7f902a;">/&gt;
+</span><span style="color:#6486ab;">&lt;/head&gt;
+</span></code></pre>
+<h3 id="leaflet">Leaflet</h3>
+<p>Leaflet is an external dependency of <code>leaflet-html</code>, as such,
+the standard Leaflet assets should be included.</p>
+<pre data-lang="html" style="background-color:#f5f5f5;color:#1f1f1f;" class="language-html "><code class="language-html" data-lang="html"><span style="color:#6486ab;">&lt;head&gt;
+</span><span>...
+</span><span style="color:#7f902a;">&lt;link
+</span><span style="color:#7f902a;">  rel=</span><span style="color:#d07711;">&quot;stylesheet&quot;
+</span><span style="color:#7f902a;">  href=</span><span style="color:#d07711;">&quot;https://unpkg.com/leaflet@1.9.4/dist/leaflet.css&quot;
+</span><span style="color:#7f902a;">  integrity=</span><span style="color:#d07711;">&quot;sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=&quot;
+</span><span style="color:#7f902a;">  crossorigin=</span><span style="color:#d07711;">&quot;&quot;
+</span><span style="color:#7f902a;">/&gt;
+</span><span>...
+</span><span style="color:#6486ab;">&lt;/head&gt;
+</span></code></pre>
+<h3 id="leaflet-html">Leaflet-HTML</h3>
+<p>Leaflet-HTML is available via <strong>npm</strong> and <strong>unpkg</strong>.
+To get started quickly, use the CDN version available on <strong>unpkg</strong>.</p>
+<pre data-lang="html" style="background-color:#f5f5f5;color:#1f1f1f;" class="language-html "><code class="language-html" data-lang="html"><span style="color:#6486ab;">&lt;script type=</span><span style="color:#d07711;">&quot;importmap&quot;</span><span style="color:#6486ab;">&gt;
+</span><span>  {
+</span><span>    &quot;imports&quot;: {
+</span><span>      &quot;leaflet&quot;: &quot;https://unpkg.com/leaflet@1.9.4/dist/leaflet-src.esm.js&quot;,
+</span><span>      &quot;leaflet-html&quot;: &quot;https://unpkg.com/leaflet-html@latest/dist/leaflet-html.js&quot;
+</span><span>    }
+</span><span>  }
+</span><span style="color:#6486ab;">&lt;/script&gt;
+</span></code></pre>
+<pre data-lang="html" style="background-color:#f5f5f5;color:#1f1f1f;" class="language-html "><code class="language-html" data-lang="html"><span style="color:#6486ab;">&lt;script type=</span><span style="color:#d07711;">&quot;module&quot;</span><span style="color:#6486ab;">&gt;
+</span><span>  </span><span style="background-color:#b0b3ba14;color:#72ab00;">import </span><span style="background-color:#b0b3ba14;color:#d07711;">&quot;leaflet-html&quot;</span><span style="background-color:#b0b3ba14;color:#1f1f1f;">;
+</span><span style="color:#6486ab;">&lt;/script&gt;
+</span></code></pre>
+<p>The <code>@latest</code> keyword should keep your site up to date during development.</p>
+<h2 id="minimal-style">Minimal style</h2>
+<p>By default Custom elements are <code>display: inline</code>,
+meaning they are unaffected by <code>height</code>.
+Add the following ruleset to your stylesheet to enable map size.</p>
+<pre data-lang="css" style="background-color:#f5f5f5;color:#1f1f1f;" class="language-css "><code class="language-css" data-lang="css"><span style="color:#cda869;">l-map </span><span>{
+</span><span>  </span><span style="color:#c5af75;">display</span><span>: </span><span style="color:#949175;">block</span><span>;
+</span><span>}
+</span></code></pre>
+<p>It's not always necessary to set <code>block</code> directly on an <code>l-map</code> tag.
+For example, a parent with <code>display: grid</code>, will size the <code>l-map</code> tag appropriately.</p>
+<h3 id="z-index">Z-index</h3>
+<p>Leaflet has fairly strong <code>z-index</code> settings that are not easy to override.
+The easiest way to get around them is to start a new stacking context using <code>isolation: isolate</code>.</p>
+<h3 id="sensible-defaults">Sensible defaults</h3>
+<p>Without knowing anything specific about your application the following settings should be a good starting place.</p>
+<pre data-lang="css" style="background-color:#f5f5f5;color:#1f1f1f;" class="language-css "><code class="language-css" data-lang="css"><span style="color:#cda869;">l-map </span><span>{
+</span><span>  </span><span style="color:#c5af75;">display</span><span>: </span><span style="color:#949175;">block</span><span>;
+</span><span>  block-</span><span style="color:#c5af75;">size</span><span>: </span><span style="color:#ca7840;">40</span><span style="color:#72ab00;">ch</span><span>;
+</span><span>  </span><span style="color:#c5af75;">isolation</span><span>: </span><span style="color:#949175;">isolate</span><span>;
+</span><span>  </span><span style="color:#c5af75;">z-index</span><span>: </span><span style="color:#ca7840;">1</span><span>;
+</span><span>}
+</span></code></pre>
+<p>This allows overlaying your own UI elements and gives full control over size and position of each map on the page.</p>
+
+</main>
+
+<footer>
+  <div class="logo">Leaflet-HTML</div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,125 @@
+
+  
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+  </style>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="/leaflet-html/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <script type="importmap">
+      {
+        "imports": {
+          "leaflet": "https://unpkg.com/leaflet@1.9.4/dist/leaflet-src.esm.js",
+          "leaflet-html": "https://unpkg.com/leaflet-html@latest/dist/leaflet-html.js"
+        }
+      }
+    </script>
+    <script type="module">
+      import "leaflet-html";
+    </script>
+    <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+</head>
+<body>
+<nav>
+<div>
+  <a href="https://andrewgryan.github.io/leaflet-html/"><iconify-icon icon="mdi:home"></iconify-icon> Home</a>
+  <a href="https://andrewgryan.github.io/leaflet-html/articles/"><iconify-icon icon="material-symbols:article-outline-sharp"></iconify-icon> Articles</a>
+  <a href="https://andrewgryan.github.io/leaflet-html/api/"><iconify-icon icon="material-symbols:api"></iconify-icon> API</a>
+</div>
+<a href="Https://GitHub.com/andrewgryan/leaflet-html"><iconify-icon icon="mdi:github"></iconify-icon></a>
+</nav>
+
+<main>
+<h1 id="leaflet-html">Leaflet HTML</h1>
+<p><a href="https://leafletjs.com/">LeafletJS</a> is a library geared towards map based visualisations.
+Leaflet HTML expresses that JavaScript API in HTML.</p>
+<h2 id="how-to-guides">How-to guides</h2>
+<p><a href="https://andrewgryan.github.io/leaflet-html/articles/">Articles</a> have been written to make adopting Leaflet HTML simpler.
+These articles follow the Leaflet tutorials closely and add a few <code>leaflet-html</code> specific
+tips and tricks.</p>
+<h2 id="design-principles">Design principles</h2>
+<p>Leaflet HTML tries to model Leaflet's API as closely as possible to avoid confusion and to ease onboarding.
+Naming conventions are followed where possible.
+The hierarchy in the JS API is replicated by nesting HTML elements.</p>
+<h2 id="example">Example</h2>
+<p>The following is a live running example of Leaflet HTML.</p>
+<l-map center="[39.61, -105.02]" zoom="10">
+  <l-control-layers>
+    <l-base-layers>
+      <l-tile-layer
+        name="CartoDB_Voyager"
+        url-template="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+        max-zoom="20"
+        subdomains="abcd"
+        show
+      ></l-tile-layer>
+    </l-base-layers>
+    <l-overlay-layers>
+      <l-layer-group name="Cities">
+        <l-marker lat-lng="[39.61, -105.02]">
+          <l-popup content="This is Littleton, CO."></l-popup>
+        </l-marker>
+        <l-marker lat-lng="[39.74, -104.99]">
+          <l-popup content="This is Denver, CO."></l-popup>
+        </l-marker>
+        <l-marker lat-lng="[39.73, -104.8]">
+          <l-popup content="This is Aurora, CO."></l-popup>
+        </l-marker>
+        <l-marker lat-lng="[39.77, -105.23]">
+          <l-popup content="This is Golden, CO."></l-popup>
+        </l-marker>
+      </l-layer-group>
+    </l-overlay-layers>
+  </l-control-layers>
+</l-map>
+<p>The above application is represented in HTML using the following syntax.</p>
+<pre data-lang="html" style="background-color:#f5f5f5;color:#1f1f1f;" class="language-html "><code class="language-html" data-lang="html"><span style="color:#6486ab;">&lt;l-map center=</span><span style="color:#d07711;">&quot;[39.61, -105.02]&quot; </span><span style="color:#6486ab;">zoom=</span><span style="color:#d07711;">&quot;10&quot;</span><span style="color:#6486ab;">&gt;
+</span><span>  </span><span style="color:#6486ab;">&lt;l-control-layers&gt;
+</span><span>    </span><span style="color:#6486ab;">&lt;l-base-layers&gt;
+</span><span>      </span><span style="color:#6486ab;">&lt;l-tile-layer
+</span><span style="color:#6486ab;">        name=</span><span style="color:#d07711;">&quot;CartoDB_Voyager&quot;
+</span><span style="color:#6486ab;">        url-template=</span><span style="color:#d07711;">&quot;https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png&quot;
+</span><span style="color:#6486ab;">        attribution=</span><span style="color:#d07711;">&#39;</span><span style="color:#aeb52b;">&amp;copy;</span><span style="color:#d07711;"> &lt;a href=&quot;https://www.openstreetmap.org/copyright&quot;&gt;OpenStreetMap&lt;/a&gt; contributors </span><span style="color:#aeb52b;">&amp;copy;</span><span style="color:#d07711;"> &lt;a href=&quot;https://carto.com/attributions&quot;&gt;CARTO&lt;/a&gt;&#39;
+</span><span style="color:#6486ab;">        max-zoom=</span><span style="color:#d07711;">&quot;20&quot;
+</span><span style="color:#6486ab;">        subdomains=</span><span style="color:#d07711;">&quot;abcd&quot;
+</span><span style="color:#6486ab;">      &gt;&lt;/l-tile-layer&gt;
+</span><span>    </span><span style="color:#6486ab;">&lt;/l-base-layers&gt;
+</span><span>    </span><span style="color:#6486ab;">&lt;l-overlay-layers&gt;
+</span><span>      </span><span style="color:#6486ab;">&lt;l-layer-group name=</span><span style="color:#d07711;">&quot;Cities&quot;</span><span style="color:#6486ab;">&gt;
+</span><span>        </span><span style="color:#6486ab;">&lt;l-marker lat-lng=</span><span style="color:#d07711;">&quot;[39.61, -105.02]&quot;</span><span style="color:#6486ab;">&gt;
+</span><span>          </span><span style="color:#6486ab;">&lt;l-popup content=</span><span style="color:#d07711;">&quot;This is Littleton, CO.&quot;</span><span style="color:#6486ab;">&gt;&lt;/l-popup&gt;
+</span><span>        </span><span style="color:#6486ab;">&lt;/l-marker&gt;
+</span><span>        </span><span style="color:#6486ab;">&lt;l-marker lat-lng=</span><span style="color:#d07711;">&quot;[39.74, -104.99]&quot;</span><span style="color:#6486ab;">&gt;
+</span><span>          </span><span style="color:#6486ab;">&lt;l-popup content=</span><span style="color:#d07711;">&quot;This is Denver, CO.&quot;</span><span style="color:#6486ab;">&gt;&lt;/l-popup&gt;
+</span><span>        </span><span style="color:#6486ab;">&lt;/l-marker&gt;
+</span><span>        </span><span style="color:#6486ab;">&lt;l-marker lat-lng=</span><span style="color:#d07711;">&quot;[39.73, -104.8]&quot;</span><span style="color:#6486ab;">&gt;
+</span><span>          </span><span style="color:#6486ab;">&lt;l-popup content=</span><span style="color:#d07711;">&quot;This is Aurora, CO.&quot;</span><span style="color:#6486ab;">&gt;&lt;/l-popup&gt;
+</span><span>        </span><span style="color:#6486ab;">&lt;/l-marker&gt;
+</span><span>        </span><span style="color:#6486ab;">&lt;l-marker lat-lng=</span><span style="color:#d07711;">&quot;[39.77, -105.23]&quot;</span><span style="color:#6486ab;">&gt;
+</span><span>          </span><span style="color:#6486ab;">&lt;l-popup content=</span><span style="color:#d07711;">&quot;This is Golden, CO.&quot;</span><span style="color:#6486ab;">&gt;&lt;/l-popup&gt;
+</span><span>        </span><span style="color:#6486ab;">&lt;/l-marker&gt;
+</span><span>      </span><span style="color:#6486ab;">&lt;/l-layer-group&gt;
+</span><span>    </span><span style="color:#6486ab;">&lt;/l-overlay-layers&gt;
+</span><span>  </span><span style="color:#6486ab;">&lt;/l-control-layers&gt;
+</span><span style="color:#6486ab;">&lt;/l-map&gt;
+</span></code></pre>
+<p>The above example is a taste of the syntax and capabilities of wrapping Leaflet in HTML tags.</p>
+
+</main>
+
+<footer>
+  <div class="logo">Leaflet-HTML</div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,312 @@
+
+  
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+  </style>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="/leaflet-html/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <script type="importmap">
+      {
+        "imports": {
+          "leaflet": "https://unpkg.com/leaflet@1.9.4/dist/leaflet-src.esm.js",
+          "leaflet-html": "https://unpkg.com/leaflet-html@latest/dist/leaflet-html.js"
+        }
+      }
+    </script>
+    <script type="module">
+      import "leaflet-html";
+    </script>
+    <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+</head>
+<body>
+<nav>
+<div>
+  <a href="https://andrewgryan.github.io/leaflet-html/"><iconify-icon icon="mdi:home"></iconify-icon> Home</a>
+  <a href="https://andrewgryan.github.io/leaflet-html/articles/"><iconify-icon icon="material-symbols:article-outline-sharp"></iconify-icon> Articles</a>
+  <a href="https://andrewgryan.github.io/leaflet-html/api/"><iconify-icon icon="material-symbols:api"></iconify-icon> API</a>
+</div>
+<a href="Https://GitHub.com/andrewgryan/leaflet-html"><iconify-icon icon="mdi:github"></iconify-icon></a>
+</nav>
+
+<main>
+  <h1>Arcade games</h1>
+  <h2 id="pong">Pong</h2>
+<p>To illustrate the elegance and efficiency of representing application state in hypermedia it is instructive to implement a simple arcade game in Leaflet HTML.</p>
+<p>To play pong in a cylindrical projection of a sphere it is wise to position the board close to the equator.</p>
+<pre data-lang="html" style="background-color:#f5f5f5;color:#1f1f1f;" class="language-html "><code class="language-html" data-lang="html"><span style="color:#6486ab;">&lt;l-map
+</span><span style="color:#6486ab;">  lat-lng=</span><span style="color:#d07711;">&quot;[0,40]&quot;
+</span><span style="color:#6486ab;">  zoom=</span><span style="color:#d07711;">&quot;12&quot;</span><span style="color:#6486ab;">&gt;&lt;/l-map&gt;
+</span></code></pre>
+<div>
+  Scoreboard <span id="player-one">0</span> : <span id="player-two">0</span>
+</div>
+<l-map center="[0, 0]" zoom="6">
+  <l-tile-layer
+    url-template="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+  ></l-tile-layer>
+  <l-rectangle id="ball" lat-lng-bounds="[[0,0],[0.1,0.1]]" weight="1" fill-opacity="1" color="#f44708">
+  </l-rectangle>
+  <l-rectangle id="paddle-1" lat-lng-bounds="[[-0.5,-5], [0.5,-4.9]]" weight="1"></l-rectangle>
+  <l-rectangle id="paddle-2" lat-lng-bounds="[[-0.5,5], [0.5,4.9]]" weight="1"></l-rectangle>
+  <l-polyline lat-lngs="[[2,-5],[2,5]]" weight="1" color="cadetblue">
+  </l-polyline>
+  <l-polyline lat-lngs="[[-2,-5],[-2,5]]" weight="1" color="cadetblue">
+  </l-polyline>
+  <l-polyline lat-lngs="[[-2,0],[2,0]]" weight="1" color="cadetblue">
+  </l-polyline>
+</l-map>
+<script>
+  const score = {
+    playerOne: 0,
+    playerTwo: 0
+  }
+  const MAX_ANGLE = (55 / 180) * Math.PI
+  let ball = {
+    x: 0,
+    y: 0,
+    dx: 0.125,
+    dy: 0.125,
+    velocity: -0.0675,
+    angleRadians: Math.PI / 6,
+    el: document.getElementById("ball")
+  }
+
+  let paddleOne = {
+    x: -5,
+    y: -0.7,
+    dx: 0.1,
+    dy: 1,
+    el: document.getElementById("paddle-1"),
+    velocity: 0,
+    angleRadians: -1 * Math.PI / 2,
+  }
+  let paddleTwo = {
+    x: 5 - 0.05,
+    y: 1.2,
+    dx: 0.1,
+    dy: 1,
+    el: document.getElementById("paddle-2")
+  }
+
+  const extent = (entity) => {
+    const { x, y, dx, dy } = entity
+    const low = [y - (dy / 2.0), x - (dx / 2.0)]
+    const high = [y + (dy / 2.0), x + (dx / 2.0)]
+    return [low, high]
+  }
+
+  const integrate = (entity) => {
+    const y = entity.y + entity.velocity * Math.sin(entity.angleRadians)
+    const x = entity.x + entity.velocity * Math.cos(entity.angleRadians)
+    return {...entity, x, y}
+  }
+
+  const render = (entity) => {
+    entity.el.setAttribute("lat-lng-bounds", JSON.stringify(extent(entity)))
+  }
+
+  const upperExtent = (entity) => entity.y + (entity.dy / 2)
+  const lowerExtent = (entity) => entity.y - (entity.dy / 2)
+  const rightFace = (entity) => entity.x + (entity.dx / 2)
+  const leftFace = (entity) => entity.x - (entity.dx / 2)
+
+  const collideOne = (ball, paddle) => {
+    return (leftFace(ball) < rightFace(paddle)) && inside(ball, paddle)
+  }
+  const collideTwo = (ball, paddle) => {
+    return (rightFace(ball) > leftFace(paddle)) && inside(ball, paddle)
+  }
+
+  const inside = (ball, paddle) => {
+    return (ball.y < upperExtent(paddle)) && (ball.y > lowerExtent(paddle))
+  }
+
+  const collideLeftWall = (nextBall) => {
+    return leftFace(nextBall) < rightFace(paddleOne)
+  }
+  const collideRightWall = (nextBall) => {
+    return rightFace(nextBall) > leftFace(paddleTwo)
+  }
+  const collideWall = (nextBall) => {
+    return collideRightWall(nextBall) || collideLeftWall(nextBall)
+  }
+
+  const gameLoop = () => {
+    let nextBall = integrate(ball)
+    if ((upperExtent(nextBall) > 2) || (lowerExtent(nextBall) < -2)) {
+      nextBall.angleRadians *= -1
+    }
+    if (collideWall(nextBall)) {
+      nextBall.velocity *= -1
+    }
+
+    // Paddle collision dynamics
+    if (collideOne(nextBall, paddleOne)) {
+      const dy = 2 * (nextBall.y - paddleOne.y) / paddleOne.dy
+      nextBall.angleRadians = MAX_ANGLE * dy
+      nextBall.x = paddleOne.x + Math.abs(paddleOne.x - ball.x)
+    } else if (collideTwo(nextBall, paddleTwo)) {
+      const dy = 2 * (nextBall.y - paddleTwo.y) / paddleTwo.dy
+      nextBall.angleRadians = -1 * MAX_ANGLE * dy
+      nextBall.x = paddleTwo.x - Math.abs(paddleTwo.x - nextBall.x)
+    } else if (collideWall(nextBall)) {
+      if (collideLeftWall(nextBall)) {
+        score.playerTwo += 1
+        document.getElementById("player-two").innerHTML = score.playerTwo
+      }
+      if (collideRightWall(nextBall)) {
+        score.playerOne += 1
+        document.getElementById("player-one").innerHTML = score.playerOne
+      }
+      nextBall.x = 0
+      nextBall.y = 0
+      nextBall.angleRadians = (0.5 - Math.random()) * Math.PI / 4
+    } else if ((rightFace(nextBall) > leftFace(paddleTwo)) || (leftFace(nextBall) < rightFace(paddleOne))) {
+      nextBall.angleRadians *= -1
+    }
+
+
+    ball = nextBall
+
+    // Paddle motion
+    nextPaddleOne = integrate(paddleOne)
+    if ((upperExtent(nextPaddleOne) < 2) && (lowerExtent(nextPaddleOne) > -2)) {
+      paddleOne = nextPaddleOne
+    }
+
+    render(ball)
+    render(paddleOne)
+    render(paddleTwo)
+    window.requestAnimationFrame(gameLoop)
+  }
+  // Keyboard
+  window.addEventListener("keydown", (ev) => {
+    if (ev.key === "j") {
+      paddleOne.velocity = 0.04
+    } else if (ev.key === "k") {
+      paddleOne.velocity = -0.04
+    }
+  })
+  window.addEventListener("keyup", (ev) => {
+    paddleOne.velocity = 0
+  })
+
+  // Start game loop
+  window.requestAnimationFrame(gameLoop)
+</script>
+<h3 id="game-loop">Game loop</h3>
+<p>A good place to start is the game loop. Essentially, what happens on each frame of the game. </p>
+<p>In a browser, to sync a render cycle with the browsers paint cycle it is best to use <code>window.requestAnimationFrame</code> method.</p>
+<pre data-lang="js" style="background-color:#f5f5f5;color:#1f1f1f;" class="language-js "><code class="language-js" data-lang="js"><span style="color:#668f14;">const </span><span style="color:#c23f31;">gameLoop </span><span style="color:#72ab00;">= </span><span>() </span><span style="color:#668f14;">=&gt; </span><span>{
+</span><span>  </span><span style="color:#a2a001;">console</span><span>.</span><span style="color:#b39f04;">log</span><span>(</span><span style="color:#d07711;">&quot;tick&quot;</span><span>)
+</span><span>  </span><span style="color:#a2a001;">window</span><span>.</span><span style="color:#c23f31;">requestAnimationFrame</span><span>(</span><span style="color:#5597d6;">gameLoop</span><span>)
+</span><span>}
+</span><span>
+</span><span style="color:#a2a001;">window</span><span>.</span><span style="color:#c23f31;">requestAnimationFrame</span><span>(</span><span style="color:#5597d6;">gameLoop</span><span>)
+</span></code></pre>
+<p>The game loop is responsible updating the game state and calling the render method to display the latest game state.</p>
+<p>In our game re-renders of state are handled by LeafletHTML tag updates.</p>
+<h3 id="entities">Entities</h3>
+<p>No modern game engine would be complete without a concept of entities.</p>
+<p>In our game we have three entities, two paddles and a ball.</p>
+<p>For simplicity, let's make them rectangles.</p>
+<pre data-lang="html" style="background-color:#f5f5f5;color:#1f1f1f;" class="language-html "><code class="language-html" data-lang="html"><span style="color:#6486ab;">&lt;l-rectangle
+</span><span style="color:#6486ab;">  lat-lng-bounds=</span><span style="color:#d07711;">&quot;[[-5, -5], [5, 5]]&quot;</span><span style="color:#6486ab;">&gt;
+</span><span style="color:#6486ab;">&lt;/l-rectangle&gt;
+</span></code></pre>
+<pre data-lang="js" style="background-color:#f5f5f5;color:#1f1f1f;" class="language-js "><code class="language-js" data-lang="js"><span style="color:#668f14;">const </span><span style="color:#c23f31;">bounds </span><span style="color:#72ab00;">= </span><span>(</span><span style="color:#5597d6;">entity</span><span>) </span><span style="color:#668f14;">=&gt; </span><span>{
+</span><span>  </span><span style="color:#668f14;">const </span><span>{</span><span style="color:#5597d6;">x</span><span>, </span><span style="color:#5597d6;">y</span><span>, </span><span style="color:#5597d6;">dx</span><span>, </span><span style="color:#5597d6;">dy</span><span>} </span><span style="color:#72ab00;">= </span><span style="color:#5597d6;">entity
+</span><span>  </span><span style="color:#668f14;">const </span><span style="color:#5597d6;">low </span><span style="color:#72ab00;">= </span><span>[
+</span><span>    </span><span style="color:#5597d6;">x </span><span style="color:#72ab00;">- </span><span>(</span><span style="color:#5597d6;">dx </span><span style="color:#72ab00;">/ </span><span style="color:#b3933a;">2</span><span>),
+</span><span>    </span><span style="color:#5597d6;">y </span><span style="color:#72ab00;">- </span><span>(</span><span style="color:#5597d6;">dy </span><span style="color:#72ab00;">/ </span><span style="color:#b3933a;">2</span><span>)
+</span><span>  ]
+</span><span>  </span><span style="color:#668f14;">const </span><span style="color:#5597d6;">high </span><span style="color:#72ab00;">= </span><span>[
+</span><span>    </span><span style="color:#5597d6;">x </span><span style="color:#72ab00;">+ </span><span>(</span><span style="color:#5597d6;">dx </span><span style="color:#72ab00;">/ </span><span style="color:#b3933a;">2</span><span>),
+</span><span>    </span><span style="color:#5597d6;">y </span><span style="color:#72ab00;">+ </span><span>(</span><span style="color:#5597d6;">dy </span><span style="color:#72ab00;">/ </span><span style="color:#b3933a;">2</span><span>)
+</span><span>  ]
+</span><span>  </span><span style="color:#72ab00;">return </span><span>[</span><span style="color:#5597d6;">low</span><span>, </span><span style="color:#5597d6;">high</span><span>]
+</span><span>}
+</span></code></pre>
+<h3 id="movement">Movement</h3>
+<p>Each tick of the game loop simulates some elapsed time. Pong is a world of elastic collisions. The only thing that needs to be tracked is position and direction.</p>
+<h4 id="ball">Ball</h4>
+<p>Ball movement is simple, the ball has a constant velocity and an angle. </p>
+<pre data-lang="js" style="background-color:#f5f5f5;color:#1f1f1f;" class="language-js "><code class="language-js" data-lang="js"><span style="color:#668f14;">const </span><span style="color:#5597d6;">ball </span><span style="color:#72ab00;">= </span><span>{
+</span><span>   velocity: </span><span style="color:#b3933a;">1</span><span>,
+</span><span>   angleRadians: </span><span style="color:#b3933a;">0</span><span>,
+</span><span>   x: </span><span style="color:#b3933a;">0</span><span>,
+</span><span>   y: </span><span style="color:#b3933a;">0
+</span><span>}
+</span></code></pre>
+<p>A single tick, moves the ball in its direction of travel proportional to the elapsed time since the last update. </p>
+<pre data-lang="js" style="background-color:#f5f5f5;color:#1f1f1f;" class="language-js "><code class="language-js" data-lang="js"><span style="color:#5597d6;">ball</span><span>.</span><span style="color:#a2a001;">x </span><span style="color:#72ab00;">+= </span><span style="color:#5597d6;">ball</span><span>.</span><span style="color:#5597d6;">velocity </span><span style="color:#72ab00;">* </span><span style="color:#da5d42;">Math</span><span>.</span><span style="color:#b39f04;">cos</span><span>(</span><span style="color:#5597d6;">ball</span><span>.</span><span style="color:#5597d6;">angleRadians</span><span>) </span><span style="color:#72ab00;">* </span><span style="color:#5597d6;">dT
+</span><span style="color:#5597d6;">ball</span><span>.</span><span style="color:#a2a001;">y </span><span style="color:#72ab00;">+= </span><span style="color:#5597d6;">ball</span><span>.</span><span style="color:#5597d6;">velocity </span><span style="color:#72ab00;">* </span><span style="color:#da5d42;">Math</span><span>.</span><span style="color:#b39f04;">sin</span><span>(</span><span style="color:#5597d6;">ball</span><span>.</span><span style="color:#5597d6;">angleRadians</span><span>) </span><span style="color:#72ab00;">* </span><span style="color:#5597d6;">dT
+</span></code></pre>
+<h4 id="paddle">Paddle</h4>
+<p>Paddle movement responds to keyboard input events and is constrained by the upper and lower walls.</p>
+<h3 id="collision-detection">Collision detection</h3>
+<p>Pong has very simple rules around collision detection. The paddles and upper and lower walls work very similarly. </p>
+<p>The ball is said to have collided with an obstacle if it's final position is behind the obstacle and the point of intersection is within the extent of the obstacle.</p>
+<pre data-lang="js" style="background-color:#f5f5f5;color:#1f1f1f;" class="language-js "><code class="language-js" data-lang="js"><span style="color:#668f14;">const </span><span style="color:#c23f31;">willCollide </span><span style="color:#72ab00;">= </span><span>(</span><span style="color:#5597d6;">ball</span><span>, </span><span style="color:#5597d6;">obstacle</span><span>) </span><span style="color:#668f14;">=&gt; </span><span>{
+</span><span>  </span><span style="color:#72ab00;">return </span><span style="color:#5597d6;">ball</span><span>.</span><span style="color:#a2a001;">x </span><span style="color:#72ab00;">&gt; </span><span style="color:#5597d6;">obstacle</span><span>.</span><span style="color:#a2a001;">x
+</span><span>}
+</span></code></pre>
+<h3 id="recoil">Recoil</h3>
+<p>Bouncing off the upper and lower walls is an elastic collision like light bouncing off a mirror. Calculate the angle of incidence and use that as the angle of reflection.</p>
+<pre data-lang="js" style="background-color:#f5f5f5;color:#1f1f1f;" class="language-js "><code class="language-js" data-lang="js"><span style="color:#7f8989;">// Reflective bounce mechanic
+</span><span style="color:#668f14;">const </span><span style="color:#5597d6;">wall </span><span style="color:#72ab00;">= </span><span>{
+</span><span>  y: </span><span style="color:#b3933a;">5
+</span><span>}
+</span><span>
+</span><span style="color:#668f14;">const </span><span style="color:#5597d6;">ball </span><span style="color:#72ab00;">= </span><span>{
+</span><span>  x: </span><span style="color:#b3933a;">0</span><span>,
+</span><span>  y: </span><span style="color:#b3933a;">4</span><span>,
+</span><span>  angleRadians: </span><span style="color:#da5d42;">Math</span><span>.</span><span style="color:#da5d42;">PI </span><span style="color:#72ab00;">/ </span><span style="color:#b3933a;">4</span><span>,
+</span><span>  velocity: </span><span style="color:#b3933a;">1
+</span><span>}
+</span><span>
+</span><span style="color:#668f14;">const </span><span style="color:#5597d6;">dT </span><span style="color:#72ab00;">= </span><span style="color:#b3933a;">2 </span><span style="color:#7f8989;">// Fake units
+</span><span>
+</span><span style="color:#668f14;">const </span><span style="color:#5597d6;">nextBall </span><span style="color:#72ab00;">= </span><span style="color:#c23f31;">integrateMotion</span><span>(</span><span style="color:#5597d6;">ball</span><span>, </span><span style="color:#5597d6;">dT</span><span>)
+</span><span>
+</span><span style="color:#72ab00;">if </span><span>(</span><span style="color:#c23f31;">behind</span><span>(</span><span style="color:#5597d6;">wall</span><span>, </span><span style="color:#5597d6;">nextBall</span><span>)) {
+</span><span>  </span><span style="color:#7f8989;">// recoil algorithm
+</span><span>  </span><span style="color:#5597d6;">nextBall</span><span>.</span><span style="color:#a2a001;">y </span><span style="color:#72ab00;">= </span><span style="color:#5597d6;">wall</span><span>.</span><span style="color:#a2a001;">y </span><span style="color:#72ab00;">- </span><span style="color:#da5d42;">Math</span><span>.</span><span style="color:#b39f04;">abs</span><span>(</span><span style="color:#5597d6;">nextBall</span><span>.</span><span style="color:#a2a001;">y </span><span style="color:#72ab00;">- </span><span style="color:#5597d6;">wall</span><span>.</span><span style="color:#a2a001;">y</span><span>)
+</span><span>  </span><span style="color:#5597d6;">nextBall</span><span>.</span><span style="color:#5597d6;">angleRadians </span><span style="color:#7f8989;">// TO DO
+</span><span>}
+</span></code></pre>
+<p>Bouncing off a paddle however is different. The angle that the ball leaves the paddle is proportional to the distance from the center of the paddle. Independent of the angle of incidence.</p>
+<h3 id="scoring">Scoring</h3>
+<p>Scoring is based on collision detection.
+If either of the vertical boundaries are collided with then the opposite players score counter is incremented and the ball is placed back into the field of play or a game over state is reached.</p>
+<pre data-lang="js" style="background-color:#f5f5f5;color:#1f1f1f;" class="language-js "><code class="language-js" data-lang="js"><span style="color:#72ab00;">if </span><span>(</span><span style="color:#5597d6;">final</span><span>.</span><span style="color:#a2a001;">x </span><span style="color:#72ab00;">&gt; </span><span style="color:#5597d6;">rightWall</span><span>.</span><span style="color:#a2a001;">x</span><span>) {
+</span><span>  </span><span style="color:#5597d6;">score</span><span>.</span><span style="color:#5597d6;">playerOne </span><span style="color:#72ab00;">+= </span><span style="color:#b3933a;">1
+</span><span>  </span><span style="color:#c23f31;">resetBall</span><span>()
+</span><span>}
+</span><span style="color:#72ab00;">if </span><span>(</span><span style="color:#5597d6;">final</span><span>.</span><span style="color:#a2a001;">x </span><span style="color:#72ab00;">&lt; </span><span style="color:#5597d6;">leftWall</span><span>.</span><span style="color:#a2a001;">x</span><span>) {
+</span><span>  </span><span style="color:#5597d6;">score</span><span>.</span><span style="color:#5597d6;">playerTwo </span><span style="color:#72ab00;">+= </span><span style="color:#b3933a;">1
+</span><span>  </span><span style="color:#c23f31;">resetBall</span><span>()
+</span><span>}
+</span></code></pre>
+<h2 id="rendering">Rendering</h2>
+<p>A game that updates state without displaying the game to the user is a meaningless game. </p>
+<p>To render Pong we use Leaflet to embed our entities in a cylindrical projection world. </p>
+
+</main>
+
+<footer>
+  <div class="logo">Leaflet-HTML</div>
+</footer>
+</body>
+</html>

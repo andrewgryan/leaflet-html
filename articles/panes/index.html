@@ -1,0 +1,107 @@
+
+  
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+  </style>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="/leaflet-html/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <script type="importmap">
+      {
+        "imports": {
+          "leaflet": "https://unpkg.com/leaflet@1.9.4/dist/leaflet-src.esm.js",
+          "leaflet-html": "https://unpkg.com/leaflet-html@latest/dist/leaflet-html.js"
+        }
+      }
+    </script>
+    <script type="module">
+      import "leaflet-html";
+    </script>
+    <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+</head>
+<body>
+<nav>
+<div>
+  <a href="https://andrewgryan.github.io/leaflet-html/"><iconify-icon icon="mdi:home"></iconify-icon> Home</a>
+  <a href="https://andrewgryan.github.io/leaflet-html/articles/"><iconify-icon icon="material-symbols:article-outline-sharp"></iconify-icon> Articles</a>
+  <a href="https://andrewgryan.github.io/leaflet-html/api/"><iconify-icon icon="material-symbols:api"></iconify-icon> API</a>
+</div>
+<a href="Https://GitHub.com/andrewgryan/leaflet-html"><iconify-icon icon="mdi:github"></iconify-icon></a>
+</nav>
+
+<main>
+  <h1>Working with map panes</h1>
+  <h2 id="demo">Demo</h2>
+<p>This tutorial illustrates how to make effective use of Leaflet panes.</p>
+<style>
+.leaflet-coastline-pane {
+  z-index: 450;
+  pointer-events: none;
+}
+</style>
+<l-map zoom="3" center="[55, 0]">
+  <l-tile-layer url-template="https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png"></l-tile-layer>
+  <l-pane name="coastline">
+    <l-tile-layer url-template="https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png"></l-tile-layer>
+  </l-pane>
+  <l-geojson id="countries"></l-geojson>
+</l-map>
+<script type="text/javascript" src="/leaflet-html/panes/eu-countries.js"></script>
+<script type="text/javascript" src="/panes/eu-countries.js"></script>
+<script>
+document.getElementById("countries").setAttribute("geojson", JSON.stringify(euCountries))
+</script>
+<p>Following the tutorial on the Leaflet JS website.</p>
+<h3 id="mark-up">Mark-up</h3>
+<p>The mark-up for a custom pane is relatively straight-forward.
+Add a <code>l-pane</code> tag with a <code>name</code> attribute to instruct <code>leaflet-html</code> to add a new pane.</p>
+<pre data-linenos data-lang="html" style="background-color:#f5f5f5;color:#1f1f1f;" class="language-html "><code class="language-html" data-lang="html"><table><tbody><tr><td>1</td><td><span style="color:#7f8989;">&lt;!-- Example app using a Pane --&gt;
+</span></td></tr><tr><td>2</td><td><span style="color:#6486ab;">&lt;l-map zoom=</span><span style="color:#d07711;">&quot;3&quot; </span><span style="color:#6486ab;">center=</span><span style="color:#d07711;">&quot;[55, 0]&quot;</span><span style="color:#6486ab;">&gt;
+</span></td></tr><tr><td>3</td><td><span>  </span><span style="color:#6486ab;">&lt;l-tile-layer
+</span></td></tr><tr><td>4</td><td><span style="color:#6486ab;">    url-template=</span><span style="color:#d07711;">&quot;https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png&quot;
+</span></td></tr><tr><td>5</td><td><span style="color:#6486ab;">  &gt;&lt;/l-tile-layer&gt;
+</span></td></tr><tr><td><mark style="background-color:#c7c7bf2e;">6</mark></td><td><mark style="background-color:#c7c7bf2e;"><span>  </span><span style="color:#6486ab;">&lt;l-pane name=</span><span style="color:#d07711;">&quot;coastline&quot;</span><span style="color:#6486ab;">&gt;
+</span></mark></td></tr><tr><td>7</td><td><span>    </span><span style="color:#6486ab;">&lt;l-tile-layer
+</span></td></tr><tr><td>8</td><td><span style="color:#6486ab;">      url-template=</span><span style="color:#d07711;">&quot;https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png&quot;
+</span></td></tr><tr><td>9</td><td><span style="color:#6486ab;">    &gt;&lt;/l-tile-layer&gt;
+</span></td></tr><tr><td><mark style="background-color:#c7c7bf2e;">10</mark></td><td><mark style="background-color:#c7c7bf2e;"><span>  </span><span style="color:#6486ab;">&lt;/l-pane&gt;
+</span></mark></td></tr><tr><td>11</td><td><span>  </span><span style="color:#6486ab;">&lt;l-geojson id=</span><span style="color:#d07711;">&quot;countries&quot;</span><span style="color:#6486ab;">&gt;&lt;/l-geojson&gt;
+</span></td></tr><tr><td>12</td><td><span style="color:#6486ab;">&lt;/l-map&gt;
+</span></td></tr></tbody></table></code></pre>
+<p>Lines 6 and 10 show the modifications required to place a layer into a pane.</p>
+<h3 id="control-the-z-index-and-pointer-events">Control the z-index and pointer events</h3>
+<pre data-lang="css" style="background-color:#f5f5f5;color:#1f1f1f;" class="language-css "><code class="language-css" data-lang="css"><span style="color:#7f8989;">/* Style the element generated by Leaflet JS */
+</span><span style="color:#9b703f;">.leaflet-coastline-pane </span><span>{
+</span><span>  </span><span style="color:#c5af75;">z-index</span><span>: </span><span style="color:#ca7840;">450</span><span>;
+</span><span>  </span><span style="color:#c5af75;">pointer-events</span><span>: </span><span style="color:#949175;">none</span><span>;
+</span><span>}
+</span></code></pre>
+<h3 id="sample-data">Sample data</h3>
+<p>In a real application, the HTML will be server rendered with geoJSON.
+But for this short demo the following snippet of JS has been used.</p>
+<pre data-lang="js" style="background-color:#f5f5f5;color:#1f1f1f;" class="language-js "><code class="language-js" data-lang="js"><span style="color:#7f8989;">/** Sample data */
+</span><span style="color:#a2a001;">document
+</span><span>  .</span><span style="color:#b39f04;">getElementById</span><span>(</span><span style="color:#d07711;">&quot;countries&quot;</span><span>)
+</span><span>  .</span><span style="color:#b39f04;">setAttribute</span><span>(</span><span style="color:#d07711;">&quot;geojson&quot;</span><span>, </span><span style="color:#da5d42;">JSON</span><span>.</span><span style="color:#b39f04;">stringify</span><span>(</span><span style="color:#5597d6;">euCountries</span><span>));
+</span></code></pre>
+<h2 id="conclusion">Conclusion</h2>
+<p>Leaflet HTML supports custom panes for those times when controlling
+the z-index of a collection of layers is important.</p>
+
+</main>
+
+<footer>
+  <div class="logo">Leaflet-HTML</div>
+</footer>
+</body>
+</html>

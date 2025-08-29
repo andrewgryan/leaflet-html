@@ -17,6 +17,10 @@ class LGeoJSON extends HTMLElement {
     if (pane !== null) {
       options["pane"] = pane.getAttribute("name");
     }
+    const style = this.getAttribute("style");
+    if (style !== null) {
+      options["style"] = JSON.parse(style)
+    }
 
     if (value !== null) {
       this.layer = geoJSON(JSON.parse(value), options);

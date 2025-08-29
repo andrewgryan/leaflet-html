@@ -6,9 +6,10 @@ import "./index.js";
 it("should render a div icon", () => {
   const el = document.createElement("l-div-icon");
   el.innerHTML = "Hello, World!";
+  el.setAttribute("icon-anchor","[50, 50]");
   document.body.appendChild(el);
   expect(el.icon).toBeInstanceOf(DivIcon);
-  expect(el.icon).toEqual(divIcon({ html: "Hello, World!" }));
+  expect(el.icon).toEqual(divIcon({ html: "Hello, World!" , iconAnchor: "[50, 50]"}));
 });
 
 it("should attach div icon to marker", () => {

@@ -28,7 +28,7 @@ import { layerConnected, tooltipConnected } from "./events.js";
 const positionalArguments = (methodName) => {
   switch (methodName) {
     case "arrowhead":
-        return [option("latLngs", "latlng", null)];
+      return [option("latLngs", "latlng", null)];
     case "disksector":
       return [option("latLng", "latlng", null)];
     case "annulus":

@@ -53,6 +53,7 @@
     "leaflet": "^1.9.4",
     "leaflet.markercluster": "^1.5.3",
     "leaflet.annulus": "wideint/leaflet-annulus",
-    "leaflet.disksector": "wideint/leaflet-disksector"
+    "leaflet.disksector": "wideint/leaflet-disksector",
+    "leaflet.arrowhead": "wideint/leaflet-arrowheads"
   }
 }

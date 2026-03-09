@@ -2,6 +2,7 @@
 import { Circle, LatLng, Polygon, Polyline, Rectangle } from "leaflet";
 import { Annulus } from "leaflet.annulus/src/L.Annulus.js";
 import { DiskSector } from "leaflet.disksector/DiskSector.js";
+import { ArrowHead } from "leaflet.arrowhead/ArrowHead.js";
 import { camelToKebab } from "./util.js";
 import { htmlAttribute, parse } from "./parse.js";
 import { layerConnected, tooltipConnected } from "./events.js";
@@ -14,7 +15,7 @@ import { layerConnected, tooltipConnected } from "./events.js";
  * @property {AttributeValue | null} defaultValue
  */
 /**
- * @typedef {("circle"|"rectangle"|"polygon"|"polyline"|"annulus"|"disksector")} MethodName
+ * @typedef {("circle"|"rectangle"|"polygon"|"polyline"|"annulus"|"disksector"|"arrowhead")} MethodName
  * @typedef {("path"|"interactiveLayer")} LayerName
  * @typedef {("boolean"|"number"|"string"|"latlng"|"latlngbounds")} AttributeType
  * @typedef {(boolean|number|string|LatLng)} AttributeValue
@@ -26,6 +27,8 @@ import { layerConnected, tooltipConnected } from "./events.js";
  */
 const positionalArguments = (methodName) => {
   switch (methodName) {
+    case "arrowhead":
+        return [option("latLngs", "latlng", null)];
     case "disksector":
       return [option("latLng", "latlng", null)];
     case "annulus":
@@ -82,6 +85,7 @@ const inferParser = (type) => {
  */
 const options = (methodName) => {
   const _OPTIONS = {
+    arrowhead: [],
     disksector: [
       option("startAngle", "number", null),
       option("stopAngle", "number", null)
@@ -116,6 +120,7 @@ const options = (methodName) => {
  * @type {Object.<string, (MethodName | LayerName)[]>}
  */
 const INHERITS = {
+  arrowhead: ["polyline"],
   disksector: ["circle"],
   annulus: ["circle"],
   circle: ["path"],
@@ -161,7 +166,13 @@ const setter = (layer, methodName, name, newValue) => {
   const parsedValue = _opt.parser(newValue);
 
   // Update
-  if (layer instanceof DiskSector) {
+  if (layer instanceof ArrowHead) {
+    switch (name) {
+      case "lat-lngs":
+        layer.setLatLngs(JSON.parse(newValue));
+        break;
+    }
+  } else if (layer instanceof DiskSector) {
     switch (name) {
       case "lat-lng":
         layer.setLatLng(JSON.parse(newValue));

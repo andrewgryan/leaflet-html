@@ -20,6 +20,7 @@ import generator from "./generator.js";
 import { circle, polyline, polygon, rectangle } from "leaflet";
 import { annulus } from "leaflet.annulus/src/L.Annulus.js";
 import { disksector } from "leaflet.disksector/DiskSector.js";
+import { arrowhead } from "leaflet.arrowhead/ArrowHead.js";
 
 import LMarkerClusterGroup from "./l-marker-cluster-group.js";
 
@@ -47,6 +48,7 @@ const init = (() => {
   customElements.define("l-rectangle", generator(rectangle, "rectangle"));
   customElements.define("l-annulus", generator(annulus, "annulus"));
   customElements.define("l-disk-sector", generator(disksector, "disksector"));
+  customElements.define("l-arrowhead", generator(arrowhead, "arrowhead"));
   customElements.define("l-tooltip", LTooltip);
   customElements.define("l-div-icon", LDivIcon);
 })();

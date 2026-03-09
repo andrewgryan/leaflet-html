@@ -7,7 +7,8 @@ export default defineConfig({
       entry: resolve(__dirname, "src/index.js"),
       name: "leaflet-html",
       fileName: "leaflet-html"
-    }
+    },
+    minify: "false"
   },
   test: {
     includeSource: ["src/**/*.{js,ts}"],

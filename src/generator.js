@@ -1,5 +1,5 @@
 // @ts-check
-import { Circle, LatLng, Polygon, Polyline, Rectangle } from "leaflet";
+import { Circle, LatLng, Polygon, Polyline, Rectangle, stamp } from "leaflet";
 import { camelToKebab } from "./util.js";
 import { htmlAttribute, parse } from "./parse.js";
 import { layerConnected, tooltipConnected } from "./events.js";
@@ -248,6 +248,7 @@ const generator = (method, methodName) => {
       const args = positional(this, methodName);
       const options = settings(this, methodName);
       this.layer = method(...args, options);
+      this.setAttribute("leaflet-id", stamp(this.layer));
       const event = new CustomEvent(layerConnected, {
         cancelable: true,
         bubbles: true,

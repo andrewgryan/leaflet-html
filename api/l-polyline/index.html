@@ -1,0 +1,83 @@
+
+  
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+  </style>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="/leaflet-html/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <script type="importmap">
+      {
+        "imports": {
+          "leaflet": "https://unpkg.com/leaflet@1.9.4/dist/leaflet-src.esm.js",
+          "leaflet-html": "https://unpkg.com/leaflet-html@latest/dist/leaflet-html.js"
+        }
+      }
+    </script>
+    <script type="module">
+      import "leaflet-html";
+    </script>
+    <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+</head>
+<body>
+<nav>
+<div>
+  <a href="https://andrewgryan.github.io/leaflet-html/"><iconify-icon icon="mdi:home"></iconify-icon> Home</a>
+  <a href="https://andrewgryan.github.io/leaflet-html/articles/"><iconify-icon icon="material-symbols:article-outline-sharp"></iconify-icon> Articles</a>
+  <a href="https://andrewgryan.github.io/leaflet-html/api/"><iconify-icon icon="material-symbols:api"></iconify-icon> API</a>
+</div>
+<a href="Https://GitHub.com/andrewgryan/leaflet-html"><iconify-icon icon="mdi:github"></iconify-icon></a>
+</nav>
+
+<main>
+  <h1>Polyline</h1>
+  <p>HTML equivalent to <code>L.polyline</code> function.
+Can be a child of <code>l-map</code> or <code>l-layer-group</code> elements.</p>
+<h2 id="example">Example</h2>
+<p>A standard way to initialise.</p>
+<pre data-lang="html" style="background-color:#f5f5f5;color:#1f1f1f;" class="language-html "><code class="language-html" data-lang="html"><span style="color:#6486ab;">&lt;l-polyline lat-lngs=</span><span style="color:#d07711;">&quot;[[0,0], [1,0], [1, 1]]&quot;</span><span style="color:#6486ab;">&gt;&lt;/l-polyline&gt;
+</span></code></pre>
+<h2 id="parameters">Parameters</h2>
+<p>Mandatory HTML properties to successfully instantiate.</p>
+<table><thead><tr><th>Attribute</th><th>Example</th><th>Description</th></tr></thead><tbody>
+<tr><td>lat-lngs</td><td>[[0, 0], [1, 0], [1, 1]]</td><td>LatLngs to define extent</td></tr>
+</tbody></table>
+<h2 id="properties">Properties</h2>
+<table><thead><tr><th>Attribute</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td>stroke</td><td>boolean</td><td>true</td></tr>
+<tr><td>color</td><td>string</td><td>#3388ff</td></tr>
+<tr><td>weight</td><td>number</td><td>3</td></tr>
+<tr><td>opacity</td><td>number</td><td>1.0</td></tr>
+<tr><td>lineCap</td><td>string</td><td>round</td></tr>
+<tr><td>lineJoin</td><td>string</td><td>round</td></tr>
+<tr><td>dashArray</td><td>string</td><td>null</td></tr>
+<tr><td>dashOffset</td><td>string</td><td>null</td></tr>
+<tr><td>fill</td><td>boolean</td><td>true</td></tr>
+<tr><td>fillColor</td><td>string</td><td>#3388ff</td></tr>
+<tr><td>fillOpacity</td><td>number</td><td>0.2</td></tr>
+<tr><td>smoothFactor</td><td>number</td><td>1.0</td></tr>
+<tr><td>noClip</td><td>boolean</td><td>false</td></tr>
+<tr><td>interactive</td><td>boolean</td><td>true</td></tr>
+</tbody></table>
+<h2 id="events">Events</h2>
+<table><thead><tr><th>Event key</th><th>Detail</th><th>Description</th></tr></thead><tbody>
+<tr><td>l:layer:connected</td><td></td><td>Triggered when connected to the document</td></tr>
+</tbody></table>
+
+</main>
+
+<footer>
+  <div class="logo">Leaflet-HTML</div>
+</footer>
+</body>
+</html>

@@ -3,6 +3,14 @@ import { layerGroup } from "leaflet";
 import { layerConnected } from "./events.js";
 import LLayer from "./l-layer.js";
 
+function _removeNode(group, node) {
+  const leafletId = node.getAttribute("leaflet-id");
+  const layer = group.getLayer(parseInt(leafletId));
+  if (typeof layer !== "undefined") {
+    group.removeLayer(layer);
+  }
+}
+
 class LLayerGroup extends LLayer {
   constructor() {
     super();
@@ -33,13 +41,10 @@ class LLayerGroup extends LLayer {
       mutations.forEach((mutation) => {
         mutation.removedNodes.forEach((node) => {
           if (node instanceof HTMLElement) {
-            const leafletId = node.getAttribute("leaflet-id");
-            if (leafletId !== null) {
-              const layer = group.getLayer(parseInt(leafletId));
-              if (typeof layer !== "undefined") {
-                group.removeLayer(layer);
-              }
-            }
+            node.querySelectorAll("[leaflet-id]").forEach((child) => {
+              _removeNode(group, child);
+            });
+            _removeNode(group, node);
           }
         });
       });

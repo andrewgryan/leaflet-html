@@ -7,6 +7,7 @@ it("should render <l-polyline lat-lng='[]'>", () => {
   const el = document.createElement("l-polyline");
   el.setAttribute("lat-lngs", "[]");
   document.body.appendChild(el);
+  delete el.layer._leaflet_id;
   expect(el.layer).toEqual(polyline([]));
 });
 
@@ -32,6 +33,7 @@ it.each([
     document.body.appendChild(el);
     el.setAttribute("lat-lng", JSON.stringify(line));
     el.setAttribute(attName, attValue);
+    delete el.layer._leaflet_id;
     expect(el.layer).toEqual(circle(line, { [key]: value }));
   }
 );
@@ -45,6 +47,7 @@ it.each([["smooth-factor", "1.1"]])(
     document.body.appendChild(el);
     el.setAttribute("lat-lng", JSON.stringify(line));
     el.setAttribute(attName, attValue);
+    delete el.layer._leaflet_id;
     expect(el.layer).toEqual(circle(line));
   }
 );
@@ -76,6 +79,7 @@ it.each([
     document.body.appendChild(el);
     el.setAttribute("lat-lngs", JSON.stringify(line));
     el.setAttribute(attName, attValue);
+    delete el.layer._leaflet_id;
     expect(el.layer).toEqual(polyline(line, { [key]: value }));
   }
 );
@@ -106,6 +110,7 @@ it.each([
     document.body.appendChild(el);
     el.setAttribute("lat-lngs", JSON.stringify(line));
     el.setAttribute(attName, attValue);
+    delete el.layer._leaflet_id;
     expect(el.layer).toEqual(polygon(line, { [key]: value }));
   }
 );
@@ -121,6 +126,7 @@ it.each([["color", "red", "color", "red"]])(
     el.setAttribute("lat-lng-bounds", JSON.stringify(line));
     document.body.appendChild(el);
     el.setAttribute(attName, attValue);
+    delete el.layer._leaflet_id;
     expect(el.layer).toEqual(rectangle(line, { [key]: value }));
   }
 );
@@ -138,6 +144,7 @@ it("should update <l-rectangle> lat-lng-bounds", () => {
   el.setAttribute("lat-lng-bounds", JSON.stringify(before));
   document.body.appendChild(el);
   el.setAttribute("lat-lng-bounds", JSON.stringify(after));
+  delete el.layer._leaflet_id;
   expect(el.layer).toEqual(rectangle(after));
 });
 
@@ -148,6 +155,7 @@ it("should update <l-circle> lat-lng", () => {
   el.setAttribute("lat-lng", JSON.stringify(before));
   document.body.appendChild(el);
   el.setAttribute("lat-lng", JSON.stringify(after));
+  delete el.layer._leaflet_id;
   expect(el.layer).toEqual(circle(after));
 });
 

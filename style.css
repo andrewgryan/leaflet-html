@@ -1,0 +1,227 @@
+@import "https://unpkg.com/open-props";
+@import url("https://fonts.googleapis.com/css2?family=Saira+Stencil+One&display=swap");
+
+:root {
+  --accent: hsl(160deg 70% 50%);
+  --font-family: "Saira Stencil One", system-ui;
+}
+
+:root {
+  --surface-table: var(--gray-2);
+  --surface-table-head: var(--gray-9);
+  --text-table-head: var(--gray-1);
+  --scroll-thumb-color: var(--text);
+}
+
+:where(html) {
+  scrollbar-color: var(--scroll-thumb-color) transparent;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --text: var(--gray-9);
+    --surface: white;
+    --text-negative: var(--surface);
+    --surface-negative: var(--text);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: white;
+    --surface: var(--gray-9);
+    --text-negative: var(--surface);
+    --surface-negative: hsl(from var(--accent) h s 85%);
+    --surface-table: var(--gray-9);
+    --surface-table-head: var(--gray-9);
+    --text-table-head: var(--accent);
+    --scroll-thumb-color: var(--accent);
+  }
+
+  .leaflet-tile-pane {
+    filter: grayscale();
+  }
+
+  pre {
+    color: var(--text) !important;
+    background-color: var(--surface) !important;
+    font-size: 1rem;
+  }
+
+  code {
+    filter: brightness(1.5);
+  }
+
+  a {
+    color: var(--accent);
+  }
+
+}
+
+:where(button) {
+  background-color: var(--surface-negative);
+  padding-block: var(--size-1);
+  padding-inline: var(--size-3);
+  border: 1px solid transparent;
+  cursor: pointer;
+  color: var(--text-negative);
+}
+
+l-map {
+  display: block;
+  block-size: 40ch;
+  isolation: isolate;
+  z-index: 1;
+}
+
+iconify-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+}
+
+body {
+  font-family: system-ui;
+  line-height: 1.6;
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto;
+  row-gap: 1ch;
+  color: var(--text);
+  background-color: var(--surface);
+}
+
+h1,
+h2,
+h3,
+th {
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-style: normal;
+}
+
+@keyframes gentleColors {
+  0% {
+    background-position: 100% 50%;
+  }
+  50% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+:root {
+  --angle: 160deg;
+  --color-1: hsl(var(--angle) 70% 50%);
+  --color-2: hsl(from var(--color-1) calc(180deg + var(--angle)) s l);
+  --color-3: hsl(from var(--color-1) calc(180deg - var(--angle)) s l);
+  --color-4: hsl(from var(--color-1) calc(360deg - var(--angle)) s l);
+  --background-gradient: linear-gradient(
+    30deg,
+    var(--color-1) 12.5%,
+    var(--color-2) 12.5%,
+    var(--color-2) 25%,
+    var(--color-3) 25%,
+    var(--color-3) 37.5%,
+    var(--color-4) 37.5%,
+    var(--color-4) 50%,
+    var(--color-1) 50%,
+    var(--color-1) 62.5%,
+    var(--color-2) 62.5%,
+    var(--color-2) 75%,
+    var(--color-3) 75%
+  );
+  
+}
+
+h1 {
+  color: transparent;
+  text-wrap: balance;
+  background: var(--background-gradient);
+  background-size: 200% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  animation: 30s gentleColors ease infinite;
+}
+
+
+
+pre {
+  padding-inline: 0.75rem;
+  padding-block: 0.5rem;
+  border-radius: 0.2rem;
+  overflow-x: auto;
+}
+
+main {
+  inline-size: min(90%, 80ch);
+  margin-inline: auto;
+  max-inline-size: 100vw;
+}
+
+nav {
+  z-index: 2;
+  background-color: var(--surface);
+  position: sticky;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  & div {
+    display: flex;
+  }
+  & a {
+    font-family: var(--font-family);
+    text-decoration: none;
+    padding: var(--size-3);
+    display: flex;
+    align-items: center;
+    gap: var(--size-1);
+    color: var(--text);
+  }
+}
+
+footer {
+  margin-block-start: auto;
+  min-height: 15ch;
+  background-color: var(--surface-negative);
+  padding: var(--size-3);
+
+  & .logo {
+    color: var(--text-negative);
+    font-size: var(--font-size-0);
+    text-transform: uppercase;
+    font-family: var(--font-family);
+  }
+}
+
+
+table {
+  inline-size: 100%;
+  background-color: var(--surface-table);
+  border-radius: var(--size-1);
+  border-collapse: collapse;
+  overflow: hidden;
+}
+
+th {
+  background-color: var(--surface-table-head);
+  color: var(--text-table-head);
+}
+
+td,
+th {
+  padding: var(--size-2);
+  text-align: left;
+}
+
+:where(a):where(:not(:hover)) {
+  text-decoration: inherit;
+}
+
+input[type="range"] {
+  inline-size: 100%;
+}

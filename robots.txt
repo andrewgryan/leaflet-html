@@ -1,0 +1,4 @@
+User-agent: *
+Disallow:
+Allow: /
+Sitemap: https://andrewgryan.github.io/leaflet-html/sitemap.xml

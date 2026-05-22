@@ -1,0 +1,147 @@
+
+  
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+  </style>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="/leaflet-html/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <script type="importmap">
+      {
+        "imports": {
+          "leaflet": "https://unpkg.com/leaflet@1.9.4/dist/leaflet-src.esm.js",
+          "leaflet-html": "https://unpkg.com/leaflet-html@latest/dist/leaflet-html.js"
+        }
+      }
+    </script>
+    <script type="module">
+      import "leaflet-html";
+    </script>
+    <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+</head>
+<body>
+<nav>
+<div>
+  <a href="https://andrewgryan.github.io/leaflet-html/"><iconify-icon icon="mdi:home"></iconify-icon> Home</a>
+  <a href="https://andrewgryan.github.io/leaflet-html/articles/"><iconify-icon icon="material-symbols:article-outline-sharp"></iconify-icon> Articles</a>
+  <a href="https://andrewgryan.github.io/leaflet-html/api/"><iconify-icon icon="material-symbols:api"></iconify-icon> API</a>
+</div>
+<a href="Https://GitHub.com/andrewgryan/leaflet-html"><iconify-icon icon="mdi:github"></iconify-icon></a>
+</nav>
+
+<main>
+  <h1>Icon</h1>
+  <p>HTML equivalent to <code>L.icon</code> function.
+Can be a child of <code>l-marker</code> element.</p>
+<p>See <a href="https://leafletjs.com/reference.html#icon">Leaflet docs</a>.</p>
+<h2 id="example">Example</h2>
+<p>A standard way to initialise with minimal options.</p>
+<pre data-lang="html" style="background-color:#f5f5f5;color:#1f1f1f;" class="language-html "><code class="language-html" data-lang="html"><span style="color:#6486ab;">&lt;l-icon icon-url=</span><span style="color:#d07711;">&quot;/icon.png&quot;</span><span style="color:#6486ab;">&gt;&lt;/l-icon&gt;
+</span></code></pre>
+<p>A more detailed approach is to specify custom icon and shadow images.</p>
+<l-map zoom="13" center="[51.5,-0.09]">
+  <l-tile-layer
+    url-template="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+  ></l-tile-layer>
+  <l-marker lat-lng="[51.5, -0.09]">
+    <l-icon
+      id="example-icon"
+      icon-size="[38, 95]"
+      icon-anchor="[22, 94]"
+      icon-url=https://andrewgryan.github.io/leaflet-html/icons/leaf-green.png
+
+      shadow-url=https://andrewgryan.github.io/leaflet-html/icons/leaf-shadow.png
+
+      shadow-size="[50, 64]"
+      shadow-anchor="[4, 62]"
+    ></l-icon>
+</l-map>
+<div>
+<label for="icon-size">Icon size</label>
+<input type="range" min="0" max="100" value="38" id="icon-size" name="icon-size" />
+</div>
+<div>
+<input type="radio" id="icon-red" name="icon-color" value="red" />
+<label for="icon-red">Red</label>
+<input type="radio" id="icon-orange" name="icon-color" value="orange" />
+<label for="icon-orange">Orange</label>
+<input type="radio" id="icon-green" name="icon-color" value="green" checked />
+<label for="icon-green">Green</label>
+</div>
+<script>
+    const icon = document.getElementById("example-icon")
+    const templateUrl = icon.getAttribute("icon-url")
+    document.getElementById("icon-size").addEventListener("change", (ev) => {
+        const scale = parseInt(ev.target.value) / 38
+        const size = [38 * scale, 95 * scale]
+        const anchor = [22 * scale, 94 * scale]
+        const shadowSize = [50 * scale, 64 * scale]
+        const shadowAnchor = [4 * scale, 62 * scale]
+        icon.setAttribute("icon-size", JSON.stringify(size))
+        icon.setAttribute("icon-anchor", JSON.stringify(anchor))
+        icon.setAttribute("shadow-size", JSON.stringify(shadowSize))
+        icon.setAttribute("shadow-anchor", JSON.stringify(shadowAnchor))
+    });
+    document.querySelectorAll("input[name='icon-color']").forEach((el) => {
+      el.addEventListener("change", (ev) => {
+        const color = ev.target.value;
+        icon.setAttribute("icon-url", templateUrl.replace("green", color))
+      });
+    })
+
+</script>
+<pre data-lang="html" style="background-color:#f5f5f5;color:#1f1f1f;" class="language-html "><code class="language-html" data-lang="html"><span style="color:#6486ab;">&lt;l-icon
+</span><span style="color:#6486ab;">    icon-url=</span><span style="color:#d07711;">&quot;/icons/leaf-green.png&quot;
+</span><span style="color:#6486ab;">    shadow-url=</span><span style="color:#d07711;">&quot;/icons/leaf-shadow.png&quot;
+</span><span style="color:#6486ab;">    icon-size=</span><span style="color:#d07711;">&quot;[38, 95]&quot;
+</span><span style="color:#6486ab;">    shadow-size=</span><span style="color:#d07711;">&quot;[50, 64]&quot; 
+</span><span style="color:#6486ab;">    icon-anchor=</span><span style="color:#d07711;">&quot;[22, 94]&quot; 
+</span><span style="color:#6486ab;">    shadow-anchor=</span><span style="color:#d07711;">&quot;[4, 62]&quot; 
+</span><span style="color:#6486ab;">    popup-anchor=</span><span style="color:#d07711;">&quot;[-3, -76]&quot; 
+</span><span style="color:#6486ab;">  &gt;&lt;/l-icon&gt;
+</span></code></pre>
+<h2 id="related-elements">Related elements</h2>
+<ul>
+<li><a href="https://andrewgryan.github.io/leaflet-html/api/l-marker/">l-marker</a></li>
+</ul>
+<h2 id="parameters">Parameters</h2>
+<p>Mandatory HTML properties to successfully instantiate.</p>
+<table><thead><tr><th>Attribute</th><th>Example</th><th>Description</th></tr></thead><tbody>
+</tbody></table>
+<h2 id="properties">Properties</h2>
+<table><thead><tr><th>Attribute</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td>class-name</td><td>string</td><td>Custom class name</td></tr>
+<tr><td>cross-origin</td><td>bool</td><td></td></tr>
+<tr><td>icon-anchor</td><td>Point</td><td>Coordinates of the &quot;tip&quot; of the icon</td></tr>
+<tr><td>icon-retina-url</td><td>string</td><td></td></tr>
+<tr><td>icon-size</td><td>Point</td><td>Size of the icon in pixels</td></tr>
+<tr><td>icon-url</td><td>string</td><td>URL to define icon image</td></tr>
+<tr><td>popup-anchor</td><td>Point</td><td></td></tr>
+<tr><td>shadow-anchor</td><td>Point</td><td></td></tr>
+<tr><td>shadow-retina-url</td><td>string</td><td>Coordinates of the &quot;tip&quot; of the shadow</td></tr>
+<tr><td>shadow-size</td><td>Point</td><td>Size in pixels</td></tr>
+<tr><td>shadow-url</td><td>string</td><td>Url for shadow, no shadow if not specified</td></tr>
+<tr><td>tooltip-anchor</td><td>Point</td><td>Coordinates relative to anchor</td></tr>
+</tbody></table>
+<h2 id="events">Events</h2>
+<table><thead><tr><th>Event key</th><th>Detail</th><th>Description</th></tr></thead><tbody>
+<tr><td>l:icon:connected</td><td></td><td>Triggered when connected to the document</td></tr>
+</tbody></table>
+
+</main>
+
+<footer>
+  <div class="logo">Leaflet-HTML</div>
+</footer>
+</body>
+</html>

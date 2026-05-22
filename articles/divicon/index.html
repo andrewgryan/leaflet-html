@@ -1,0 +1,111 @@
+
+  
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+  </style>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="/leaflet-html/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <script type="importmap">
+      {
+        "imports": {
+          "leaflet": "https://unpkg.com/leaflet@1.9.4/dist/leaflet-src.esm.js",
+          "leaflet-html": "https://unpkg.com/leaflet-html@latest/dist/leaflet-html.js"
+        }
+      }
+    </script>
+    <script type="module">
+      import "leaflet-html";
+    </script>
+    <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+</head>
+<body>
+<nav>
+<div>
+  <a href="https://andrewgryan.github.io/leaflet-html/"><iconify-icon icon="mdi:home"></iconify-icon> Home</a>
+  <a href="https://andrewgryan.github.io/leaflet-html/articles/"><iconify-icon icon="material-symbols:article-outline-sharp"></iconify-icon> Articles</a>
+  <a href="https://andrewgryan.github.io/leaflet-html/api/"><iconify-icon icon="material-symbols:api"></iconify-icon> API</a>
+</div>
+<a href="Https://GitHub.com/andrewgryan/leaflet-html"><iconify-icon icon="mdi:github"></iconify-icon></a>
+</nav>
+
+<main>
+  <h1>Div icons</h1>
+  <p>A customisable icon using a single <code>&lt;div/&gt;</code> and CSS.
+For inspiration to style a single div, visit <a href="https://a.singlediv.com/">https://a.singlediv.com/</a></p>
+<style>
+  .icon {
+    border: none;
+    border-radius: 1000px;
+  }
+
+  .pink {
+    background-color: hotpink;
+  }
+
+  .blue {
+    background-color: cadetblue;
+  }
+</style>
+<l-map zoom="5" center="[45, 0]">
+  <l-tile-layer
+    url-template="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+  ></l-tile-layer>
+  <l-marker lat-lng="[45, 1]">
+    <l-div-icon class-name="icon pink"></l-div-icon>
+  </l-marker>
+  <l-marker lat-lng="[45, -1]">
+    <l-div-icon class-name="icon blue"></l-div-icon>
+  </l-marker>
+</l-map>
+<h2 id="styling">Styling</h2>
+<p>If custom styles are to be applied,
+it is best to use the JS attribute <code>className</code> by using the <code>class-name</code> equivalent HTML attribute.</p>
+<pre data-lang="css" style="background-color:#f5f5f5;color:#1f1f1f;" class="language-css "><code class="language-css" data-lang="css"><span style="color:#9b703f;">.icon </span><span>{
+</span><span>  </span><span style="color:#c5af75;">border</span><span>: </span><span style="color:#949175;">none</span><span>;
+</span><span>  </span><span style="color:#c5af75;">border-radius</span><span>: </span><span style="color:#ca7840;">1000</span><span style="color:#72ab00;">px</span><span>;
+</span><span>}
+</span><span>
+</span><span style="color:#9b703f;">.pink </span><span>{
+</span><span>  </span><span style="color:#c5af75;">background-color</span><span>: </span><span style="color:#da5d42;">hotpink</span><span>;
+</span><span>}
+</span><span>
+</span><span style="color:#9b703f;">.blue </span><span>{
+</span><span>  </span><span style="color:#c5af75;">background-color</span><span>: </span><span style="color:#da5d42;">cadetblue</span><span>;
+</span><span>}
+</span></code></pre>
+<h2 id="mark-up">Mark-up</h2>
+<p>The usual rules for converting from JS to HTML apply.</p>
+<pre data-linenos data-lang="html" style="background-color:#f5f5f5;color:#1f1f1f;" class="language-html "><code class="language-html" data-lang="html"><table><tbody><tr><td>1</td><td><span style="color:#6486ab;">&lt;l-map zoom=</span><span style="color:#d07711;">&quot;5&quot; </span><span style="color:#6486ab;">center=</span><span style="color:#d07711;">&quot;[45, 0]&quot;</span><span style="color:#6486ab;">&gt;
+</span></td></tr><tr><td>2</td><td><span>  </span><span style="color:#6486ab;">&lt;l-tile-layer
+</span></td></tr><tr><td>3</td><td><span style="color:#6486ab;">    url-template=</span><span style="color:#d07711;">&quot;https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png&quot;
+</span></td></tr><tr><td>4</td><td><span style="color:#6486ab;">  &gt;&lt;/l-tile-layer&gt;
+</span></td></tr><tr><td>5</td><td><span>  </span><span style="color:#6486ab;">&lt;l-marker lat-lng=</span><span style="color:#d07711;">&quot;[45, 1]&quot;</span><span style="color:#6486ab;">&gt;
+</span></td></tr><tr><td><mark style="background-color:#c7c7bf2e;">6</mark></td><td><mark style="background-color:#c7c7bf2e;"><span>    </span><span style="color:#6486ab;">&lt;l-div-icon class-name=</span><span style="color:#d07711;">&quot;icon pink&quot;</span><span style="color:#6486ab;">&gt;&lt;/l-div-icon&gt;
+</span></mark></td></tr><tr><td>7</td><td><span>  </span><span style="color:#6486ab;">&lt;/l-marker&gt;
+</span></td></tr><tr><td>8</td><td><span>  </span><span style="color:#6486ab;">&lt;l-marker lat-lng=</span><span style="color:#d07711;">&quot;[45, -1]&quot;</span><span style="color:#6486ab;">&gt;
+</span></td></tr><tr><td><mark style="background-color:#c7c7bf2e;">9</mark></td><td><mark style="background-color:#c7c7bf2e;"><span>    </span><span style="color:#6486ab;">&lt;l-div-icon class-name=</span><span style="color:#d07711;">&quot;icon blue&quot;</span><span style="color:#6486ab;">&gt;&lt;/l-div-icon&gt;
+</span></mark></td></tr><tr><td>10</td><td><span>  </span><span style="color:#6486ab;">&lt;/l-marker&gt;
+</span></td></tr><tr><td>11</td><td><span style="color:#6486ab;">&lt;/l-map&gt;
+</span></td></tr></tbody></table></code></pre>
+<p>Line 6 and 9 above show how to use a div icon to create a pink and blue circle icon.</p>
+<h1 id="conclusion">Conclusion</h1>
+<p>Div icons enable a front-end developer to craft amazing visualisations.</p>
+
+</main>
+
+<footer>
+  <div class="logo">Leaflet-HTML</div>
+</footer>
+</body>
+</html>

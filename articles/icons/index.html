@@ -1,0 +1,89 @@
+
+  
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+  </style>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="/leaflet-html/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <script type="importmap">
+      {
+        "imports": {
+          "leaflet": "https://unpkg.com/leaflet@1.9.4/dist/leaflet-src.esm.js",
+          "leaflet-html": "https://unpkg.com/leaflet-html@latest/dist/leaflet-html.js"
+        }
+      }
+    </script>
+    <script type="module">
+      import "leaflet-html";
+    </script>
+    <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+</head>
+<body>
+<nav>
+<div>
+  <a href="https://andrewgryan.github.io/leaflet-html/"><iconify-icon icon="mdi:home"></iconify-icon> Home</a>
+  <a href="https://andrewgryan.github.io/leaflet-html/articles/"><iconify-icon icon="material-symbols:article-outline-sharp"></iconify-icon> Articles</a>
+  <a href="https://andrewgryan.github.io/leaflet-html/api/"><iconify-icon icon="material-symbols:api"></iconify-icon> API</a>
+</div>
+<a href="Https://GitHub.com/andrewgryan/leaflet-html"><iconify-icon icon="mdi:github"></iconify-icon></a>
+</nav>
+
+<main>
+  <h1>Custom icons</h1>
+  <p>There are two ways to add an icon to a marker.
+One is to specify a <code>icon</code> attribute containing a JSON string of <code>L.Icon</code> options.</p>
+<pre data-lang="html" style="background-color:#f5f5f5;color:#1f1f1f;" class="language-html "><code class="language-html" data-lang="html"><span style="color:#6486ab;">&lt;l-marker
+</span><span style="color:#6486ab;">  lat-lng=</span><span style="color:#d07711;">&quot;[51.5, -0.09]&quot;
+</span><span style="color:#6486ab;">  icon=</span><span style="color:#d07711;">&#39;{&quot;iconUrl&quot;: &quot;icons/leaf-green.png&quot;}&#39;
+</span><span style="color:#6486ab;">&gt;&lt;/l-marker&gt;
+</span></code></pre>
+<p>The other way is to create a separate HTML tag to configure the icon.
+This is a more HTML centered approach.
+The above JSON approach may be suitable in cases where the icon data is available in a data structure.</p>
+<pre data-lang="html" style="background-color:#f5f5f5;color:#1f1f1f;" class="language-html "><code class="language-html" data-lang="html"><span style="color:#6486ab;">&lt;l-marker lat-lng=</span><span style="color:#d07711;">&quot;[51.5, -0.09]&quot;</span><span style="color:#6486ab;">&gt;&lt;l-icon
+</span><span style="color:#6486ab;">    icon-url=</span><span style="color:#d07711;">&quot;/icons/leaf-green.png&quot;
+</span><span style="color:#6486ab;">    shadow-url=</span><span style="color:#d07711;">&quot;/icons/leaf-shadow.png&quot;
+</span><span style="color:#6486ab;">    icon-size=</span><span style="color:#d07711;">&quot;[38, 95]&quot;
+</span><span style="color:#6486ab;">    shadow-size=</span><span style="color:#d07711;">&quot;[50, 64]&quot; 
+</span><span style="color:#6486ab;">    icon-anchor=</span><span style="color:#d07711;">&quot;[22, 94]&quot; 
+</span><span style="color:#6486ab;">    shadow-anchor=</span><span style="color:#d07711;">&quot;[4, 62]&quot; 
+</span><span style="color:#6486ab;">    popup-anchor=</span><span style="color:#d07711;">&quot;[-3, -76]&quot; 
+</span><span style="color:#6486ab;">  &gt;&lt;/l-icon&gt;
+</span></code></pre>
+<p>Both are supported, choose whichever is most convenient.</p>
+<l-map center="[51.5, -0.09]" zoom="12">
+  <l-tile-layer
+    url-template="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+  ></l-tile-layer>
+  <l-marker lat-lng="[51.5, -0.09]"><l-icon
+      icon-url=https://andrewgryan.github.io/leaflet-html/icons/leaf-green.png
+
+      shadow-url=https://andrewgryan.github.io/leaflet-html/icons/leaf-shadow.png
+
+      icon-size="[38, 95]"
+      shadow-size="[50, 64]" 
+      icon-anchor="[22, 94]" 
+      shadow-anchor="[4, 62]" 
+      popup-anchor="[-3, -76]" 
+    ></l-icon>
+  </l-marker>
+</l-map>
+
+</main>
+
+<footer>
+  <div class="logo">Leaflet-HTML</div>
+</footer>
+</body>
+</html>
